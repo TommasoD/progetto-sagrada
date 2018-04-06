@@ -5,4 +5,4 @@ Ingegneria Software 2018
 10495562 DISARÒ EDOARDO
 10529287 DOLCI TOMMASO
 
-Implementazione del gioco da tavolo "Sagrada".
+Implementazione del gioco da tavolo "Sagrada"
