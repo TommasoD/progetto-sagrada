@@ -5,28 +5,21 @@ import java.util.Random;
 public class DiceBag {
 
     private ArrayList <Die> diceBag;
+    private static final String[] colors = {
+            "RED",
+            "BLUE",
+            "YELLOW",
+            "GREEN",
+            "PURPLE"
+    };
 
     public DiceBag() {
         diceBag = new ArrayList <Die>();
-        for(int i = 0; i < 18; i++) {
-            Die d = new Die("RED");
-            diceBag.add(d);
-        }
-        for(int i = 0; i < 18; i++) {
-            Die d = new Die("BLUE");
-            diceBag.add(d);
-        }
-        for(int i = 0; i < 18; i++) {
-            Die d = new Die("PURPLE");
-            diceBag.add(d);
-        }
-        for(int i = 0; i < 18; i++) {
-            Die d = new Die("YELLOW");
-            diceBag.add(d);
-        }
-        for(int i = 0; i < 18; i++) {
-            Die d = new Die("GREEN");
-            diceBag.add(d);
+        for(String s: colors){
+            for(int i = 0; i < 18; i++) {
+                Die d = new Die(s);
+                diceBag.add(d);
+            }
         }
     }
 

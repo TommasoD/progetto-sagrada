@@ -2,7 +2,8 @@ package it.polimi.ingsw;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestClassDie {
+class DieTest {
+
     @Test
     void notNull(){
         Die d = new Die("RED");

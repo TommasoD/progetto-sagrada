@@ -2,7 +2,7 @@ package it.polimi.ingsw;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestClassDiceBag {
+class DiceBagTest {
     @Test
     void fullBag(){
         DiceBag db = new DiceBag();
@@ -16,5 +16,11 @@ class TestClassDiceBag {
         for(int i = 0; i < 90; i++) db.getDie();
         int size = db.getSize();
         assertEquals(0, size);
+    }
+
+    @Test
+    void showBag(){
+        DiceBag db = new DiceBag();
+        db.dump();
     }
 }
