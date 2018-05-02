@@ -22,6 +22,12 @@ class WindowPatternTest {
     }
 
     @Test
+    void print(){
+        WindowPattern w = new Window1();
+        w.dump();
+    }
+
+    @Test
     void valid() {
         WindowPattern w = new Window1();
         Die d = new Die("BLUE");

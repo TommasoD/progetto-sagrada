@@ -45,8 +45,10 @@ public abstract class WindowPattern {
     }
 
     public void dump() {
-        for(Slot s : windowMatrix) {
-            System.out.println(s);
+        System.out.println(name + " " + difficultyToken + "\n");
+        for(int i = 8; i < 34; i+=7) {
+            System.out.println(windowMatrix[i] + "\t\t" + windowMatrix[i+1] + "\t\t" + windowMatrix[i+2] +
+                    "\t\t" + windowMatrix[i+3] + "\t\t" + windowMatrix[i+4]);
         }
     }
 
