@@ -37,14 +37,8 @@ public class Die {
             this.value = values[i];
         }
 
-        public int getValueAsInt() {
-            if(value.equals("1")) return 1;
-            if(value.equals("2")) return 2;
-            if(value.equals("3")) return 3;
-            if(value.equals("4")) return 4;
-            if(value.equals("5")) return 5;
-            if(value.equals("6")) return 6;
-            return 0;
+        public void setValue (String value) {
+            this.value = value;
         }
 
         @Override

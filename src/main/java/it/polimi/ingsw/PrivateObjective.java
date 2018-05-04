@@ -14,7 +14,7 @@ public class PrivateObjective implements Objective {
 
     public int checkPoints(WindowPattern window) {
         int sum = 0;
-        for(int i = 0; i < window.windowMatrix.length; i++) {
+        for(int i = 8; i < 34; i++) {
             if(window.windowMatrix[i].isNotEmpty()) {
                 if(window.windowMatrix[i].getDie().getColor().equals(this.color)) {
                     sum = sum + window.windowMatrix[i].getDie().getValueAsInt();

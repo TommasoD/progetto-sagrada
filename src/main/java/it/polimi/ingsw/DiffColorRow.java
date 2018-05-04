@@ -21,7 +21,7 @@ public class DiffColorRow extends PublicObjective {
         int yellow = 0;
         int purple = 0;
         for (int i = 8; i < 34; i += 7) {
-            for (int j = i; j < i + 5; j++) {
+            for (int j = i; j < (i + 5); j++) {
                 if (window.windowMatrix[j].isNotEmpty()) {
                     if (window.windowMatrix[j].getDie().getColor().equals("RED")) red++;
                     if (window.windowMatrix[j].getDie().getColor().equals("GREEN")) green++;
