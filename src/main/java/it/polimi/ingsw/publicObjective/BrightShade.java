@@ -1,4 +1,5 @@
-package it.polimi.ingsw.publicObjectivesTest.publicObjectives;
+package it.polimi.ingsw.publicObjective;
+
 import it.polimi.ingsw.WindowPattern;
 
 public class BrightShade extends PublicObjective {

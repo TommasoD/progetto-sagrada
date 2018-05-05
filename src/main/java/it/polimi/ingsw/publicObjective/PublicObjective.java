@@ -1,4 +1,4 @@
-package it.polimi.ingsw.publicObjectivesTest.publicObjectives;
+package it.polimi.ingsw.publicObjective;
 import it.polimi.ingsw.WindowPattern;
 import it.polimi.ingsw.Objective;
 
