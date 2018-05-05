@@ -1,13 +1,11 @@
 package it.polimi.ingsw;
+import it.polimi.ingsw.windows.*;
 
-/**
- * Hello world!
- *
- */
-public class App 
+public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        WindowPattern w = new Window2();
+        w.dump();
     }
 }
