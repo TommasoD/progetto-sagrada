@@ -4,9 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WindowPatternTest {
-                                        /*
-                                        ** more tests must be added
-                                        **/
+
     @Test
     void tokenTest() {
         WindowPattern w = new Window1();
@@ -22,40 +20,62 @@ class WindowPatternTest {
     }
 
     @Test
-    void print(){
-        WindowPattern w = new Window1();
-        w.dump();
-    }
-
-    @Test
     void valid() {
         WindowPattern w = new Window1();
         Die d = new Die("BLUE");
         d.roll();
-        d.dump();
         Die d2 = new Die("RED");
         d2.roll();
-        d2.dump();
-        w.windowMatrix[23].setDie(d);
-        assertEquals(true, w.isValid(24, d2));
+        w.windowMatrix[2][2].setDie(d);
+        assertEquals(true, w.isValid(1, 1, d2));
     }
 
     @Test
-    void notValid() {
+    void valid2() {
         WindowPattern w = new Window1();
         Die d = new Die("BLUE");
         d.roll();
-        assertEquals(false, w.isValid(24, d));
+        Die d2 = new Die("YELLOW");
+        d2.roll();
+        w.windowMatrix[1][1].setDie(d);
+        assertEquals(true, w.isValid(0, 0, d2));
     }
 
     @Test
-    void notValid2() {
+    void notValidColorRuleSlot() {                                  //valueRule
+        WindowPattern w = new Window1();
+        Die d = new Die("BLUE");
+        d.roll();
+        assertEquals(false, w.isValid(2,2 , d));
+    }
+
+    @Test
+    void notValidOccupiedSlot() {
         WindowPattern w = new Window1();
         Die d = new Die("RED");
         d.roll();
-        w.windowMatrix[24].setDie(d);
+        w.windowMatrix[2][2].setDie(d);
+        Die d2 = new Die("RED");
+        d2.roll();
+        assertEquals(false, w.isValid(2,2 , d));
+    }
+
+    @Test
+    void notValidOrthogonalColor() {                                //value
+        WindowPattern w = new Window1();
+        Die d = new Die("RED");
+        d.roll();
+        w.windowMatrix[2][2].setDie(d);
         Die d2 = new Die("RED");
         d.roll();
-        assertEquals(false, w.isValid(24, d2));
+        assertEquals(false, w.isValid(3, 2, d2));
+    }
+
+    @Test
+    void notValidAdjacent() {                                //value
+        WindowPattern w = new Window1();
+        Die d = new Die("RED");
+        d.roll();
+        assertEquals(false, w.isValid(3, 2, d));
     }
 }

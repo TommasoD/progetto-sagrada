@@ -20,14 +20,14 @@ public class DiffColorRow extends PublicObjective {
         int blue = 0;
         int yellow = 0;
         int purple = 0;
-        for (int i = 8; i < 34; i += 7) {
-            for (int j = i; j < (i + 5); j++) {
-                if (window.windowMatrix[j].isNotEmpty()) {
-                    if (window.windowMatrix[j].getDie().getColor().equals("RED")) red++;
-                    if (window.windowMatrix[j].getDie().getColor().equals("GREEN")) green++;
-                    if (window.windowMatrix[j].getDie().getColor().equals("BLUE")) blue++;
-                    if (window.windowMatrix[j].getDie().getColor().equals("YELLOW")) yellow++;
-                    if (window.windowMatrix[j].getDie().getColor().equals("PURPLE")) purple++;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (window.windowMatrix[j][i].isNotEmpty()) {
+                    if (window.windowMatrix[j][i].getDie().getColor().equals("RED")) red++;
+                    if (window.windowMatrix[j][i].getDie().getColor().equals("GREEN")) green++;
+                    if (window.windowMatrix[j][i].getDie().getColor().equals("BLUE")) blue++;
+                    if (window.windowMatrix[j][i].getDie().getColor().equals("YELLOW")) yellow++;
+                    if (window.windowMatrix[j][i].getDie().getColor().equals("PURPLE")) purple++;
                 }
                 if (red == 1 && green == 1 && blue == 1 && yellow == 1 && purple == 1) sum = sum + points;
             }
