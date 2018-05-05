@@ -1,4 +1,5 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.publicObjectivesTest.publicObjectives;
+import it.polimi.ingsw.WindowPattern;
 
 public class DiffColorRow extends PublicObjective {
 
@@ -22,12 +23,12 @@ public class DiffColorRow extends PublicObjective {
         int purple = 0;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
-                if (window.windowMatrix[j][i].isNotEmpty()) {
-                    if (window.windowMatrix[j][i].getDie().getColor().equals("RED")) red++;
-                    if (window.windowMatrix[j][i].getDie().getColor().equals("GREEN")) green++;
-                    if (window.windowMatrix[j][i].getDie().getColor().equals("BLUE")) blue++;
-                    if (window.windowMatrix[j][i].getDie().getColor().equals("YELLOW")) yellow++;
-                    if (window.windowMatrix[j][i].getDie().getColor().equals("PURPLE")) purple++;
+                if (window.getWindowMatrix(j, i).isNotEmpty()) {
+                    if (window.getWindowMatrix(j, i).getDie().getColor().equals("RED")) red++;
+                    if (window.getWindowMatrix(j, i).getDie().getColor().equals("GREEN")) green++;
+                    if (window.getWindowMatrix(j, i).getDie().getColor().equals("BLUE")) blue++;
+                    if (window.getWindowMatrix(j, i).getDie().getColor().equals("YELLOW")) yellow++;
+                    if (window.getWindowMatrix(j, i).getDie().getColor().equals("PURPLE")) purple++;
                 }
                 if (red == 1 && green == 1 && blue == 1 && yellow == 1 && purple == 1) sum = sum + points;
             }

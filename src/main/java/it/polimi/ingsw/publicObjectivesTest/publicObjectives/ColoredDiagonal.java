@@ -1,4 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.publicObjectivesTest.publicObjectives;
+import it.polimi.ingsw.Slot;
+import it.polimi.ingsw.WindowPattern;
 
 public class ColoredDiagonal extends PublicObjective {
 
@@ -18,14 +20,14 @@ public class ColoredDiagonal extends PublicObjective {
             m--;
             k = 0;
             for (int j = m; j < (m + 4); j++) {
-                this.supportMatrix1[j][i] = window.windowMatrix[i][k];
+                this.supportMatrix1[j][i] = window.getWindowMatrix(i, k);
                 k++;
             }
         }
         for(int i = 0; i < 5; i++) {
             k = 0;
             for(int j = m; j < (m + 4); j++) {
-                this.supportMatrix2[j][i] = window.windowMatrix[i][k];
+                this.supportMatrix2[j][i] = window.getWindowMatrix(i, k);
                 k++;
             }
             m++;

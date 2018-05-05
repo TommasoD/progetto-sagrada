@@ -1,4 +1,5 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.publicObjectivesTest.publicObjectives;
+import it.polimi.ingsw.WindowPattern;
 
 public class MediumShade extends PublicObjective {
 
@@ -19,10 +20,10 @@ public class MediumShade extends PublicObjective {
 
         for (int i = 0; i < 4; i++) {
             for(int j = 0; j < 5; j++) {
-                if(window.windowMatrix[j][i].isNotEmpty()) {
-                    if(window.windowMatrix[j][i].getDie().getValue().equals("3"))
+                if(window.getWindowMatrix(j, i).isNotEmpty()) {
+                    if(window.getWindowMatrix(j, i).getDie().getValue().equals("3"))
                         three++;
-                    if(window.windowMatrix[j][i].getDie().getValue().equals("4"))
+                    if(window.getWindowMatrix(j, i).getDie().getValue().equals("4"))
                         four++;
                 }
             }

@@ -1,4 +1,5 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.publicObjectivesTest.publicObjectives;
+import it.polimi.ingsw.WindowPattern;
 
 public class DiffColor extends PublicObjective {
 
@@ -20,12 +21,12 @@ public class DiffColor extends PublicObjective {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
-                if(window.windowMatrix[j][i].isNotEmpty()) {
-                    if (window.windowMatrix[j][i].getDie().getColor().equals("RED")) colors[0]++;
-                    if (window.windowMatrix[j][i].getDie().getColor().equals("GREEN")) colors[1]++;
-                    if (window.windowMatrix[j][i].getDie().getColor().equals("BLUE")) colors[2]++;
-                    if (window.windowMatrix[j][i].getDie().getColor().equals("YELLOW")) colors[3]++;
-                    if (window.windowMatrix[j][i].getDie().getColor().equals("PURPLE")) colors[4]++;
+                if(window.getWindowMatrix(j, i).isNotEmpty()) {
+                    if (window.getWindowMatrix(j, i).getDie().getColor().equals("RED")) colors[0]++;
+                    if (window.getWindowMatrix(j, i).getDie().getColor().equals("GREEN")) colors[1]++;
+                    if (window.getWindowMatrix(j, i).getDie().getColor().equals("BLUE")) colors[2]++;
+                    if (window.getWindowMatrix(j, i).getDie().getColor().equals("YELLOW")) colors[3]++;
+                    if (window.getWindowMatrix(j, i).getDie().getColor().equals("PURPLE")) colors[4]++;
                 }
             }
         }

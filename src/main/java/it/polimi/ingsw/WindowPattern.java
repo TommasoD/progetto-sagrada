@@ -14,6 +14,10 @@ public abstract class WindowPattern {
         return difficultyToken;
     }
 
+    public Slot getWindowMatrix(int x, int y) {
+        return this.windowMatrix[x][y];
+    }
+
     public void decreaseDifficultyToken(){
         difficultyToken--;
     }

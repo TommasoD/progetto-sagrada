@@ -1,4 +1,5 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.publicObjectivesTest.publicObjectives;
+import it.polimi.ingsw.WindowPattern;
 
 public class DiffColorColumn extends PublicObjective {
     private int points = 5;
@@ -24,12 +25,12 @@ public class DiffColorColumn extends PublicObjective {
         //primo indice sono le colonne, secondo indice sono le righe
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 4; j++) {
-                if (window.windowMatrix[i][j].isNotEmpty()) {
-                    if (window.windowMatrix[i][j].getDie().getColor().equals("RED")) red++;
-                    if (window.windowMatrix[i][j].getDie().getColor().equals("GREEN")) green++;
-                    if (window.windowMatrix[i][j].getDie().getColor().equals("BLUE")) blue++;
-                    if (window.windowMatrix[i][j].getDie().getColor().equals("YELLOW")) yellow++;
-                    if (window.windowMatrix[i][j].getDie().getColor().equals("PURPLE")) purple++;
+                if (window.getWindowMatrix(i, j).isNotEmpty()) {
+                    if (window.getWindowMatrix(i, j).getDie().getColor().equals("RED")) red++;
+                    if (window.getWindowMatrix(i, j).getDie().getColor().equals("GREEN")) green++;
+                    if (window.getWindowMatrix(i, j).getDie().getColor().equals("BLUE")) blue++;
+                    if (window.getWindowMatrix(i, j).getDie().getColor().equals("YELLOW")) yellow++;
+                    if (window.getWindowMatrix(i, j).getDie().getColor().equals("PURPLE")) purple++;
                     occupiedSlot++;
                 }
             }

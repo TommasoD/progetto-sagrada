@@ -1,4 +1,5 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.publicObjectivesTest.publicObjectives;
+import it.polimi.ingsw.WindowPattern;
 
 public class DiffShade extends PublicObjective {
 
@@ -18,18 +19,18 @@ public class DiffShade extends PublicObjective {
         int[] values = new int[6];
         for (int i = 0; i < 4; i++) {
             for(int j = 0; j < 5; j++) {
-                if (window.windowMatrix[j][i].isNotEmpty()) {
-                    if (window.windowMatrix[j][i].getDie().getValue().equals("1"))
+                if (window.getWindowMatrix(j, i).isNotEmpty()) {
+                    if (window.getWindowMatrix(j, i).getDie().getValue().equals("1"))
                         values[0]++;
-                    if (window.windowMatrix[j][i].getDie().getValue().equals("2"))
+                    if (window.getWindowMatrix(j, i).getDie().getValue().equals("2"))
                         values[1]++;
-                    if (window.windowMatrix[j][i].getDie().getValue().equals("3"))
+                    if (window.getWindowMatrix(j, i).getDie().getValue().equals("3"))
                         values[2]++;
-                    if (window.windowMatrix[j][i].getDie().getValue().equals("4"))
+                    if (window.getWindowMatrix(j, i).getDie().getValue().equals("4"))
                         values[3]++;
-                    if (window.windowMatrix[j][i].getDie().getValue().equals("5"))
+                    if (window.getWindowMatrix(j, i).getDie().getValue().equals("5"))
                         values[4]++;
-                    if (window.windowMatrix[j][i].getDie().getValue().equals("6"))
+                    if (window.getWindowMatrix(j, i).getDie().getValue().equals("6"))
                         values[5]++;
                 }
             }
