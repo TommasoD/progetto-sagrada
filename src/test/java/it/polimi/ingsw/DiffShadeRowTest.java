@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class DiffShadeRowTest {
 
     @Test
-    void checkBrightShade() {
+    void checkDiffShadeRow() {
         PublicObjective s = new DiffShadeRow();
         WindowPattern window = new Window1();
         Die die1 = new Die("RED");

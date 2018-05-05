@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class DiffColorRowTest {
 
     @Test
-    void checkColoredDiagonal() {
+    void checkColorRow() {
         PublicObjective s = new DiffColorRow();
         WindowPattern window = new Window1();
         window.windowMatrix[0][1].setDie(new Die("RED"));

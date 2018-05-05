@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DiffColorColumnTest {
 
     @Test
-    void checkColorColumnTest () {
+    void checkColorColumn() {
         WindowPattern window = new Window1();
         PublicObjective obj = new DiffColorColumn();
 

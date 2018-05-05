@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PrivateObjectiveTest {
 
     @Test
-    void checkBrightShade() {
+    void checkPrivateObjective() {
         PrivateObjective s = new PrivateObjective("RED");
         WindowPattern window = new Window1();
         Die die1 = new Die("RED");
