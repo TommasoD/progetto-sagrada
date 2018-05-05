@@ -38,7 +38,7 @@ public class DiffShade extends PublicObjective {
         for(int i = 1; i < 6; i++) {
             sum = Math.min(sum, values[i]);
         }
-        return sum;
+        return (points*sum);
     }
 
     @Override

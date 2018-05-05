@@ -20,6 +20,7 @@ public class DiffShadeRow extends PublicObjective {
         int four = 0;
         int five = 0;
         int six = 0;
+        int occupiedSlot = 0;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
                 if (window.windowMatrix[j][i].isNotEmpty()) {
@@ -29,15 +30,17 @@ public class DiffShadeRow extends PublicObjective {
                     if (window.windowMatrix[j][i].getDie().getValue().equals("4")) four++;
                     if (window.windowMatrix[j][i].getDie().getValue().equals("5")) five++;
                     if (window.windowMatrix[j][i].getDie().getValue().equals("6")) six++;
+                    occupiedSlot++;
                 }
-                if (one < 2 && two < 2 && three <2 && four < 2 && five < 2 && six < 2) sum = sum + points;
             }
+            if (one < 2 && two < 2 && three <2 && four < 2 && five < 2 && six < 2 && occupiedSlot == 5) sum = sum + points;
             one = 0;
             two = 0;
             three = 0;
             four = 0;
             five = 0;
             six = 0;
+            occupiedSlot = 0;
         }
         return sum;
     }
