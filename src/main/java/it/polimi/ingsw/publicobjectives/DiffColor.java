@@ -1,4 +1,4 @@
-package it.polimi.ingsw.publicObjective;
+package it.polimi.ingsw.publicobjectives;
 
 import it.polimi.ingsw.WindowPattern;
 

@@ -1,8 +1,8 @@
-package it.polimi.ingsw.publicObjectiveTest;
+package it.polimi.ingsw.publicobjectivetests;
 import it.polimi.ingsw.Die;
 import it.polimi.ingsw.WindowPattern;
-import it.polimi.ingsw.publicObjective.DiffColorRow;
-import it.polimi.ingsw.publicObjective.PublicObjective;
+import it.polimi.ingsw.publicobjectives.DiffColorRow;
+import it.polimi.ingsw.publicobjectives.PublicObjective;
 import it.polimi.ingsw.windows.Window1;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;

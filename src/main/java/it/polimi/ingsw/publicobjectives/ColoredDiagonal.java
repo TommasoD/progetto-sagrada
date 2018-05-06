@@ -1,13 +1,18 @@
-package it.polimi.ingsw.publicObjective;
+package it.polimi.ingsw.publicobjectives;
 
 import it.polimi.ingsw.Slot;
 import it.polimi.ingsw.WindowPattern;
 
 public class ColoredDiagonal extends PublicObjective {
 
+    private int points = 1;
     private String name = "Diagonali Colorate";
     private Slot[][] supportMatrix1 = new Slot[8][5];
     private Slot[][] supportMatrix2 = new Slot[8][5];
+
+    public int getPoints() {
+        return points;
+    }
 
     public String getName() {
         return name;
@@ -76,7 +81,7 @@ public class ColoredDiagonal extends PublicObjective {
                 colors2[k] = 0;
             }
         }
-        return sum;
+        return (sum*points);
     }
 
     @Override
