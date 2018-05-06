@@ -18,9 +18,4 @@ class DiceBagTest {
         assertEquals(0, size);
     }
 
-    @Test
-    void showBag(){
-        DiceBag db = new DiceBag();
-        db.dump();
-    }
 }

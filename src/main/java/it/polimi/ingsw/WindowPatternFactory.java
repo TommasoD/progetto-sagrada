@@ -60,7 +60,7 @@ public class WindowPatternFactory {
         if(name.equals("Luz Celestial")) return new Window16();
         if(name.equals("Chromatic Splendor")) return new Window17();
         if(name.equals("Fractal Drops")) return new Window18();
-        if(name.equals("Ripples of Light")) return new Window19();
+        if(name.equals("Ripples of Lights")) return new Window19();
         if(name.equals("Comitas")) return new Window20();
         if(name.equals("Fulgor del Ciel")) return new Window21();
         if(name.equals("Water of Light")) return new Window22();

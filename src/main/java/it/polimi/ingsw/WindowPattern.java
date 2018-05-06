@@ -63,7 +63,7 @@ public abstract class WindowPattern {
     }
 
     public void dump() {
-        System.out.println(name + " " + difficultyToken + "\n");
+        System.out.println("\u001B[0m" + name + " " + difficultyToken);
         for(int i = 0; i < 4; i++){
             System.out.println(windowMatrix[0][i] + " " + windowMatrix[1][i] + " " + windowMatrix[2][i]
                     + " " + windowMatrix[3][i] + " " + windowMatrix[4][i]);
