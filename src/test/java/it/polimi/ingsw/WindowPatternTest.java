@@ -42,11 +42,19 @@ class WindowPatternTest {
     }
 
     @Test
-    void notValidColorRuleSlot() {                                  //valueRule
+    void notValidColorRuleSlot() {
         WindowPattern w = new Window1();
         Die d = new Die("BLUE");
         d.roll();
         assertEquals(false, w.isValid(2,2 , d));
+    }
+
+    @Test
+    void notValidValueRuleSlot() {
+        WindowPattern w = new Window1();
+        Die d = new Die("BLUE");
+        d.setValue("5");
+        assertEquals(false, w.isValid(4,0 , d));
     }
 
     @Test
@@ -61,7 +69,7 @@ class WindowPatternTest {
     }
 
     @Test
-    void notValidOrthogonalColor() {                                //value
+    void notValidOrthogonalColor() {
         WindowPattern w = new Window1();
         Die d = new Die("RED");
         d.roll();
@@ -72,7 +80,18 @@ class WindowPatternTest {
     }
 
     @Test
-    void notValidAdjacent() {                                //value
+    void notValidOrthogonalValue() {
+        WindowPattern w = new Window1();
+        Die d = new Die("RED");
+        d.setValue("2");
+        w.windowMatrix[2][2].setDie(d);
+        Die d2 = new Die("RED");
+        d.setValue("2");
+        assertEquals(false, w.isValid(3, 2, d2));
+    }
+
+    @Test
+    void notValidAdjacent() {
         WindowPattern w = new Window1();
         Die d = new Die("RED");
         d.roll();

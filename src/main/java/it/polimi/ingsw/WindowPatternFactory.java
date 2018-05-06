@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 import it.polimi.ingsw.windows.*;
@@ -35,8 +36,9 @@ public class WindowPatternFactory {
             "Sun's Glory"
     };
 
-    private WindowPatternFactory(){
-        list.addAll(Arrays.asList(windows));
+    public WindowPatternFactory(){
+        list = new ArrayList<String>();
+        Collections.addAll(list, windows);
     }
 
     public WindowPattern createWindow(String name){
@@ -76,6 +78,13 @@ public class WindowPatternFactory {
         String s = list.get(i);
         list.remove(s);
         return s;
+    }
+
+    public void dump(){
+        System.out.println("Window Factory:");
+        for(String s : list){
+            System.out.println(s);
+        }
     }
 
 }

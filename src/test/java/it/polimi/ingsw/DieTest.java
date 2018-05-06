@@ -20,15 +20,41 @@ class DieTest {
     @Test
     void redDie(){
         Die d = new Die("RED");
-        String s = d.getColor();
-        assertEquals("RED", s);
+        assertEquals("RED", d.getColor());
+        d.setColor("BLUE");
+        assertEquals("BLUE", d.getColor());
+    }
+
+    @Test
+    void redDie2(){
+        Die d = new Die("RED");
+        assertEquals(0, d.getColorAsInt());
     }
 
     @Test
     void notRedDie(){
         Die d = new Die("BLUE");
-        String s = d.getColor();
-        assertNotEquals("RED", s);
+        assertNotEquals("RED", d.getColor());
+    }
+
+    @Test
+    void notRedDie2(){
+        Die d = new Die("BLUE");
+        assertNotEquals(0, d.getColorAsInt());
+    }
+
+    @Test
+    void sixValueDie(){
+        Die d = new Die("RED");
+        d.setValue("6");
+        assertEquals("6", d.getValue());
+    }
+
+    @Test
+    void sixValueDie2(){
+        Die d = new Die("RED");
+        d.setValue("6");
+        assertEquals(6, d.getValueAsInt());
     }
 
 }
