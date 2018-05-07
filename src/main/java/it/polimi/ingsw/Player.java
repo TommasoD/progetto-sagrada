@@ -7,6 +7,7 @@ public class Player {
     private WindowPattern playerWindow;
     private PrivateObjective playerObjective;
     private boolean isOnline;
+    private int points;
 
     //costruttore
     public Player(String username, WindowPattern playerWindow) {
@@ -40,6 +41,13 @@ public class Player {
         this.isOnline = status;
     }
 
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
 
     @Override
     public String toString() {

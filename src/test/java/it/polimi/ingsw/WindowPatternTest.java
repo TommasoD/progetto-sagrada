@@ -9,8 +9,9 @@ class WindowPatternTest {
     void tokenTest() {
         WindowPattern w = new Window1();
         assertEquals(4, w.getDifficultyToken());
-        w.decreaseDifficultyToken();
-        assertEquals(3, w.getDifficultyToken());
+        int cost = 2;
+        w.decreaseDifficultyToken(cost);
+        assertEquals(2, w.getDifficultyToken());
     }
 
     @Test

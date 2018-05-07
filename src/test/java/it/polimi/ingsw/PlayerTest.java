@@ -43,5 +43,12 @@ class PlayerTest {
         assertEquals(obj,p.getPlayerObjective());
     }
 
+    @Test
+    void PointsTest () {
+        WindowPattern w = new Window1();
+        Player p = new Player("Giovanni",w);
+        p.setPoints(54);
+        assertEquals(54,p.getPoints());
+    }
 
 }

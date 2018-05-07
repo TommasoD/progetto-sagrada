@@ -18,8 +18,8 @@ public abstract class WindowPattern {
         return this.windowMatrix[x][y];
     }
 
-    public void decreaseDifficultyToken(){
-        difficultyToken--;
+    public void decreaseDifficultyToken(int cost){
+        difficultyToken = difficultyToken - cost;
     }
 
     public boolean isValid(int x, int y, Die die) {
