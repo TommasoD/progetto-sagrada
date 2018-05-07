@@ -13,7 +13,7 @@ class PlayerTest {
     }
 
     @Test
-    void OnlineTest() {
+    void onlineTest() {
         WindowPattern w = new Window1();
         Player p = new Player("Giovanni",w);
         p.setOnline(true);
@@ -21,21 +21,21 @@ class PlayerTest {
     }
 
     @Test
-    void NotNullTest () {
+    void notNullTest () {
         WindowPattern w = new Window1();
         Player p = new Player("Giovanni",w);
         assertNotNull(p);
     }
 
     @Test
-    void CorrectWindow () {
+    void correctWindow () {
         WindowPattern w = new Window1();
         Player p = new Player("Giovanni",w);
         assertEquals(w,p.getPlayerWindow());
     }
 
     @Test
-    void CorrectObjective () {
+    void correctObjective () {
         WindowPattern w = new Window1();
         PrivateObjective obj  = new PrivateObjective("RED");
         Player p = new Player("Giovanni",w);
@@ -44,7 +44,7 @@ class PlayerTest {
     }
 
     @Test
-    void PointsTest () {
+    void pointsTest () {
         WindowPattern w = new Window1();
         Player p = new Player("Giovanni",w);
         p.setPoints(54);

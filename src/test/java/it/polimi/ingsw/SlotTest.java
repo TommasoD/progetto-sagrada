@@ -13,7 +13,7 @@ class SlotTest {
     }
 
     @Test
-    void EmptySlot() {
+    void emptySlot() {
         Slot s = new Slot("none", "none");
         assertEquals(false, s.isNotEmpty());
     }
@@ -79,7 +79,7 @@ class SlotTest {
     }
 
     @Test
-    void Valid() {
+    void valid() {
         Slot s = new Slot("none", "none");
         Die d = new Die("RED");
         assertEquals(true, s.isValid(d));
