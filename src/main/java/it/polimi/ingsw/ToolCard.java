@@ -20,6 +20,6 @@ public abstract class ToolCard {
         alreadyUsed = true;
     }
 
-    public abstract void effect();
+    public abstract void effect(ToolCardParameters parameters);
 
 }

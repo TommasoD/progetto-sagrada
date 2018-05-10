@@ -19,6 +19,10 @@ public class DraftPool {
     }
 
     public Die getDieFromDraft(int index) {
+        return draftPool.get(index);
+    }
+
+    public Die removeDieFromDraft(int index) {
         Die die;
         die = draftPool.get(index);
         draftPool.remove(die);

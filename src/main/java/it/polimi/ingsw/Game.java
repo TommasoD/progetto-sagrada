@@ -100,7 +100,7 @@ public class Game {
 
         player.getPlayerWindow().decreaseDifficultyToken(cost);
         toolcard.setAsAlreadyUsed();
-        toolcard.effect(); //not implemented yet
+        //toolcard.effect(); //not implemented yet
         return true;
     }
 

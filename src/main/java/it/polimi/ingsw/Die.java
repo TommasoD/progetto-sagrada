@@ -37,8 +37,17 @@ public class Die {
             this.value = values[i];
         }
 
-        public void setValue (String value) {
+        public void setValue(String value) {
             this.value = value;
+        }
+
+        public void setValue(int value) {
+            if(value == 1) this.value = "1";
+            if(value == 2) this.value = "2";
+            if(value == 3) this.value = "3";
+            if(value == 4) this.value = "4";
+            if(value == 5) this.value = "5";
+            if(value == 6) this.value = "6";
         }
 
         public int getValueAsInt() {
