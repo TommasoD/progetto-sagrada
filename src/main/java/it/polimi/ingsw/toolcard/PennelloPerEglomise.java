@@ -1,4 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.toolcard;
+
+import it.polimi.ingsw.WindowPattern;
 
 public class PennelloPerEglomise extends ToolCard {
 

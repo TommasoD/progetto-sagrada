@@ -1,6 +1,8 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.toolcard;
 
-import java.awt.*;
+import it.polimi.ingsw.Die;
+import it.polimi.ingsw.DraftPool;
+import it.polimi.ingsw.toolcard.ToolCard;
 
 public class GrozingPliers extends ToolCard {
 

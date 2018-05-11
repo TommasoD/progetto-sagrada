@@ -1,4 +1,8 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.toolcard;
+
+import it.polimi.ingsw.Die;
+import it.polimi.ingsw.DraftPool;
+import it.polimi.ingsw.toolcard.ToolCard;
 
 import java.util.ArrayList;
 

@@ -1,5 +1,8 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.toolcard;
 
+
+import it.polimi.ingsw.DraftPool;
+import it.polimi.ingsw.WindowPattern;
 
 public class PennelloPerPastaSalda extends ToolCard {
 

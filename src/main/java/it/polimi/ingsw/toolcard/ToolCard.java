@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.toolcard;
 
 public abstract class ToolCard {
     protected String name;

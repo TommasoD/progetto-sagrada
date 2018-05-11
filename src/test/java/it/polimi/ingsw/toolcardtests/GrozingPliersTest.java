@@ -1,4 +1,7 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.toolcardtests;
+import it.polimi.ingsw.Die;
+import it.polimi.ingsw.DraftPool;
+import it.polimi.ingsw.toolcard.GrozingPliers;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

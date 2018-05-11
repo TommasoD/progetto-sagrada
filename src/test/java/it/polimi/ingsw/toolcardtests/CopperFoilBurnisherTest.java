@@ -1,4 +1,7 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.toolcardtests;
+import it.polimi.ingsw.Die;
+import it.polimi.ingsw.WindowPattern;
+import it.polimi.ingsw.toolcard.CopperFoilBurnisher;
 import it.polimi.ingsw.windows.Window3;
 import org.junit.jupiter.api.Test;
 

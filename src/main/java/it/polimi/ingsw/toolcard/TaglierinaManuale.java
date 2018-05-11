@@ -1,4 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.toolcard;
+
+import it.polimi.ingsw.WindowPattern;
 
 public class TaglierinaManuale extends ToolCard {
 

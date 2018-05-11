@@ -1,4 +1,7 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.toolcard;
+
+import it.polimi.ingsw.DraftPool;
+import it.polimi.ingsw.toolcard.ToolCard;
 
 public class GlazingHammer extends ToolCard {
 

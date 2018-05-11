@@ -1,4 +1,7 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.toolcard;
+
+import it.polimi.ingsw.WindowPattern;
+import it.polimi.ingsw.toolcard.ToolCard;
 
 public class CopperFoilBurnisher extends ToolCard {
 

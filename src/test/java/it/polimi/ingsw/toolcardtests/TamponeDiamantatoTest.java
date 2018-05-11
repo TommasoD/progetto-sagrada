@@ -1,5 +1,7 @@
-package it.polimi.ingsw;
-import it.polimi.ingsw.windows.Window1;
+package it.polimi.ingsw.toolcardtests;
+import it.polimi.ingsw.Die;
+import it.polimi.ingsw.DraftPool;
+import it.polimi.ingsw.toolcard.TamponeDiamantato;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,8 +13,8 @@ class TamponeDiamantatoTest {
         Die die = new Die("RED");
         die.setValue(6);
         draftPool.setDieInDraftPool(die);
-        ToolCard tool = new TamponeDiamantato();
-        ((TamponeDiamantato) tool).effect(draftPool,0);
+        TamponeDiamantato tool = new TamponeDiamantato();
+        tool.effect(draftPool,0);
         assertEquals(1,die.getValueAsInt());
     }
 }

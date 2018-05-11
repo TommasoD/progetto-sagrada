@@ -34,6 +34,10 @@ public class DiceBag {
         return d;
     }
 
+    public void addDie(Die d){
+        diceBag.add(d);
+    }
+
     public int getSize(){
         return diceBag.size();
     }

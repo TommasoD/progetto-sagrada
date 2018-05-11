@@ -1,4 +1,7 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.toolcardtests;
+import it.polimi.ingsw.Die;
+import it.polimi.ingsw.DraftPool;
+import it.polimi.ingsw.toolcard.LensCutter;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 

@@ -18,4 +18,12 @@ class DiceBagTest {
         assertEquals(0, size);
     }
 
+    @Test
+    void addDie(){
+        DiceBag db = new DiceBag();
+        Die d = new Die("RED");
+        db.addDie(d);
+        assertEquals(91, db.getSize());
+    }
+
 }
