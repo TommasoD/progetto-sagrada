@@ -1,22 +1,17 @@
 package it.polimi.ingsw;
-import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 public class CopperFoilBurnisher extends ToolCard {
 
-    public void effect(ToolCardParameters parameters) {
-        try {
-                if (parameters.getInputSlot().isNotEmpty()) {   //////is valid è troppo restrittivo
-                    if (parameters.getOutputSlot().isValid(parameters.getInputSlot().getDie())) {
-                        parameters.getOutputSlot().setDie(parameters.getInputSlot().getDie());
-                        parameters.getInputSlot().setDie(null);
-                    }
-                    else throw new InvalidValue();
-                }
-                else throw new InvalidValue();
-            }
-        catch(InvalidValue e) {
-            System.out.println(e + ": mossa non valida");
-        }
+    public CopperFoilBurnisher() {
+        super();
+        this.name = "Copper Foil Burnisher";
+    }
+
+    public void effect3(WindowPattern window, int x, int y, int a, int b) {
+
+        window.getWindowMatrix(a, b).setDie(window.getWindowMatrix(x, y).getDie());
+        window.getWindowMatrix(x, y).setDie(null);
+
     }
 
 }

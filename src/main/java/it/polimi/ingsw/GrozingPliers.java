@@ -1,28 +1,25 @@
 package it.polimi.ingsw;
 
-import org.omg.CORBA.DynAnyPackage.InvalidValue;
+import java.awt.*;
 
 public class GrozingPliers extends ToolCard {
 
+    public GrozingPliers() {
+        super();
+        this.name = "Grozing Pliers";
+    }
 
+    public void effect1(DraftPool draft, int i, String move) {
 
-    public void effect(ToolCardParameters p) {
-        try {
-            if(p.getMove().equals("increase")) {
-                Die die = p.getDieFromDraft();
-                if(die.getValue().equals("6")) throw new InvalidValue();
-                p.getDieFromDraft().setValue(die.getValueAsInt() + 1);
+            if(move.equals("increase")) {
+                Die die = draft.getDieFromDraft(i);
+                draft.getDieFromDraft(i).setValue(die.getValueAsInt() + 1);
             }
-            if(p.getMove().equals("decrease")) {
-                Die die = p.getDieFromDraft();
-                if(die.getValue().equals("1")) throw new InvalidValue();
-                p.getDieFromDraft().setValue(die.getValueAsInt() - 1);
+            if(move.equals("decrease")) {
+                Die die = draft.getDieFromDraft(i);
+                draft.getDieFromDraft(i).setValue(die.getValueAsInt() - 1);
             }
-            if(!p.getMove().equals("increase") && !p.getMove().equals("decrease")) throw new InvalidValue();
-        }
-        catch(InvalidValue e) {
-            System.out.println(e + ": mossa non valida");
-        }
+
     }
 
 }

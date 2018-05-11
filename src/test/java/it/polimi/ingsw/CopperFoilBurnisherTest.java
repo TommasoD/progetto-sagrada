@@ -7,10 +7,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class CopperFoilBurnisherTest {
 
     @Test
-    void effectTest() {  //////////////rivedere una volta aggiunti i nuovi metodi di restrizione
+    void effectTest() {
         WindowPattern window = new Window3();
-        ToolCard tool = new CopperFoilBurnisher();
-        ToolCardParameters parameters = new ToolCardParameters(window, 0, 0, 2, 3);
+        CopperFoilBurnisher tool = new CopperFoilBurnisher();
         Die die1 = new Die("RED");
         die1.setValue("5");
         window.getWindowMatrix(0, 0).setDie(die1);
@@ -32,7 +31,7 @@ class CopperFoilBurnisherTest {
         Die die7 = new Die("BLUE");
         die7.setValue("3");
         window.getWindowMatrix(4, 3).setDie(die7);
-        tool.effect(parameters);
+        tool.effect3(window, 0, 0, 2, 3);
         assertEquals(die1, window.getWindowMatrix(2, 3).getDie());
         assertEquals(null, window.getWindowMatrix(0,0).getDie());
     }

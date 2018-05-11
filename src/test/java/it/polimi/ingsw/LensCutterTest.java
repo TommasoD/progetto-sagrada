@@ -10,8 +10,7 @@ class LensCutterTest {
     void effectTest() {
         DraftPool draft = new DraftPool();
         ArrayList<Die> track = new ArrayList<Die>();
-        ToolCard tool = new LensCutter();
-        ToolCardParameters p = new ToolCardParameters(draft, track, 0, 2);
+        LensCutter tool = new LensCutter();
         Die die1 = new Die("RED");
         die1.setValue(1);
         Die die2 = new Die("BLUE");
@@ -30,7 +29,7 @@ class LensCutterTest {
         track.add(die4);
         track.add(die5);
         track.add(die6);
-        tool.effect(p);
+        tool.effect5(draft, track, 0, 2);
         assertEquals(die2, draft.getDieFromDraft(0));
         assertEquals(die3, draft.getDieFromDraft(1));
         assertEquals(die6, draft.getDieFromDraft(2));
