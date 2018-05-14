@@ -6,7 +6,7 @@ Insert username
 
 **login message**
 
-<username>
+'username'
 
 **login answer**
 
@@ -14,18 +14,18 @@ Welcome
 
 **login answer in case of error**
 
-Username <username> already used
+Username 'username' already used
 
 
 ## windows
 
 **show windows**
 
-windows <config1> <config2> <config3> <config4>
+windows 'config1' 'config2' 'config3' 'config4'
 
 **windows choice**
 
-windows <index>
+windows 'index'
 
 
 
@@ -37,7 +37,7 @@ Insert move
 
 **placement request**
 
-place <username> <positionX> <positionY> <dieIndex>
+place 'username' 'positionX' 'positionY' 'dieIndex'
 
 **placement answer**
 
@@ -53,7 +53,7 @@ Invalid placement
 
 **notification**
 
-toolcard <index>
+toolcard 'index'
 
 
 
@@ -61,7 +61,7 @@ toolcard <index>
 
 **move request**
 
-move <username> <positionX> <positionY> <positionX'> <positionY'>
+move 'username' 'positionX1' 'positionY1' 'positionX2' 'positionY2'
 
 **move answer**
 
@@ -76,7 +76,7 @@ Invalid move
 
 **change request**
 
-change <dieIndex> <increase/decrease/oppositeFace>
+change 'dieIndex' 'increase/decrease/oppositeFace'
 
 **answer**
 
@@ -92,7 +92,7 @@ Invalid change
 
 **switch request**
 
-switch <dieIndex> <trackIndex>
+switch 'dieIndex' 'trackIndex'
 
 **answer**
 
@@ -108,7 +108,7 @@ Invalid switch
 
 **roll request**
 
-roll <dieIndex>
+roll 'dieIndex'
 
 **answer**
 
