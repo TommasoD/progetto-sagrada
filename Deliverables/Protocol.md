@@ -37,7 +37,7 @@ Insert move
 
 **placement request**
 
-place 'username' 'positionX' 'positionY' 'dieIndex'
+place 'positionX' 'positionY' 'dieIndex'
 
 **placement answer**
 
@@ -49,70 +49,217 @@ Invalid placement
 
 
 
-## toolcard usage
-
-**notification**
-
-toolcard 'index'
-
-
-
-## move
-
-**move request**
-
-move 'username' 'positionX1' 'positionY1' 'positionX2' 'positionY2'
-
-**move answer**
-
-Die moved
-
-**move answer in case of error**
-
-Invalid move
-
-
 ## toolcard 1
 
-**change request**
+**client request**
 
-change 'dieIndex' 'increase/decrease/oppositeFace'
+toolcard 1 'dieIndex' 'increase/decrease'
 
 **answer**
 
-Change done
+Action done
 
 **answer in case of error**
 
-Invalid change
+Invalid action
+
+
+
+## toolcard 2
+
+**client request**
+
+toolcard 2 'positionX1' 'positionY1' 'positionX2' 'positionY2'
+
+**answer**
+
+Action done
+
+**answer in case of error**
+
+Invalid action
+
+
+
+## toolcard 3
+
+**client request**
+
+toolcard 3 'positionX1' 'positionY1' 'positionX2' 'positionY2'
+
+**answer**
+
+Action done
+
+**answer in case of error**
+
+Invalid action
+
+
+
+## toolcard 4
+
+**client request**
+
+toolcard 4 'positionX1' 'positionY1' 'positionX2' 'positionY2' 'secondPositionX1' 'secondPositionY1' 'secondPositionX2' 'secondPositionY2'
+
+**answer**
+
+Action done
+
+**answer in case of error**
+
+Invalid action
 
 
 
 ## toolcard 5
 
-**switch request**
+**client request**
 
-switch 'dieIndex' 'trackIndex'
+toolcard 5 'dieIndex' 'roundIndex'
 
 **answer**
 
-Switch done
+Action done
 
 **answer in case of error**
 
-Invalid switch
+Invalid action
 
 
 
 ## toolcard 6
 
-**roll request**
+**client request**
 
-roll 'dieIndex'
+toolcard 6 'dieIndex'
 
 **answer**
 
-Roll done
+Action done
+
+**answer in case of error**
+
+Invalid action
+
+
+
+## toolcard 7
+
+**client request**
+
+toolcard 7
+
+**answer**
+
+Action done
+
+**answer in case of error**
+
+Invalid action
+
+
+
+## toolcard 8
+
+**client request**
+
+toolcard 8 'positionX' 'positionY' 'dieIndex'
+
+**answer**
+
+Action done
+
+**answer in case of error**
+
+Invalid action
+
+
+
+## toolcard 9
+
+**client request**
+
+toolcard 9 'positionX' 'positionY' 'dieIndex'
+
+**answer**
+
+Action done
+
+**answer in case of error**
+
+Invalid action
+
+
+## toolcard 9
+
+**client request**
+
+toolcard 9 'positionX' 'positionY' 'dieIndex'
+
+**answer**
+
+Action done
+
+**answer in case of error**
+
+Invalid action
+
+
+
+## toolcard 10
+
+**client request**
+
+toolcard 10 'dieIndex'
+
+**answer**
+
+Action done
+
+**answer in case of error**
+
+Invalid action
+
+
+## toolcard 11
+
+**client request**
+
+toolcard 11 'dieIndex'
+
+**answer**
+
+'dieColor'
+
+**client value setting**
+
+'dieValue' 'positionX' 'positionY'
+
+**answer**
+
+Action done
+
+**answer in case of error**
+
+Invalid action
+
+
+
+## toolcard 12
+
+**client request**
+
+toolcard 12 'positionX1' 'positionY1' 'positionX2' 'positionY2' 'secondPositionX1' 'secondPositionY1' 'secondPositionX2' 'secondPositionY2'
+
+**answer**
+
+Action done
+
+**answer in case of error**
+
+Invalid action
 
 
 
