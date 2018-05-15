@@ -1,29 +1,29 @@
 ﻿## login
 
-**login request**
+**S-->C login request**
 
 Insert username
 
-**login message**
+**C-->S login message**
 
 'username'
 
-**login answer**
+**S-->C login answer**
 
 Welcome
 
-**login answer in case of error**
+**S-->C login answer in case of error**
 
 Username 'username' already used
 
 
 ## windows
 
-**show windows**
+**S-->C show windows**
 
 windows 'config1' 'config2' 'config3' 'config4'
 
-**windows choice**
+**C-->S windows choice**
 
 windows 'index'
 
@@ -31,19 +31,19 @@ windows 'index'
 
 ## positioning
 
-**notification**
+**S-->C notification**
 
 Insert move
 
-**placement request**
+**C-->S placement request**
 
 place 'positionX' 'positionY' 'dieIndex'
 
-**placement answer**
+**S-->C placement answer**
 
 Die placed
 
-**placement answer in case of error**
+**S-->C placement answer in case of error**
 
 Invalid placement
 
@@ -51,15 +51,15 @@ Invalid placement
 
 ## toolcard 1
 
-**client request**
+**C-->S client request**
 
 toolcard 1 'dieIndex' 'increase/decrease'
 
-**answer**
+**S-->C answer**
 
 Action done
 
-**answer in case of error**
+**S-->C answer in case of error**
 
 Invalid action
 
@@ -67,15 +67,15 @@ Invalid action
 
 ## toolcard 2
 
-**client request**
+**C-->S client request**
 
 toolcard 2 'positionX1' 'positionY1' 'positionX2' 'positionY2'
 
-**answer**
+**S-->C answer**
 
 Action done
 
-**answer in case of error**
+**S-->C answer in case of error**
 
 Invalid action
 
@@ -83,15 +83,15 @@ Invalid action
 
 ## toolcard 3
 
-**client request**
+**C-->S client request**
 
 toolcard 3 'positionX1' 'positionY1' 'positionX2' 'positionY2'
 
-**answer**
+**S-->C answer**
 
 Action done
 
-**answer in case of error**
+**S-->C answer in case of error**
 
 Invalid action
 
@@ -99,15 +99,15 @@ Invalid action
 
 ## toolcard 4
 
-**client request**
+**C-->S client request**
 
 toolcard 4 'positionX1' 'positionY1' 'positionX2' 'positionY2' 'secondPositionX1' 'secondPositionY1' 'secondPositionX2' 'secondPositionY2'
 
-**answer**
+**S-->C answer**
 
 Action done
 
-**answer in case of error**
+**S-->C answer in case of error**
 
 Invalid action
 
@@ -115,15 +115,15 @@ Invalid action
 
 ## toolcard 5
 
-**client request**
+**C-->S client request**
 
 toolcard 5 'dieIndex' 'roundIndex'
 
-**answer**
+**S-->C answer**
 
 Action done
 
-**answer in case of error**
+**S-->C answer in case of error**
 
 Invalid action
 
@@ -131,15 +131,15 @@ Invalid action
 
 ## toolcard 6
 
-**client request**
+**C-->S client request**
 
 toolcard 6 'dieIndex'
 
-**answer**
+**S-->C answer**
 
 Action done
 
-**answer in case of error**
+**S-->C answer in case of error**
 
 Invalid action
 
@@ -147,15 +147,15 @@ Invalid action
 
 ## toolcard 7
 
-**client request**
+**C-->S client request**
 
 toolcard 7
 
-**answer**
+**S-->C answer**
 
 Action done
 
-**answer in case of error**
+**S-->C answer in case of error**
 
 Invalid action
 
@@ -163,15 +163,15 @@ Invalid action
 
 ## toolcard 8
 
-**client request**
+**C-->S client request**
 
 toolcard 8 'positionX' 'positionY' 'dieIndex'
 
-**answer**
+**S-->C answer**
 
 Action done
 
-**answer in case of error**
+**S-->C answer in case of error**
 
 Invalid action
 
@@ -179,30 +179,15 @@ Invalid action
 
 ## toolcard 9
 
-**client request**
+**C-->S client request**
 
 toolcard 9 'positionX' 'positionY' 'dieIndex'
 
-**answer**
+**S-->C answer**
 
 Action done
 
-**answer in case of error**
-
-Invalid action
-
-
-## toolcard 9
-
-**client request**
-
-toolcard 9 'positionX' 'positionY' 'dieIndex'
-
-**answer**
-
-Action done
-
-**answer in case of error**
+**S-->C answer in case of error**
 
 Invalid action
 
@@ -210,38 +195,38 @@ Invalid action
 
 ## toolcard 10
 
-**client request**
+**C-->S client request**
 
 toolcard 10 'dieIndex'
 
-**answer**
+**S-->C answer**
 
 Action done
 
-**answer in case of error**
+**S-->C answer in case of error**
 
 Invalid action
 
 
 ## toolcard 11
 
-**client request**
+**C-->S client request**
 
 toolcard 11 'dieIndex'
 
-**answer**
+**S-->C answer**
 
 'dieColor'
 
-**client value setting**
+**C-->S client value setting**
 
 'dieValue' 'positionX' 'positionY'
 
-**answer**
+**S-->C answer**
 
 Action done
 
-**answer in case of error**
+**S-->C answer in case of error**
 
 Invalid action
 
@@ -249,15 +234,15 @@ Invalid action
 
 ## toolcard 12
 
-**client request**
+**C-->S client request**
 
 toolcard 12 'positionX1' 'positionY1' 'positionX2' 'positionY2' 'secondPositionX1' 'secondPositionY1' 'secondPositionX2' 'secondPositionY2'
 
-**answer**
+**S-->C answer**
 
 Action done
 
-**answer in case of error**
+**S-->C answer in case of error**
 
 Invalid action
 
@@ -265,6 +250,6 @@ Invalid action
 
 ## logout
 
-**logout message**
+**C-->S logout message**
 
 quit
