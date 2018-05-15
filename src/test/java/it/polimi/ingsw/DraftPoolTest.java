@@ -13,7 +13,7 @@ class DraftPoolTest {
         dp.setDieInDraftPool(d1);
         dp.setDieInDraftPool(d2);
         dp.setDieInDraftPool(d3);
-        dp.getDieFromDraft(2);
+        dp.removeDieFromDraft(2);
         assertEquals(2, dp.getDraftPoolSize());
     }
 
