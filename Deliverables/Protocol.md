@@ -1,23 +1,21 @@
 ﻿## login
 
-**S-->C login request**
-
-Insert username
 
 **C-->S login message**
 
-'username'
+login 'username'
 
 **S-->C login answer**
 
-Welcome
+Welcome 'username'
 
 **S-->C login answer in case of error**
 
 Username 'username' already used
 
 
-## windows
+
+## windows (sent at the start of the game, when 2-4 players are connected)
 
 **S-->C show windows**
 
