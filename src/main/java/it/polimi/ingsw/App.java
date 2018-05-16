@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
-import it.polimi.ingsw.windows.*;
+import it.polimi.ingsw.model.WindowPattern;
+import it.polimi.ingsw.model.WindowPatternFactory;
+import it.polimi.ingsw.model.windows.*;
 
 public class App
 {
