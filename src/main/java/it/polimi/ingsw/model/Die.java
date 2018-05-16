@@ -14,7 +14,19 @@ public class Die {
                 "6"
         };
 
+        /*
+            constructor
+         */
+
         public Die(String color) {
+            this.color = color;
+        }
+
+        /*
+            getter and setter
+         */
+
+        public void setColor(String color) {
             this.color = color;
         }
 
@@ -22,13 +34,17 @@ public class Die {
             return color;
         }
 
+        public void setValue(String value) {
+            this.value = value;
+        }
+
         public String getValue() {
             return value;
         }
 
-        public void setColor(String color) {
-            this.color = color;
-        }
+        /*
+            rolls the Die assigning a random value
+         */
 
         public void roll() {
             Random rand = new Random();
@@ -37,9 +53,9 @@ public class Die {
             this.value = values[i];
         }
 
-        public void setValue(String value) {
-            this.value = value;
-        }
+        /*
+            methods to handle colors and values as int tyes
+         */
 
         public void setValue(int value) {
             if(value == 1) this.value = "1";
@@ -69,11 +85,40 @@ public class Die {
             return -1;
         }
 
+        /*
+            toString methods:
+                valueToString() handles values
+                colorToString() handles colors returning the corresponding color code
+                toString() combines the two methods above
+         */
+
+        private String valueToString(){
+            if (value.equals("1")) return "\u2680";
+            if (value.equals("2")) return "\u2681";
+            if (value.equals("3")) return "\u2682";
+            if (value.equals("4")) return "\u2683";
+            if (value.equals("5")) return "\u2684";
+            if (value.equals("6")) return "\u2685";
+            return "\u25a1";
+        }
+
+        private String colorToString() {
+            if (color.equals("RED")) return "\u001B[31m";
+            if (color.equals("GREEN")) return "\u001B[32m";
+            if (color.equals("YELLOW")) return "\u001B[33m";
+            if (color.equals("BLUE")) return "\u001B[34m";
+            if (color.equals("PURPLE")) return "\u001B[35m";
+            return "\u001B[0m";
+        }
+
         @Override
         public String toString() {
-            String s = this.color;
-            return s + " [" + value + "]";
+            return colorToString() + valueToString();
         }
+
+        /*
+        print the class
+         */
 
         void dump(){
             System.out.println(this);

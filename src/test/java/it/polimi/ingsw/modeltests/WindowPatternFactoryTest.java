@@ -17,9 +17,9 @@ class WindowPatternFactoryTest {
     @Test
     void getAllWindows() {
         WindowPatternFactory wf = new WindowPatternFactory();
-        String s;
+        WindowPattern w;
         for(int i = 0; i < 24; i++){
-            s = wf.getWindow();
+            w = wf.getWindow();
         }
         assertEquals(null, wf.getWindow());
     }

@@ -6,6 +6,10 @@ public abstract class WindowPattern {
     protected int difficultyToken;
     protected String name;
 
+    /*
+        getter methods
+     */
+
     public String getName(){
         return name;
     }
@@ -18,27 +22,38 @@ public abstract class WindowPattern {
         return this.windowMatrix[x][y];
     }
 
+    /*
+        decrease the amount of difficulty tokens available
+     */
+
     public void decreaseDifficultyToken(int cost){
         difficultyToken = difficultyToken - cost;
     }
 
-    public boolean isValid(int x, int y, Die die) {
-        if(!windowMatrix[x][y].isValid(die)) return false;                 //regarding the selected slot
+    /*
+        validation methods:
+            adjacentSlots() checks a single slot and return true if it is not empty
+            allAdjacent() checks all the slots adjacent to the one passed as parameter
+            colorsAndValues() checks if a slot has the same value or color as the Die passed as parameter
+            isValid() checks all rules a player should follow when positioning a Die
+     */
 
-        if(colorsAndValues(x-1, y, die)) return false;	    			//check colors and values in orthogonal slots
+    public boolean isValid(int x, int y, Die die) {
+
+        //regarding the selected slot:
+
+        if(!windowMatrix[x][y].isValid(die)) return false;
+
+        //check colors and values in orthogonal slots:
+
+        if(colorsAndValues(x-1, y, die)) return false;
         if(colorsAndValues(x+1, y, die)) return false;
         if(colorsAndValues(x, y-1, die)) return false;
         if(colorsAndValues(x, y+1, die)) return false;
 
-        for(int i = x-1; i <= x+1; i++) {                                   //check empty/full slots around
-            if(adjacentSlots(i, y-1)) return true;
-        }
-        for(int i = x-1; i <= x+1; i++)
-        {
-            if(adjacentSlots(i, y+1)) return true;
-        }
-        if(adjacentSlots(x-1, y)) return true;
-        return adjacentSlots(x-1, y);
+        //check empty/full slots around:
+
+        return allAdjacent(x, y);
     }
 
     private boolean adjacentSlots(int x, int y){
@@ -50,7 +65,19 @@ public abstract class WindowPattern {
         return false;
     }
 
-    private boolean colorsAndValues(int x, int y, Die die) {
+    public boolean allAdjacent(int x, int y){
+        for(int i = x-1; i <= x+1; i++) {
+            if(adjacentSlots(i, y-1)) return true;
+        }
+        for(int i = x-1; i <= x+1; i++)
+        {
+            if(adjacentSlots(i, y+1)) return true;
+        }
+        if(adjacentSlots(x-1, y)) return true;
+        return adjacentSlots(x-1, y);
+    }
+
+    public boolean colorsAndValues(int x, int y, Die die) {
         try {
             if(windowMatrix[x][y].isNotEmpty()) {
                 if (windowMatrix[x][y].getDie().getColor().equals(die.getColor()) ||
@@ -61,6 +88,10 @@ public abstract class WindowPattern {
         }
         return false;
     }
+
+    /*
+        print the window
+     */
 
     public void dump() {
         System.out.println("\u001B[0m" + name + " " + difficultyToken);

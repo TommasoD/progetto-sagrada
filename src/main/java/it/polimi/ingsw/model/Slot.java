@@ -6,14 +6,26 @@ public class Slot {
     private String colorRule;
     private String valueRule;
 
+    /*
+        constructor
+     */
+
     public Slot(String color, String value) {
         colorRule = color;
         valueRule = value;
     }
 
+    /*
+        check if the slot is occupied by a Die
+     */
+
     public boolean isNotEmpty() {
         return die != null;
     }
+
+    /*
+        getter and setter for attribute of Die type
+     */
 
     public Die getDie() {
         return die;
@@ -23,12 +35,19 @@ public class Slot {
         this.die = die;
     }
 
-    public boolean checkColorRule(Die die) {                  //return true if rules are followed
+    /*
+        validation methods:
+            checkColorRule() check the rules related to colors
+            checkValueRule() check the rules related to values
+            isValid() check both color and value rules
+     */
+
+    public boolean checkColorRule(Die die) {
         if(colorRule.equals(die.getColor()) || colorRule.equals("none")) return true;
         return false;
     }
 
-    public boolean checkValueRule(Die die) {                 //return true if rules are followed
+    public boolean checkValueRule(Die die) {
         if(valueRule.equals(die.getValue()) || valueRule.equals("none")) return true;
         return false;
     }
@@ -38,9 +57,22 @@ public class Slot {
         return checkColorRule(die) && checkValueRule(die);
     }
 
+    /*
+        toString methods:
+            valueRuleToString() handles values
+            colorRuleToString() handles colors returning the corresponding color code
+            toString() combines the two methods above
+     */
+
     private String valueRuleToString(){
-        if(valueRule.equals("none")) return "-";
-        return valueRule;
+        if (valueRule.equals("1")) return "\u2680";
+        if (valueRule.equals("2")) return "\u2681";
+        if (valueRule.equals("3")) return "\u2682";
+        if (valueRule.equals("4")) return "\u2683";
+        if (valueRule.equals("5")) return "\u2684";
+        if (valueRule.equals("6")) return "\u2685";
+        if (colorRule.equals("none")) return "\u25a1";
+        return "\u25a0";
     }
 
     private String colorRuleToString(){
@@ -55,8 +87,12 @@ public class Slot {
     @Override
     public String toString() {
         if(die != null) return die.toString();
-        return colorRuleToString() + " [" + valueRuleToString() + "]";
+        return colorRuleToString() + valueRuleToString();
     }
+
+    /*
+        dump() print the class
+     */
 
     public void dump() {
         System.out.println(this);

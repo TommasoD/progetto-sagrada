@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class DiceBag {
 
-    private ArrayList <Die> diceBag;
+    private ArrayList <Die> bag;
     private static final String[] colors = {
             "RED",
             "BLUE",
@@ -13,40 +13,53 @@ public class DiceBag {
             "PURPLE"
     };
 
+    /*
+        constructor
+     */
+
     public DiceBag() {
-        diceBag = new ArrayList <Die>();
+        bag = new ArrayList <Die>();
         for(String s: colors){
             for(int i = 0; i < 18; i++) {
                 Die d = new Die(s);
-                diceBag.add(d);
+                bag.add(d);
             }
         }
     }
 
+    /*
+        return random die from the bag
+     */
+
     public Die getDie() {
-        int bound = diceBag.size();
+        int bound = bag.size();
         if(bound == 0) return null;
 
         Random rand = new Random();
         int i = rand.nextInt(bound);
-        Die d = diceBag.get(i);
-        diceBag.remove(d);
+        Die d = bag.get(i);
+        bag.remove(d);
         return d;
     }
 
     public void addDie(Die d){
-        diceBag.add(d);
+        bag.add(d);
     }
 
     public int getSize(){
-        return diceBag.size();
+        return bag.size();
     }
 
+    /*
+        print the class
+     */
+
     public void dump() {
-        int size = diceBag.size();
+        int size = bag.size();
         System.out.println("Dice remaining: " + size);
 
-        for(Die d : diceBag) {
+        for(Die d : bag) {
+            d.roll();
             System.out.println(d);
         }
     }

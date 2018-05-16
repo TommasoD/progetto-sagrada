@@ -69,7 +69,7 @@ public class WindowPatternFactory {
         return null;
     }
 
-    public String getWindow (){
+    public WindowPattern getWindow (){
         int bound = list.size();
         if(bound == 0) return null;
 
@@ -77,7 +77,7 @@ public class WindowPatternFactory {
         int i = rand.nextInt(bound);
         String s = list.get(i);
         list.remove(s);
-        return s;
+        return createWindow(s);
     }
 
     public void dump(){

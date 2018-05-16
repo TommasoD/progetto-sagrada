@@ -3,7 +3,6 @@ import java.util.ArrayList;
 
 public class DraftPool {
 
-
     private ArrayList<Die> draft;
 
     public DraftPool() {
@@ -27,5 +26,15 @@ public class DraftPool {
         die = draft.get(index);
         draft.remove(die);
         return die;
+    }
+
+    public void dump() {
+        int size = draft.size();
+        System.out.println("Dice remaining: " + size);
+
+        for(Die d : draft) {
+            d.roll();
+            System.out.println(d);
+        }
     }
 }
