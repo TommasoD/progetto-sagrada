@@ -35,6 +35,8 @@ public class ClientHandler extends  Thread {
         try {
             //input username
             //while need to be synchronized
+            output.writeUTF("Connection established");
+            output.flush();
             LoginMessage message = new LoginMessage();
             while (!done) {
                 message = message.deserialize(input.readUTF());

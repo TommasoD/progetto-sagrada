@@ -6,7 +6,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Client {
@@ -30,18 +29,22 @@ public class Client {
 
     public void startClient() throws IOException {
         Socket socket = new Socket(ip, port);
-        System.out.println("Connection established");
         DataInputStream socketIn = new DataInputStream(socket.getInputStream());
         DataOutputStream socketOut = new DataOutputStream(socket.getOutputStream());
-
         Scanner stdin = new Scanner(System.in);
+
         try {
+
+            String mex = socketIn.readUTF();
+            System.out.println(mex);
+            if(mex.equals("Too many players")) throw new IOException();
 
             boolean done = false;
             LoginMessage message;
 
             //login
             while (!done) {
+                System.out.println("Insert username: ");
                 String inputLine = stdin.nextLine();
                 message = new LoginMessage("login", inputLine);
                 socketOut.writeUTF(message.serialize());
@@ -51,7 +54,7 @@ public class Client {
                 if (socketLine.equals("Welcome " + inputLine)) done = true;
 
             }
-        } catch (NoSuchElementException e) {
+        } catch (IOException e) {
             System.out.println("Connection closed");
         }
 
