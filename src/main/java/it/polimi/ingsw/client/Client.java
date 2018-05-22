@@ -1,7 +1,8 @@
 package it.polimi.ingsw.client;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -20,37 +21,31 @@ public class Client {
         try {
             client.startClient();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 
     public void startClient() throws IOException {
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established");
-        Scanner socketIn = new Scanner(socket.getInputStream());
-        PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
+        DataInputStream socketIn = new DataInputStream(socket.getInputStream());
+        DataOutputStream socketOut = new DataOutputStream(socket.getOutputStream());
+
         Scanner stdin = new Scanner(System.in);
         try {
-            while (true) {
-                //while for log
-                System.out.println(socketIn.nextLine());
+
+            boolean done = false;
+
+            while (!done) {
                 String inputLine = stdin.nextLine();
-                socketOut.println(inputLine);
+                socketOut.writeUTF(inputLine);
                 socketOut.flush();
-                String socketLine = socketIn.nextLine();
+                String socketLine = socketIn.readUTF();
                 System.out.println(socketLine);
-                if(socketLine.equals("Welcome")) break;
+                if (socketLine.equals("Welcome " + inputLine)) done = true;
+
             }
-
-            //while for operations
-            while (true) {
-                System.out.println(socketIn.nextLine());
-                String inputLine = stdin.nextLine();
-                socketOut.println(inputLine);
-                socketOut.flush();
-            }
-
-
         } catch (NoSuchElementException e) {
             System.out.println("Connection closed");
         } finally {

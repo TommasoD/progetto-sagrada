@@ -1,64 +1,66 @@
 package it.polimi.ingsw.server;
-
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Scanner;
 
-public class ClientHandler implements Runnable {
+
+public class ClientHandler extends  Thread {
     private Socket socket;
-    private static ArrayList<String> playerList = new ArrayList<String>();
     private String username;
+    private DataInputStream input;
+    private DataOutputStream output;
+    private Server server;
+    protected boolean threadSuspended = true;
 
-    public ClientHandler(Socket socket) {
+
+    public ClientHandler(Socket socket, Server server) {
         this.socket = socket;
+        try {
+            input = new DataInputStream(socket.getInputStream());
+            output = new DataOutputStream(socket.getOutputStream());
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        this.server = server;
     }
 
     public void run() {
+        boolean done = false;
+
         try {
-            Scanner in = new Scanner(socket.getInputStream());
-            PrintWriter out = new PrintWriter(socket.getOutputStream());
-
-            while (true) {
-                out.println("Insert username");
-                out.flush();
-                String line = in.nextLine();
-                //logout
-                if (line.equals("quit")) {
-                    break;
+            //input username
+            while (!done) {
+                String line = input.readUTF();
+                if (server.nameUsed(line)) {
+                    output.writeUTF("Username " + line + " already used");
+                    output.flush();
                 } else {
-                    if (playerList.contains(line))  {
-                        out.println("Username " + line + " already used");
-                        out.flush();
-                    } else {
-                        playerList.add(line);
-                        this.username = line;
-                        out.println("Welcome");
-                        out.flush();
-
-                        //inserimento mosse
-                        while (true) {
-                            out.println("Insert move");
-                            out.flush();
-                            line = in.nextLine();
-                            if (line.equals("quit")) break;
-                            ////player moves
-                            ////use synchronized
-                        }
-                        break;
-                    }
+                    done = true;
+                    username = line;
+                    output.writeUTF("Welcome " + username);
                 }
             }
 
-
-
-            playerList.remove(username);  ////aggiungere gestione caso solo offline, no logout
-            in.close();
-            out.close();
-            socket.close();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        try {
+            socket.close();
+        }
+        catch (IOException e ) {
+            e.printStackTrace();
+            System.exit(1);
         }
     }
+
+
+    public String getUsername() {
+        return this.username;
+    }
+
 }
