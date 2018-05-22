@@ -3,31 +3,63 @@ import it.polimi.ingsw.model.objectives.PrivateObjective;
 import it.polimi.ingsw.model.objectives.PublicObjectiveFactory;
 import it.polimi.ingsw.model.objectives.publicobjectives.*;
 import it.polimi.ingsw.model.toolcard.ToolCard;
-
 import  java.util.Random;
-
 import java.util.ArrayList;
-
 
 public class Game {
 
     //variables
-    private int round = 0;
-    private ArrayList<Die> roundTrack = new ArrayList<Die>();
-    private ArrayList<Player> players = new ArrayList<Player>();
-    private PublicObjective[] publicObjectiveActive = new PublicObjective[3];
-    private ArrayList<PrivateObjective> privateObjectives = new ArrayList<PrivateObjective>(5);
-    private ToolCard[] toolCardList = new ToolCard[12];
-    private DiceBag diceBag = new DiceBag();
+    private int round;
+    private DiceBag diceBag;
+    private DraftPool draftPool;
+    private ArrayList<Player> players;
+    private ArrayList<Die> roundTrack;
+    private ArrayList<PrivateObjective> privateObjectives;
+    private PublicObjective[] publicObjectiveActive;
+    private ToolCard[] toolCardList;
 
+    public Game(){
+        this.round = 0;
+        this.diceBag = new DiceBag();
+        this.draftPool = new DraftPool();
+        this.players = new ArrayList<Player>();
+        this.roundTrack = new ArrayList<Die>();
+        this.publicObjectiveActive = new PublicObjective[3];
+        this.privateObjectives = new ArrayList<PrivateObjective>();
+        this.toolCardList = new ToolCard[12];
+    }
+
+    public int getRound() {
+        return round;
+    }
+
+    public void increaseRound() {
+        round++;
+    }
+
+    /*
+        toolCardList methods
+     */
+
+    public ToolCard getToolCard(int index) {
+        return toolCardList[index];
+    }
+
+    /*
+        players methods
+     */
 
     public void setPlayers(Player player) {
         players.add(player);
     }
 
-    public Player getPlayers(int i) {
-        return players.get(i);
+    public Player getPlayers(int index) {
+        return players.get(index);
     }
+
+    /*
+        roundTrack methods
+     */
 
     public void setDieRoundTrack(Die dieLeft) {
         roundTrack.add(dieLeft);
@@ -40,13 +72,23 @@ public class Game {
         return die;
     }
 
-    public void setDraft(DraftPool draftPool) {
-        for (int i = 0; i < 2 * players.size() + 1; i++) draftPool.setDieInDraftPool(diceBag.getDie());
+    /*
+        draftPool methods
+     */
+
+    public Die getDieFromDraft(int index){
+        return draftPool.getDieFromDraft(index);
     }
 
-    public void increaseRound() {
-        round++;
+    public void setDraft() {
+        for (int i = 0; i < 2 * players.size() + 1; i++) {
+            draftPool.setDieInDraftPool(diceBag.getDie());
+        }
     }
+
+    /*
+        inizializza carte obiettivo privato e le distribuisce, carte obiettivo pubblico e carte strumento
+     */
 
     public void inizialize() {
         //random assignment of private objectives
@@ -71,82 +113,8 @@ public class Game {
             publicObjectiveActive[i] = of.getRandomObjective();
         }
 
-        /*
-        toolcard missing
-        wait for the creation of tool cards
-         */
     }
 
     //missing a method that assigns WindowPattern to player
-
-    public void useDie(Player player, int x, int y, Die die) {
-
-        if (player.getPlayerWindow().isValid(x, y, die)) {
-            player.getPlayerWindow().getWindowMatrix(x, y).setDie(die);
-            System.out.println("Dado posizionato correttamente");
-        } else {
-            System.out.println("Posizione non valida");
-        }
-    }
-
-    //toolcard.effect() not implemented yet
-    public boolean useToolCard(ToolCard toolcard, Player player) {
-
-        int cost = 1;
-        if (toolcard.isAlreadyUsed()) cost = 2;
-
-        if (player.getPlayerWindow().getDifficultyToken() < cost) {
-            System.out.println("Token non sufficienti");
-            return false;
-        }
-
-        player.getPlayerWindow().decreaseDifficultyToken(cost);
-        toolcard.setAsAlreadyUsed();
-        //toolcard.effect(); //not implemented yet
-        return true;
-    }
-
-
-    //not finished
-    //we must consider the management of the rounds to determine the winner
-    /*public Player determineWinner() {
-        int totalPoints[] = new int[4];
-        int privateObjectivePoints[] = new int[4];
-
-
-        for (int i = 0; i < players.size(); i++) {
-            for (int j = 0; j < 3; j++) {
-                totalPoints[i] += publicObjectiveActive[j].checkPoints(players.get(i).getPlayerWindow());
-            }
-        }
-
-        for (int i = 0; i < players.size(); i++) {
-            privateObjectivePoints[i] = players.get(i).getPrivatePoints();
-            totalPoints[i] = players.get(i).getTotalPoints();
-        }
-
-        int max = totalPoints[0];
-        int maxIndex[] = new int[4];
-        int count = 0;
-        for (int i = 1; i < players.size(); i++) {
-            if (totalPoints[i] > max) max = totalPoints[i];
-        }
-
-        for (int i = 0; i < players.size(); i++) {
-            if (totalPoints[i] == max) maxIndex[i] = 1;
-            count++;
-        }
-
-        if (count == 1) {
-            //un solo vincitore
-            for (int i = 0; i < players.size(); i++) {
-                if (maxIndex[i] == 1) return players.get(i);
-            }
-        }
-
-        return players.get(0);
-
-    }*/
-
 
 }
