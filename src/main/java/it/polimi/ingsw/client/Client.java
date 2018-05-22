@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.messages.LoginMessage;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -36,10 +38,13 @@ public class Client {
         try {
 
             boolean done = false;
+            LoginMessage message;
 
+            //login
             while (!done) {
                 String inputLine = stdin.nextLine();
-                socketOut.writeUTF(inputLine);
+                message = new LoginMessage("login", inputLine);
+                socketOut.writeUTF(message.serialize());
                 socketOut.flush();
                 String socketLine = socketIn.readUTF();
                 System.out.println(socketLine);
@@ -48,11 +53,13 @@ public class Client {
             }
         } catch (NoSuchElementException e) {
             System.out.println("Connection closed");
-        } finally {
+        }
+
+        finally {
+            socket.close();
             stdin.close();
             socketIn.close();
             socketOut.close();
-            socket.close();
-        }
+            }
     }
 }

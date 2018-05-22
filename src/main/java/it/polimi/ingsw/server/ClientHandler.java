@@ -1,4 +1,6 @@
 package it.polimi.ingsw.server;
+import it.polimi.ingsw.messages.LoginMessage;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -32,8 +34,11 @@ public class ClientHandler extends  Thread {
 
         try {
             //input username
+            //while need to be synchronized
+            LoginMessage message = new LoginMessage();
             while (!done) {
-                String line = input.readUTF();
+                message = message.deserialize(input.readUTF());
+                String line = message.getUsername();
                 if (server.nameUsed(line)) {
                     output.writeUTF("Username " + line + " already used");
                     output.flush();
@@ -41,6 +46,7 @@ public class ClientHandler extends  Thread {
                     done = true;
                     username = line;
                     output.writeUTF("Welcome " + username);
+                    output.flush();
                 }
             }
 
@@ -48,6 +54,7 @@ public class ClientHandler extends  Thread {
             e.printStackTrace();
             System.exit(1);
         }
+
 
         try {
             socket.close();

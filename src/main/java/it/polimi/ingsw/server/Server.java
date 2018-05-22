@@ -37,10 +37,11 @@ public class Server {
 
 
         //when the second player is connected the server must wait N seconds before starting the game
-        for (int i = 0; i< 4; i++) {
+        for (int i = 0; i < 4; i++) {
             try {
                 Socket socket = serverSocket.accept();
                 playerList.add(new ClientHandler(socket,this));
+                System.out.println("Client " + (i+1) + " connected");
                 playerList.get(i).start();
 
             } catch (IOException e) {
@@ -48,7 +49,6 @@ public class Server {
                 System.exit(1);
             }
         }
-
     }
 
     public boolean nameUsed(String string) {
@@ -57,8 +57,6 @@ public class Server {
         }
         return false;
     }
-
-
 
     public static void main(String[] args) {
         Server echoServer = new Server();
