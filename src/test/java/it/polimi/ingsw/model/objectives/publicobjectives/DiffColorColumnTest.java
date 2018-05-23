@@ -1,8 +1,6 @@
-package it.polimi.ingsw.modeltests.objectivetests.publicobjectivetests;
+package it.polimi.ingsw.model.objectives.publicobjectives;
 import it.polimi.ingsw.model.Die;
 import it.polimi.ingsw.model.WindowPattern;
-import it.polimi.ingsw.model.objectives.publicobjectives.DiffColorColumn;
-import it.polimi.ingsw.model.objectives.publicobjectives.PublicObjective;
 import it.polimi.ingsw.model.windows.Window1;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

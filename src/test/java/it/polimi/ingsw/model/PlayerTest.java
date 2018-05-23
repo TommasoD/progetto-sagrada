@@ -1,8 +1,5 @@
-package it.polimi.ingsw.modeltests;
-import it.polimi.ingsw.model.Die;
-import it.polimi.ingsw.model.Player;
+package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.objectives.PrivateObjective;
-import it.polimi.ingsw.model.WindowPattern;
 import it.polimi.ingsw.model.windows.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

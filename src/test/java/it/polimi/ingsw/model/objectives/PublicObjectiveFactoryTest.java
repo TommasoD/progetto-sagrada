@@ -1,6 +1,5 @@
-package it.polimi.ingsw.modeltests.objectivetests;
+package it.polimi.ingsw.model.objectives;
 
-import it.polimi.ingsw.model.objectives.PublicObjectiveFactory;
 import it.polimi.ingsw.model.objectives.publicobjectives.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

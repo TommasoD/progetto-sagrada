@@ -1,6 +1,4 @@
-package it.polimi.ingsw.modeltests;
-import it.polimi.ingsw.model.DiceBag;
-import it.polimi.ingsw.model.Die;
+package it.polimi.ingsw.model;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
