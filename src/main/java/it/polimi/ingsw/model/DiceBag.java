@@ -28,7 +28,7 @@ public class DiceBag {
     }
 
     /*
-        return random die from the bag
+        return random die from the bag, with a random value assigned
      */
 
     public Die getDie() {
@@ -38,6 +38,7 @@ public class DiceBag {
         Random rand = new Random();
         int i = rand.nextInt(bound);
         Die d = bag.get(i);
+        d.roll();
         bag.remove(d);
         return d;
     }
@@ -59,7 +60,7 @@ public class DiceBag {
         System.out.println("Dice remaining: " + size);
 
         for(Die d : bag) {
-            d.roll();
+            d.setValue(1);
             System.out.println(d);
         }
     }

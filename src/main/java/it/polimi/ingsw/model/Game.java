@@ -2,8 +2,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.objectives.PrivateObjective;
 import it.polimi.ingsw.model.objectives.PublicObjectiveFactory;
 import it.polimi.ingsw.model.objectives.publicobjectives.*;
-import it.polimi.ingsw.model.toolcard.ToolCard;
-import  java.util.Random;
+import java.util.Random;
 import java.util.ArrayList;
 
 public class Game {
@@ -11,22 +10,20 @@ public class Game {
     //variables
     private int round;
     private DiceBag diceBag;
-    private DraftPool draftPool;
+    private ArrayList<Die> draft;
     private ArrayList<Player> players;
     private ArrayList<Die> roundTrack;
     private ArrayList<PrivateObjective> privateObjectives;
     private PublicObjective[] publicObjectiveActive;
-    private ToolCard[] toolCardList;
 
     public Game(){
         this.round = 0;
         this.diceBag = new DiceBag();
-        this.draftPool = new DraftPool();
+        this.draft = new ArrayList<Die>();
         this.players = new ArrayList<Player>();
         this.roundTrack = new ArrayList<Die>();
         this.publicObjectiveActive = new PublicObjective[3];
         this.privateObjectives = new ArrayList<PrivateObjective>();
-        this.toolCardList = new ToolCard[12];
     }
 
     public int getRound() {
@@ -35,14 +32,6 @@ public class Game {
 
     public void increaseRound() {
         round++;
-    }
-
-    /*
-        toolCardList methods
-     */
-
-    public ToolCard getToolCard(int index) {
-        return toolCardList[index];
     }
 
     /*
@@ -61,13 +50,20 @@ public class Game {
         roundTrack methods
      */
 
-    public void setDieRoundTrack(Die dieLeft) {
-        roundTrack.add(dieLeft);
+    public void setDieRoundTrack(Die die) {
+        roundTrack.add(die);
     }
 
-    public Die getDieFromRoundTrack(int index) {
-        Die die;
-        die = roundTrack.get(index);
+    public Die getDieFromRoundTrack(int index){
+        return roundTrack.get(index);
+    }
+
+    public int roundTrackSize(){
+        return roundTrack.size();
+    }
+
+    public Die removeDieFromRoundTrack(int index) {
+        Die die = roundTrack.get(index);
         roundTrack.remove(index);
         return die;
     }
@@ -77,20 +73,39 @@ public class Game {
      */
 
     public Die getDieFromDraft(int index){
-        return draftPool.getDieFromDraft(index);
+        return draft.get(index);
+    }
+
+    public void setDieDraft(Die die){
+        draft.add(die);
+    }
+
+    public int draftSize(){
+        return draft.size();
+    }
+
+    public Die removeDieFromDraft(int index) {
+        Die die = draft.get(index);
+        draft.remove(index);
+        return die;
     }
 
     public void setDraft() {
         for (int i = 0; i < 2 * players.size() + 1; i++) {
-            draftPool.setDieInDraftPool(diceBag.getDie());
+            draft.add(diceBag.getDie());
         }
     }
 
+    public void diceLeft(){
+        roundTrack.addAll(draft);
+        draft.clear();
+    }
+
     /*
-        inizializza carte obiettivo privato e le distribuisce, carte obiettivo pubblico e carte strumento
+        give players their private objective, select the public objectives
      */
 
-    public void inizialize() {
+    public void initialize() {
         //random assignment of private objectives
         privateObjectives.add(new PrivateObjective("RED"));
         privateObjectives.add(new PrivateObjective("YELLOW"));
@@ -115,6 +130,20 @@ public class Game {
 
     }
 
-    //missing a method that assigns WindowPattern to player
+    /*
+        method that assigns WindowPattern to player
+
+        [...]
+     */
+
+    /*
+        standard player actions
+     */
+
+    private void useDie(int playerIndex, int x, int y, int die) {
+        WindowPattern w = getPlayers(playerIndex).getPlayerWindow();
+        Die d = getDieFromDraft(die);
+        w.getWindowMatrix(x, y).setDie(d);
+    }
 
 }
