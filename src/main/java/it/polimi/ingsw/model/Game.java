@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class Game {
 
     //variables
-    private int round;
     private DiceBag diceBag;
     private ArrayList<Die> draft;
     private ArrayList<Player> players;
@@ -17,21 +16,12 @@ public class Game {
     private PublicObjective[] publicObjectiveActive;
 
     public Game(){
-        this.round = 0;
         this.diceBag = new DiceBag();
         this.draft = new ArrayList<Die>();
         this.players = new ArrayList<Player>();
         this.roundTrack = new ArrayList<Die>();
         this.publicObjectiveActive = new PublicObjective[3];
         this.privateObjectives = new ArrayList<PrivateObjective>();
-    }
-
-    public int getRound() {
-        return round;
-    }
-
-    public void increaseRound() {
-        round++;
     }
 
     /*
