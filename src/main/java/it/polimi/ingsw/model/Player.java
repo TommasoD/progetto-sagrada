@@ -17,6 +17,11 @@ public class Player {
         this.playerWindow = playerWindow;
     }
 
+    public  Player (String username) {
+        this.username = username;
+        this.isOnline = true;
+    }
+
     //methods
     public String getUsername() {
         return username;
@@ -24,6 +29,10 @@ public class Player {
 
     public WindowPattern getPlayerWindow() {
         return playerWindow;
+    }
+
+    public void setPlayerWindow(WindowPattern playerWindow) {
+        this.playerWindow = playerWindow;
     }
 
     public void  setPlayerObjective (PrivateObjective playerObjective ) {

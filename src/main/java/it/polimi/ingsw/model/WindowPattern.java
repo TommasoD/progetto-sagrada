@@ -1,22 +1,41 @@
 package it.polimi.ingsw.model;
 
-public abstract class WindowPattern {
+public class WindowPattern {
+
 
     protected Slot[][] windowMatrix;
     protected int difficultyToken;
     protected String name;
 
+    public WindowPattern () {
+        this.windowMatrix = new Slot[5][4];
+
+    }
+
     /*
         getter methods
      */
 
+
+    public void setName (String name) {
+        this.name = name;
+    }
     public String getName(){
         return name;
+    }
+
+    public void setDifficultyToken(int difficultyToken) {
+        this.difficultyToken = difficultyToken;
     }
 
     public int getDifficultyToken() {
         return difficultyToken;
     }
+
+    public void setWindowMatrix(Slot slot, int x, int y) {
+        windowMatrix[x][y] = slot;
+    }
+
 
     public Slot getWindowMatrix(int x, int y) {
         return this.windowMatrix[x][y];
