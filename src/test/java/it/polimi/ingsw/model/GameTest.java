@@ -5,12 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
-    @Test
-    void roundMethodsTest(){
-        Game g = new Game();
-        g.increaseRound();
-        assertEquals(1, g.getRound());
-    }
 
     @Test
     void roundTrackTest(){
