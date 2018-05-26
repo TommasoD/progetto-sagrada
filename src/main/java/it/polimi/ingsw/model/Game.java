@@ -36,6 +36,10 @@ public class Game {
         return players.get(index);
     }
 
+    public int playersSize(){
+        return players.size();
+    }
+
     /*
         roundTrack methods
      */
@@ -96,7 +100,7 @@ public class Game {
      */
 
     public void initialize() {
-        //random assignment of private objectives
+        //randomly assigns private objectives
         privateObjectives.add(new PrivateObjective("RED"));
         privateObjectives.add(new PrivateObjective("YELLOW"));
         privateObjectives.add(new PrivateObjective("PURPLE"));
@@ -117,7 +121,6 @@ public class Game {
         for (int i = 0; i < 3; i++) {
             publicObjectiveActive[i] = of.getRandomObjective();
         }
-
     }
 
     /*
@@ -136,4 +139,33 @@ public class Game {
         w.getWindowMatrix(x, y).setDie(d);
     }
 
+    /*
+        toString methods
+     */
+
+    public String draftToString(){
+        try {
+            StringBuilder sb = new StringBuilder();
+            for (Die d : draft) {
+                sb.append(d.toString());
+                sb.append(" ");
+            }
+            return sb.toString();
+        } catch (NullPointerException e){
+            return e.toString();
+        }
+    }
+
+    public String roundTrackToString() {
+        try {
+            StringBuilder sb = new StringBuilder();
+            for (Die d : roundTrack) {
+                sb.append(d.toString());
+                sb.append(" ");
+            }
+            return sb.toString();
+        } catch (NullPointerException e){
+            return e.toString();
+        }
+    }
 }

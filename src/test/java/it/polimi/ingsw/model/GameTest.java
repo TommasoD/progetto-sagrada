@@ -34,6 +34,16 @@ class GameTest {
     }
 
     @Test
+    void setDraftTest(){
+        Game g = new Game();
+        g.setPlayers(new Player("user"));
+        g.setPlayers(new Player("user2"));
+        g.setDraft();
+        System .out.println(g.draftToString());
+        assertEquals(5, g.draftSize());
+    }
+
+    @Test
     void removeFromDraft(){
         Game g = new Game();
         Die d = new Die("RED");
@@ -45,17 +55,23 @@ class GameTest {
     }
 
     @Test
-    void LeftDice(){
+    void diceLeft(){
         Game g = new Game();
-        Die d = new Die("RED");
-        Die d2 = new Die("RED");
-        g.setDieDraft(d);
-        g.setDieDraft(d2);
+        g.setPlayers(new Player("user"));
+        g.setPlayers(new Player("user2"));
+        g.setDraft();
         g.diceLeft();
-        assertEquals(2, g.roundTrackSize());
+        System.out.println(g.roundTrackToString());
+        assertEquals(5, g.roundTrackSize());
         assertEquals(0, g.draftSize());
-
     }
 
+    @Test
+    void playersSize(){
+        Game g = new Game();
+        assertEquals(0, g.playersSize());
+        g.setPlayers(new Player("username"));
+        assertEquals(1, g.playersSize());
+    }
 
 }
