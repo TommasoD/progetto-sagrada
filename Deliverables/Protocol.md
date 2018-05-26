@@ -19,11 +19,11 @@ Username 'username' already used
 
 **S-->C show windows**
 
-windows 'config1' 'config2' 'config3' 'config4'
+windows 'name1' 'token1' 'w1' 'name2' 'token2' 'w2' 'name3' 'token3' 'w3' 'name4' 'token4' 'w4'
 
 **C-->S windows choice**
 
-windows 'index'
+window 'windowName'
 
 
 
@@ -243,6 +243,14 @@ Action done
 **S-->C answer in case of error**
 
 Invalid action
+
+
+
+## pass the turn
+
+**C-->S pass message**
+
+pass
 
 
 
