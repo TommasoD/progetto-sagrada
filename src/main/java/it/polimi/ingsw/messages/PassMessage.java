@@ -2,12 +2,12 @@ package it.polimi.ingsw.messages;
 
 import com.google.gson.Gson;
 
-public class LogoutMessage extends Message {
+public class PassMessage {
 
     private String id;
 
-    public LogoutMessage() {
-        this.id = "quit";
+    public PassMessage() {
+        this.id = "pass";
     }
 
     public String serialize() {
@@ -15,9 +15,9 @@ public class LogoutMessage extends Message {
         return gson.toJson(this);
     }
 
-    public LogoutMessage deserialize(String s){
+    public PassMessage deserialize(String s){
         Gson gson = new Gson();
-        return gson.fromJson(s, LogoutMessage.class);
+        return gson.fromJson(s, PassMessage.class);
     }
 
     public String getId() {
