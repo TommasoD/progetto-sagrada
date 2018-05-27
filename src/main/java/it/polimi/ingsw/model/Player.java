@@ -4,25 +4,43 @@ import it.polimi.ingsw.model.objectives.PrivateObjective;
 
 public class Player {
 
-    //variables
+    //attributes
     private String username;
     private WindowPattern playerWindow;
     private PrivateObjective playerObjective;
     private boolean isOnline;
+    private boolean dieUsed;
+    private boolean toolCardUsed;
+    private boolean skipTurn;
+    private boolean firstDiePlaced;
 
-    //costruttore
+    /*
+        constructors
+     */
+
     public Player(String username, WindowPattern playerWindow) {
         this.username = username;
-        this.isOnline = true;
+        isOnline = true;
+        dieUsed = false;
+        toolCardUsed = false;
+        skipTurn = false;
+        firstDiePlaced = false;
         this.playerWindow = playerWindow;
     }
 
-    public  Player (String username) {
+    public Player (String username) {
         this.username = username;
-        this.isOnline = true;
+        isOnline = true;
+        dieUsed = false;
+        toolCardUsed = false;
+        skipTurn = false;
+        firstDiePlaced = false;
     }
 
-    //methods
+    /*
+        getters and setters
+     */
+
     public String getUsername() {
         return username;
     }
@@ -50,12 +68,58 @@ public class Player {
     public void setOnline(boolean status) {
         this.isOnline = status;
     }
+    public boolean isDieUsed() {
+        return dieUsed;
+    }
+
+    public void setDieUsed(boolean dieUsed) {
+        this.dieUsed = dieUsed;
+    }
+
+    public boolean isToolCardUsed() {
+        return toolCardUsed;
+    }
+
+    public void setToolCardUsed(boolean toolCardUsed) {
+        this.toolCardUsed = toolCardUsed;
+    }
+
+    public boolean isSkipTurn() {
+        return skipTurn;
+    }
+
+    public void setSkipTurn(boolean skipTurn) {
+        this.skipTurn = skipTurn;
+    }
+
+    public boolean isFirstDiePlaced() {
+        return firstDiePlaced;
+    }
+
+    public void setFirstDiePlaced(boolean firstDiePlaced) {
+        this.firstDiePlaced = firstDiePlaced;
+    }
+
+    /*
+        sets dieUsed and toolCardUsed to false
+     */
+
+    public void resetTurn(){
+        dieUsed = false;
+        toolCardUsed = false;
+    }
+
+    /*
+       private objective points
+     */
 
     public int getPrivatePoints() {
        return playerObjective.checkPoints(playerWindow);
     }
 
-    //totale meno obiettivi pubblici
+    /*
+        total minus public objectives
+     */
     public int getTotalPoints() {
         int emptySpace = 0;
         for (int i = 0; i < 5; i++) {
@@ -72,4 +136,5 @@ public class Player {
         boolean s2 = this.isOnline;
         return "Player: " + s + " | Online: " + s2;
     }
+
 }

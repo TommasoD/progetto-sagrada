@@ -44,20 +44,6 @@ public class RoundHandler {
     }
 
     /*
-        increase round and create the new turnOrder array
-     */
-
-    public void nextRound(){
-        round++;
-        System.arraycopy(turnOrder, 1, turnOrder, 0, nPlayers-1);
-        System.arraycopy(turnOrder, nPlayers, turnOrder, nPlayers+1, nPlayers-1);
-        turnOrder[nPlayers-1] = firstPlayer;
-        turnOrder[nPlayers] = firstPlayer;
-
-        if(firstPlayer ++ >= nPlayers) firstPlayer = 0;
-    }
-
-    /*
         returns - as an int - the identifier of the current player
      */
 
@@ -75,6 +61,20 @@ public class RoundHandler {
             nextRound();
             currentPlayerIndex = 0;
         }
+    }
+
+    /*
+        increase round and create the new turnOrder array
+     */
+
+    public void nextRound(){
+        round++;
+        System.arraycopy(turnOrder,1, turnOrder, 0, nPlayers-1);
+        System.arraycopy(turnOrder, nPlayers, turnOrder, nPlayers+1, nPlayers-1);
+        turnOrder[nPlayers-1] = firstPlayer;
+        turnOrder[nPlayers] = firstPlayer;
+        firstPlayer ++;
+        if(firstPlayer >= nPlayers) firstPlayer = 0;
     }
 
     public void dump(){

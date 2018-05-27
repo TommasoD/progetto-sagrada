@@ -8,17 +8,33 @@ class PlayerTest {
 
     @Test
     void  usernameTest () {
-        WindowPattern w = new Window1();
-        Player p = new Player("Giovanni",w);
+        Player p = new Player("Giovanni");
         assertEquals("Giovanni",p.getUsername());
     }
 
     @Test
     void onlineTest() {
-        WindowPattern w = new Window1();
-        Player p = new Player("Giovanni",w);
+        Player p = new Player("Giovanni");
         p.setOnline(true);
         assertTrue(p.getOnline());
+    }
+
+    @Test
+    void booleanTests(){
+        Player p = new Player("user");
+        assertFalse(p.isDieUsed());
+        assertFalse(p.isToolCardUsed());
+        assertFalse(p.isSkipTurn());
+        assertFalse(p.isFirstDiePlaced());
+    }
+
+    @Test
+    void resetTurnTest(){
+        Player p = new Player("user");
+        p.setDieUsed(true);
+        p.resetTurn();
+        assertFalse(p.isToolCardUsed());
+        assertFalse(p.isDieUsed());
     }
 
     @Test

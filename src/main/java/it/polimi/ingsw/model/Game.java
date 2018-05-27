@@ -124,19 +124,14 @@ public class Game {
     }
 
     /*
-        method that assigns WindowPattern to player
-
-        [...]
-     */
-
-    /*
         standard player actions
      */
 
-    private void useDie(int playerIndex, int x, int y, int die) {
+    public void useDie(int playerIndex, int x, int y, int die) {
         WindowPattern w = getPlayers(playerIndex).getPlayerWindow();
-        Die d = getDieFromDraft(die);
+        Die d = removeDieFromDraft(die);
         w.getWindowMatrix(x, y).setDie(d);
+        if(!getPlayers(playerIndex).isFirstDiePlaced()) getPlayers(playerIndex).setFirstDiePlaced(true);
     }
 
     /*

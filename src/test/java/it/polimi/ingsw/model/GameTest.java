@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.windows.Window1;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,6 +73,20 @@ class GameTest {
         assertEquals(0, g.playersSize());
         g.setPlayers(new Player("username"));
         assertEquals(1, g.playersSize());
+    }
+
+    @Test
+    void useDieTest(){
+        Game g = new Game();
+        WindowPatternFactory wf = new WindowPatternFactory();
+        WindowPattern w = wf.createWindow("Kaleidoscopic Dream");
+        g.setPlayers(new Player("user", w));
+        g.setDraft();
+        assertEquals(3, g.draftSize());
+        g.useDie(0, 2,2, 2);
+        assertEquals(2, g.draftSize());
+        assertNotNull(g.getPlayers(0).getPlayerWindow().getWindowMatrix(2,2).getDie());
+        assertTrue(g.getPlayers(0).isFirstDiePlaced());
     }
 
 }
