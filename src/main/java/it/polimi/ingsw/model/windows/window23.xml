@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<window>
+
+    <id  name = "Lux Mundi">  </id>
+
+    <difficulty token = "6"> </difficulty>
+
+    <limitation x = "0" y = "0" color = "none" value = "none"> </limitation>
+    <limitation x = "1" y = "0" color = "none" value = "none"> </limitation>
+    <limitation x = "2" y = "0" color = "none" value = "1"> </limitation>
+    <limitation x = "3" y = "0" color = "none" value = "none"> </limitation>
+    <limitation x = "4" y = "0" color = "none" value = "none"> </limitation>
+
+    <limitation x = "0" y = "1" color = "none" value = "1"> </limitation>
+    <limitation x = "1" y = "1" color = "GREEN" value = "none"> </limitation>
+    <limitation x = "2" y = "1" color = "none" value = "3"> </limitation>
+    <limitation x = "3" y = "1" color = "BLUE" value = "none"> </limitation>
+    <limitation x = "4" y = "1" color = "none" value = "2"> </limitation>
+
+    <limitation x = "0" y = "2" color = "BLUE" value = "none"> </limitation>
+    <limitation x = "1" y = "2" color = "none" value = "5"> </limitation>
+    <limitation x = "2" y = "2" color = "none" value = "4"> </limitation>
+    <limitation x = "3" y = "2" color = "none" value = "6"> </limitation>
+    <limitation x = "4" y = "2" color = "GREEN" value = "none"> </limitation>
+
+    <limitation x = "0" y = "3" color = "none" value = "none"> </limitation>
+    <limitation x = "1" y = "3" color = "BLUE" value = "none"> </limitation>
+    <limitation x = "2" y = "3" color = "none" value = "5"> </limitation>
+    <limitation x = "3" y = "3" color = "GREEN" value = "none"> </limitation>
+    <limitation x = "4" y = "3" color = "none" value = "none"> </limitation>
+
+</window>
