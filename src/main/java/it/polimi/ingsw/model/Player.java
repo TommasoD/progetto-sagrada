@@ -132,9 +132,14 @@ public class Player {
 
     @Override
     public String toString() {
-        String s = this.username;
-        boolean s2 = this.isOnline;
-        return "Player: " + s + " | Online: " + s2;
+        String s;
+        if(isOnline) s = "online";
+        else s = "offline";
+        return "Player: " + username + "\nStatus: " + s + "\n\n" + playerWindow;
+    }
+
+    public void dump(){
+        System.out.println(this.toString());
     }
 
 }

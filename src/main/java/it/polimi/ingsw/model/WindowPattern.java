@@ -75,6 +75,18 @@ public class WindowPattern {
         return allAdjacent(x, y);
     }
 
+    public boolean isValidFirstMove(int x, int y, Die die) {
+
+        //regarding the selected slot:
+
+        if(!windowMatrix[x][y].isValid(die)) return false;
+
+        //check if die is placed on one border
+
+        if(x == 0 || x == 4) return true;
+        return (y == 0 || y == 3);
+    }
+
     private boolean adjacentSlots(int x, int y){
         try {
             return windowMatrix[x][y].isNotEmpty();
@@ -112,12 +124,22 @@ public class WindowPattern {
         print the window
      */
 
-    public void dump() {
-        System.out.println("\u001B[0m" + name + " " + difficultyToken);
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        String s = "\u001B[0m" + name + "\n" + "Tokens left: " + difficultyToken + "\n";
+        sb.append(s);
         for(int i = 0; i < 4; i++){
-            System.out.println(windowMatrix[0][i] + " " + windowMatrix[1][i] + " " + windowMatrix[2][i]
-                    + " " + windowMatrix[3][i] + " " + windowMatrix[4][i]);
+            for(int j = 0; j < 5; j++){
+                sb.append(windowMatrix[j][i]);
+                sb.append(" ");
+            }
+            sb.append("\n");
         }
+        return sb.toString();
+    }
+
+    public void dump() {
+        System.out.println(this.toString());
     }
 
 }

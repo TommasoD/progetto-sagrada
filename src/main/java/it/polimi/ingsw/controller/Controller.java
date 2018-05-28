@@ -107,11 +107,11 @@ public class Controller {
                         isValid(message.getX(), message.getY(), model.getDieFromDraft(message.getIndex())))
                             return("Invalid placement");
             }
-            /*else{
+            else{
                 if(!p.getPlayerWindow().
                         isValidFirstMove(message.getX(), message.getY(), model.getDieFromDraft(message.getIndex())))
                             return("Invalid placement");
-            }*/
+            }
 
             model.useDie(player, message.getX(), message.getY(), message.getIndex());
             p.setDieUsed(true);

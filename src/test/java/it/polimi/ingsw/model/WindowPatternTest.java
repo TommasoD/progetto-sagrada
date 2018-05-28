@@ -28,7 +28,7 @@ class WindowPatternTest {
         Die d2 = new Die("RED");
         d2.roll();
         w.getWindowMatrix(2, 2).setDie(d);
-        assertEquals(true, w.isValid(1, 1, d2));
+        assertTrue(w.isValid(1, 1, d2));
     }
 
     @Test
@@ -39,7 +39,7 @@ class WindowPatternTest {
         Die d2 = new Die("YELLOW");
         d2.roll();
         w.getWindowMatrix(1, 1).setDie(d);
-        assertEquals(true, w.isValid(0, 0, d2));
+        assertTrue(w.isValid(0, 0, d2));
     }
 
     @Test
@@ -47,7 +47,7 @@ class WindowPatternTest {
         WindowPattern w = new Window1();
         Die d = new Die("BLUE");
         d.roll();
-        assertEquals(false, w.isValid(2,2 , d));
+        assertFalse(w.isValid(2,2 , d));
     }
 
     @Test
@@ -55,7 +55,7 @@ class WindowPatternTest {
         WindowPattern w = new Window1();
         Die d = new Die("BLUE");
         d.setValue("5");
-        assertEquals(false, w.isValid(4,0 , d));
+        assertFalse(w.isValid(4,0 , d));
     }
 
     @Test
@@ -66,7 +66,7 @@ class WindowPatternTest {
         w.getWindowMatrix(2, 2).setDie(d);
         Die d2 = new Die("RED");
         d2.roll();
-        assertEquals(false, w.isValid(2,2 , d));
+        assertFalse(w.isValid(2,2 , d));
     }
 
     @Test
@@ -77,7 +77,7 @@ class WindowPatternTest {
         w.getWindowMatrix(2, 2).setDie(d);
         Die d2 = new Die("RED");
         d.roll();
-        assertEquals(false, w.isValid(3, 2, d2));
+        assertFalse(w.isValid(3, 2, d2));
     }
 
     @Test
@@ -88,7 +88,7 @@ class WindowPatternTest {
         w.getWindowMatrix(2, 2).setDie(d);
         Die d2 = new Die("RED");
         d.setValue("2");
-        assertEquals(false, w.isValid(3, 2, d2));
+        assertFalse(w.isValid(3, 2, d2));
     }
 
     @Test
@@ -96,6 +96,33 @@ class WindowPatternTest {
         WindowPattern w = new Window1();
         Die d = new Die("RED");
         d.roll();
-        assertEquals(false, w.isValid(3, 2, d));
+        assertFalse(w.isValid(3, 2, d));
+    }
+
+    @Test
+    void validFirstMove(){
+        WindowPatternFactory wf = new WindowPatternFactory();
+        WindowPattern w = wf.createWindow("Kaleidoscopic Dream");
+        Die d = new Die("RED");
+        d.roll();
+        assertTrue(w.isValidFirstMove(2, 0, d));
+    }
+
+    @Test
+    void invalidFirstMove(){
+        WindowPatternFactory wf = new WindowPatternFactory();
+        WindowPattern w = wf.createWindow("Kaleidoscopic Dream");
+        Die d = new Die("RED");
+        d.roll();
+        assertFalse(w.isValidFirstMove(1, 1, d));
+    }
+
+    @Test
+    void invalidFirstMove2(){
+        WindowPatternFactory wf = new WindowPatternFactory();
+        WindowPattern w = wf.createWindow("Kaleidoscopic Dream");
+        Die d = new Die("RED");
+        d.roll();
+        assertFalse(w.isValidFirstMove(0, 0, d));
     }
 }
