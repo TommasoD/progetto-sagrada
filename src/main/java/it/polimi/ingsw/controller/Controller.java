@@ -13,11 +13,16 @@ public class Controller {
     private WindowPatternFactory factory;
 
     /*
-        constructor
+        constructors
      */
 
     public Controller(Game model){
         this.model = model;
+        this.factory = new WindowPatternFactory();
+    }
+
+    public Controller(){
+        this.model = new Game();
         this.factory = new WindowPatternFactory();
     }
 
