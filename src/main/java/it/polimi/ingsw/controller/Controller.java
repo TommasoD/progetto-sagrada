@@ -16,8 +16,8 @@ public class Controller {
         constructor
      */
 
-    public Controller(){
-        this.model = new Game();
+    public Controller(Game model){
+        this.model = model;
         this.factory = new WindowPatternFactory();
     }
 
