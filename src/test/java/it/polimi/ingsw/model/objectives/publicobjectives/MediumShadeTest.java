@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.objectives.publicobjectives;
 import it.polimi.ingsw.model.Die;
 import it.polimi.ingsw.model.WindowPattern;
-import it.polimi.ingsw.model.windows.Window1;
+import it.polimi.ingsw.model.WindowPatternFactory;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -9,7 +9,8 @@ class MediumShadeTest {
     @Test
     void checkMediumShade() {
         PublicObjective obj = new MediumShade();
-        WindowPattern window = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern window = factory.createWindow("Kaleidoscopic Dream");
 
         Die die1 = new Die("RED");
         die1.setValue("1");

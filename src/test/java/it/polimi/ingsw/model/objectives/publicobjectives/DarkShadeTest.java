@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.objectives.publicobjectives;
 
 import it.polimi.ingsw.model.Die;
 import it.polimi.ingsw.model.WindowPattern;
-import it.polimi.ingsw.model.windows.Window1;
+import it.polimi.ingsw.model.WindowPatternFactory;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,7 +10,8 @@ class DarkShadeTest {
 
     @Test
     void checkDarkShade () {
-        WindowPattern window = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern window = factory.createWindow("Kaleidoscopic Dream");
         PublicObjective obj = new DarkShade();
 
         Die die1 = new Die("RED");

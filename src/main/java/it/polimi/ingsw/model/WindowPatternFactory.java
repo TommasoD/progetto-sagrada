@@ -8,6 +8,8 @@ import it.polimi.ingsw.model.windows.*;
 
 public class WindowPatternFactory {
 
+    private XMLParserSAX reader;
+
     private ArrayList<String> list;
     private static final String[] windows = {
             "Kaleidoscopic Dream",
@@ -39,33 +41,34 @@ public class WindowPatternFactory {
     public WindowPatternFactory(){
         list = new ArrayList<String>();
         Collections.addAll(list, windows);
+        reader = new XMLParserSAX();
     }
 
     public WindowPattern createWindow(String name){
-        if(name.equals("Kaleidoscopic Dream")) return new Window1();
-        if(name.equals("Aurorae Magnificus")) return new Window2();
-        if(name.equals("Sun Catcher")) return new Window3();
-        if(name.equals("Virtus")) return new Window4();
-        if(name.equals("Via Lux")) return new Window5();
-        if(name.equals("Bellesguard")) return new Window6();
-        if(name.equals("Shadow Thief")) return new Window7();
-        if(name.equals("Aurora Sagradis")) return new Window8();
-        if(name.equals("Firmitas")) return new Window9();
-        if(name.equals("Batllo")) return new Window10();
-        if(name.equals("Industria")) return new Window11();
-        if(name.equals("Symphony of Light")) return new Window12();
-        if(name.equals("Firelight")) return new Window13();
-        if(name.equals("Lux Astram")) return new Window14();
-        if(name.equals("Gravitas")) return new Window15();
-        if(name.equals("Luz Celestial")) return new Window16();
-        if(name.equals("Chromatic Splendor")) return new Window17();
-        if(name.equals("Fractal Drops")) return new Window18();
-        if(name.equals("Ripples of Lights")) return new Window19();
-        if(name.equals("Comitas")) return new Window20();
-        if(name.equals("Fulgor del Ciel")) return new Window21();
-        if(name.equals("Water of Light")) return new Window22();
-        if(name.equals("Lux Mundi")) return new Window23();
-        if(name.equals("Sun's Glory")) return new Window24();
+        if(name.equals("Kaleidoscopic Dream")) return reader.readWindowPattern("window1");
+        if(name.equals("Aurorae Magnificus")) return reader.readWindowPattern("window2");
+        if(name.equals("Sun Catcher")) return reader.readWindowPattern("window3");
+        if(name.equals("Virtus")) return reader.readWindowPattern("window4");
+        if(name.equals("Via Lux")) return reader.readWindowPattern("window5");
+        if(name.equals("Bellesguard")) return reader.readWindowPattern("window6");
+        if(name.equals("Shadow Thief")) return reader.readWindowPattern("window7");
+        if(name.equals("Aurora Sagradis")) return reader.readWindowPattern("window8");
+        if(name.equals("Firmitas")) return reader.readWindowPattern("window9");
+        if(name.equals("Batllo")) return reader.readWindowPattern("window10");
+        if(name.equals("Industria")) return reader.readWindowPattern("window11");
+        if(name.equals("Symphony of Light")) return reader.readWindowPattern("window12");
+        if(name.equals("Firelight")) return reader.readWindowPattern("window13");
+        if(name.equals("Lux Astram")) return reader.readWindowPattern("window14");
+        if(name.equals("Gravitas")) return reader.readWindowPattern("window15");
+        if(name.equals("Luz Celestial")) return reader.readWindowPattern("window16");
+        if(name.equals("Chromatic Splendor")) return reader.readWindowPattern("window17");
+        if(name.equals("Fractal Drops")) return reader.readWindowPattern("window18");
+        if(name.equals("Ripples of Lights")) return reader.readWindowPattern("window19");
+        if(name.equals("Comitas")) return reader.readWindowPattern("window20");
+        if(name.equals("Fulgor del Ciel")) return reader.readWindowPattern("window21");
+        if(name.equals("Water of Light")) return reader.readWindowPattern("window22");
+        if(name.equals("Lux Mundi")) return reader.readWindowPattern("window23");
+        if(name.equals("Sun's Glory")) return reader.readWindowPattern("window24");
         return null;
     }
 

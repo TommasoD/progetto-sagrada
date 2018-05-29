@@ -39,21 +39,22 @@ class PlayerTest {
 
     @Test
     void notNullTest () {
-        WindowPattern w = new Window1();
-        Player p = new Player("Giovanni",w);
+        Player p = new Player("Giovanni");
         assertNotNull(p);
     }
 
     @Test
     void correctWindow () {
-        WindowPattern w = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern w = factory.createWindow("Kaleidoscopic Dream");
         Player p = new Player("Giovanni",w);
         assertEquals(w,p.getPlayerWindow());
     }
 
     @Test
     void correctObjective () {
-        WindowPattern w = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern w = factory.createWindow("Kaleidoscopic Dream");
         PrivateObjective obj  = new PrivateObjective("RED");
         Player p = new Player("Giovanni",w);
         p.setPlayerObjective(obj);
@@ -62,7 +63,8 @@ class PlayerTest {
 
     @Test
     void getTotalPoints() {
-        WindowPattern window = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern window = factory.createWindow("Kaleidoscopic Dream");
         PrivateObjective obj  = new PrivateObjective("RED");
         Player p = new Player("Giovanni",window);
         p.setPlayerObjective(obj);

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.objectives.publicobjectives;
 import it.polimi.ingsw.model.Die;
 import it.polimi.ingsw.model.WindowPattern;
-import it.polimi.ingsw.model.windows.Window1;
+import it.polimi.ingsw.model.WindowPatternFactory;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -10,7 +10,8 @@ class ColoredDiagonalTest {
     @Test
     void checkColoredDiagonal() {
         PublicObjective s = new ColoredDiagonal();
-        WindowPattern window = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern window = factory.createWindow("Kaleidoscopic Dream");
         window.getWindowMatrix(0, 2).setDie(new Die("BLUE"));
         window.getWindowMatrix(1, 1).setDie(new Die("BLUE"));
         window.getWindowMatrix(2, 2).setDie(new Die("BLUE"));

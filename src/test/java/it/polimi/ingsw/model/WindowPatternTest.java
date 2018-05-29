@@ -7,7 +7,8 @@ class WindowPatternTest {
 
     @Test
     void tokenTest() {
-        WindowPattern w = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern w = factory.createWindow("Kaleidoscopic Dream");
         assertEquals(4, w.getDifficultyToken());
         int cost = 2;
         w.decreaseDifficultyToken(cost);
@@ -16,13 +17,15 @@ class WindowPatternTest {
 
     @Test
     void correctName() {
-        WindowPattern w = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern w = factory.createWindow("Kaleidoscopic Dream");
         assertEquals("Kaleidoscopic Dream", w.getName());
     }
 
     @Test
     void valid() {
-        WindowPattern w = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern w = factory.createWindow("Kaleidoscopic Dream");
         Die d = new Die("BLUE");
         d.roll();
         Die d2 = new Die("RED");
@@ -33,7 +36,8 @@ class WindowPatternTest {
 
     @Test
     void valid2() {
-        WindowPattern w = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern w = factory.createWindow("Kaleidoscopic Dream");
         Die d = new Die("BLUE");
         d.roll();
         Die d2 = new Die("YELLOW");
@@ -44,7 +48,8 @@ class WindowPatternTest {
 
     @Test
     void notValidColorRuleSlot() {
-        WindowPattern w = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern w = factory.createWindow("Kaleidoscopic Dream");
         Die d = new Die("BLUE");
         d.roll();
         assertFalse(w.isValid(2,2 , d));
@@ -52,7 +57,8 @@ class WindowPatternTest {
 
     @Test
     void notValidValueRuleSlot() {
-        WindowPattern w = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern w = factory.createWindow("Kaleidoscopic Dream");
         Die d = new Die("BLUE");
         d.setValue("5");
         assertFalse(w.isValid(4,0 , d));
@@ -60,7 +66,8 @@ class WindowPatternTest {
 
     @Test
     void notValidOccupiedSlot() {
-        WindowPattern w = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern w = factory.createWindow("Kaleidoscopic Dream");
         Die d = new Die("RED");
         d.roll();
         w.getWindowMatrix(2, 2).setDie(d);
@@ -71,7 +78,8 @@ class WindowPatternTest {
 
     @Test
     void notValidOrthogonalColor() {
-        WindowPattern w = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern w = factory.createWindow("Kaleidoscopic Dream");
         Die d = new Die("RED");
         d.roll();
         w.getWindowMatrix(2, 2).setDie(d);
@@ -82,7 +90,8 @@ class WindowPatternTest {
 
     @Test
     void notValidOrthogonalValue() {
-        WindowPattern w = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern w = factory.createWindow("Kaleidoscopic Dream");
         Die d = new Die("RED");
         d.setValue("2");
         w.getWindowMatrix(2, 2).setDie(d);
@@ -93,7 +102,8 @@ class WindowPatternTest {
 
     @Test
     void notValidAdjacent() {
-        WindowPattern w = new Window1();
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern w = factory.createWindow("Kaleidoscopic Dream");
         Die d = new Die("RED");
         d.roll();
         assertFalse(w.isValid(3, 2, d));
