@@ -134,6 +134,7 @@ public class Game extends Observable {
         Die d = removeDieFromDraft(die);
         w.getWindowMatrix(x, y).setDie(d);
         if(!getPlayers(playerIndex).isFirstDiePlaced()) getPlayers(playerIndex).setFirstDiePlaced(true);
+        notify(this.toString());
     }
 
     /*
@@ -164,5 +165,20 @@ public class Game extends Observable {
         } catch (NullPointerException e){
             return e.toString();
         }
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        String s = "Round Track List: " + roundTrackToString() + "\u001B[0m\nDraft Pool: " + draftToString() + "\u001B[0m\n\n";
+        sb.append(s);
+        for(int i = 0; i < playersSize(); i++){
+            sb.append(players.get(i).toString());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+    public void dump(){
+        System.out.println(this);
     }
 }

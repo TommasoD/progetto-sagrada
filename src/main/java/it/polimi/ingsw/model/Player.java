@@ -135,7 +135,7 @@ public class Player {
         String s;
         if(isOnline) s = "online";
         else s = "offline";
-        return "Player: " + username + "\nStatus: " + s + "\n\n" + playerWindow;
+        return "Player: " + username + "\nStatus: " + s + "\n" + playerWindow;
     }
 
     public void dump(){

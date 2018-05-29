@@ -168,6 +168,7 @@ public class Controller {
                                 -dice left from draft to track
                                 -create new draft
                                 -skipTurn set to false for every player
+                                -model.notify
         */
     }
 
