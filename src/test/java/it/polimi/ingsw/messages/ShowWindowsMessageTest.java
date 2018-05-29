@@ -8,15 +8,14 @@ class ShowWindowsMessageTest {
 
     @Test
     void serialize() {
-        ShowWindowsMessage m = new ShowWindowsMessage("a", 1, "o", "b", 2, "o",
-                        "c", 3, "o", "d", 4, "o");
-        assertEquals("{\"id\":\"windows\",\"name1\":\"a\",\"token1\":1,\"w1\":\"o\",\"name2\":\"b\",\"token2\":2,\"w2\":\"o\",\"name3\":\"c\",\"token3\":3,\"w3\":\"o\",\"name4\":\"d\",\"token4\":4,\"w4\":\"o\"}", m.serialize());
+        ShowWindowsMessage m = new ShowWindowsMessage("a", "o", "b", "o", "c", "o", "d", "o");
+        assertEquals("{\"id\":\"windows\",\"name1\":\"a\",\"w1\":\"o\",\"name2\":\"b\",\"w2\":\"o\",\"name3\":\"c\",\"w3\":\"o\",\"name4\":\"d\",\"w4\":\"o\"}", m.serialize());
     }
 
     @Test
     void deserialize() {
         ShowWindowsMessage m = new ShowWindowsMessage();
-        m = m.deserialize("{\"id\":\"windows\",\"name1\":\"a\",\"token1\":1,\"w1\":\"o\",\"name2\":\"b\",\"token2\":2,\"w2\":\"o\",\"name3\":\"c\",\"token3\":3,\"w3\":\"o\",\"name4\":\"d\",\"token4\":4,\"w4\":\"o\"}");
+        m = m.deserialize("{\"id\":\"windows\",\"name1\":\"a\",\"w1\":\"o\",\"name2\":\"b\",\"w2\":\"o\",\"name3\":\"c\",\"w3\":\"o\",\"name4\":\"d\",\"w4\":\"o\"}");
         assertEquals("windows", m.getId());
     }
 }

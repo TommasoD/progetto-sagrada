@@ -9,6 +9,11 @@ public class LoginMessage extends Message {
 
     public LoginMessage(){}
 
+    public LoginMessage(String username){
+        id = "login";
+        this.username = username;
+    }
+
     public LoginMessage(String id, String username){
         this.id = id;
         this.username = username;
