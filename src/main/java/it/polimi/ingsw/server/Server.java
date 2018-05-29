@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.NetworkParser;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -14,7 +15,8 @@ import java.util.ArrayList;
 
 public class Server {
 
-    private final int port = 7777;
+    private int port;
+    NetworkParser reader = new NetworkParser();
 
     private ServerSocket serverSocket;
     private GameManager gameManager;
@@ -23,6 +25,10 @@ public class Server {
     private ArrayList<String> disconnectedPlayers;
 
     public Server() {
+
+        reader.readNetworkSetup();
+        port = reader.getPort();
+
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {

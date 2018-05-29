@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.messages.LoginMessage;
+import it.polimi.ingsw.model.NetworkParser;
 import it.polimi.ingsw.utils.Observer;
 import it.polimi.ingsw.view.View;
 
@@ -14,20 +15,23 @@ import java.util.Scanner;
 public class Client implements Observer {
     private String ip;
     private int port;
+    NetworkParser reader = new NetworkParser();
     private View view;
     private DataInputStream socketIn;
     private DataOutputStream socketOut;
     private Socket socket;
 
-    public Client(String ip, int port) {
-        this.ip = ip;
-        this.port = port;
+    public Client() {
+        reader.readNetworkSetup();
+        this.port = reader.getPort();
+        this.ip = reader.getIp();
+
         view = new View();
         view.register(this);
     }
 
     public static void main(String[] args) {
-        Client client = new Client("127.0.0.1", 7777);
+        Client client = new Client();
         try {
             client.startClient();
         } catch (IOException e) {
