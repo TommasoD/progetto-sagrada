@@ -2,10 +2,12 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.objectives.PrivateObjective;
 import it.polimi.ingsw.model.objectives.PublicObjectiveFactory;
 import it.polimi.ingsw.model.objectives.publicobjectives.*;
+import it.polimi.ingsw.utils.Observable;
+
 import java.util.Random;
 import java.util.ArrayList;
 
-public class Game {
+public class Game extends Observable {
 
     //variables
     private DiceBag diceBag;

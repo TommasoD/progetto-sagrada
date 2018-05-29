@@ -4,25 +4,75 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
-public class Server extends Thread {
-    protected ArrayList<ClientHandler> playerList = new ArrayList<ClientHandler>();
+import java.net.UnknownHostException;
+import java.net.InetAddress;
 
-    public void run() {
+public class ServerAcceptor {
 
-        System.out.println("Run...");
+    private final int port = 7777;
 
+    ServerSocket serverSocket;
+    Server server;
 
+    public ServerAcceptor() {
+        try {
+            serverSocket = new ServerSocket(port);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        this.server = new Server();
+        System.out.println("Server ready");
     }
 
-    public synchronized boolean nameUsed(String string) {
-        for (int i = 0; i < playerList.size()-1; i++) {
-            String s = playerList.get(i).getUsername();
-            if (s != null){
-                if(s.equals(string))return true;
+    public void startServerAcceptor() {
+
+        InetAddress ip;
+        try {
+            ip = InetAddress.getLocalHost();
+            System.out.println("Indirizzo ip: " + ip);
+        }
+        catch (UnknownHostException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+
+        //when the second player is connected the server must wait N seconds before starting the game
+        for (int i = 0; i < 4; i++) {
+            try {
+                Socket socket = serverSocket.accept();
+                server.playerList.add(new ClientHandler(socket, server));
+                System.out.println("Client " + (i+1) + " connected");
+                server.playerList.get(i).start();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.exit(1);
             }
         }
-        return false;
+
+        server.start();  ///run on another Thread
+
+        while(1 == 1) {
+            try {
+                Socket socket = serverSocket.accept();
+                DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+                output.writeUTF("Too many players");
+                output.flush();
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+
     }
+
+    public static void main(String[] args) {
+        ServerAcceptor acceptor = new ServerAcceptor();
+        acceptor.startServerAcceptor();
+    }
+
 }
