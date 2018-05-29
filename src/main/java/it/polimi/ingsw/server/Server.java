@@ -21,7 +21,6 @@ public class Server {
     private Game model;
     private Controller controller;
     private ArrayList<String> disconnectedPlayers;
-    private int nClient = 0;
 
     public Server() {
         try {
@@ -52,8 +51,7 @@ public class Server {
         for (int i = 0; i < 4; i++) {
             try {
                 Socket socket = serverSocket.accept();
-                gameManager.playerList.add(new ClientHandler(socket, gameManager));
-                nClient++;
+                gameManager.playerList.add(new ClientHandler(socket, gameManager, i));
                 System.out.println("Client " + (i+1) + " connected");
                 gameManager.playerList.get(i).start();
 
@@ -67,10 +65,6 @@ public class Server {
         controller = new Controller(model);
         model.register(gameManager);
         gameManager.setController(controller);
-
-        System.out.println(nClient);
-        while(gameManager.playerNames.size() < nClient){
-        }
 
         gameManager.start();  ///run on another Thread
 

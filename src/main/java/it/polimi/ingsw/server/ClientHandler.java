@@ -6,9 +6,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+
 public class ClientHandler extends  Thread {
     private Socket socket;
     private String username;
+    private int index;
     private DataInputStream input;
     private DataOutputStream output;
     private GameManager gameManager;
@@ -16,8 +18,9 @@ public class ClientHandler extends  Thread {
     protected String move;
 
 
-    public ClientHandler(Socket socket, GameManager gameManager) {
+    public ClientHandler(Socket socket, GameManager gameManager, int index) {
         this.socket = socket;
+        this.index = index;
         try {
             input = new DataInputStream(socket.getInputStream());
             output = new DataOutputStream(socket.getOutputStream());
@@ -31,6 +34,7 @@ public class ClientHandler extends  Thread {
 
     public void run() {
         boolean done = false;
+        String mex;
 
         try {
             //input username
@@ -46,14 +50,28 @@ public class ClientHandler extends  Thread {
                     output.flush();
                 } else {
                     done = true;
-                    gameManager.playerNames.add(line);
+                    gameManager.nClient++;
                     username = line;
                     output.writeUTF("Welcome " + username);
                     output.flush();
                 }
             }
 
-            //String mex = input.readUTF();
+            this.send(gameManager.getController().showWindows());
+            mex = input.readUTF();
+            gameManager.getController().setWindowPattern(index, mex);
+
+            /////finchè non finisce la partita
+            while(1 == 1) {
+
+                //while (threadSuspended) {}
+                String s = gameManager.getController().handleMove(index, input.readUTF());
+                System.out.println(s);
+                output.writeUTF(s);
+                output.flush();
+                threadSuspended = true;
+
+            }
 
             ///this.send insert move
             ///move = input.readUTF()

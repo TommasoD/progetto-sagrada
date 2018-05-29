@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class GameManager extends Thread implements Observer {
     protected ArrayList<ClientHandler> playerList;
     protected ArrayList<String> playerNames;
+    protected int nClient = 0;
     private Controller controller;
 
     public GameManager() {
@@ -17,15 +18,18 @@ public class GameManager extends Thread implements Observer {
 
     public void run() {
 
+        while(nClient != 4) {}
+
         for(int i = 0; i < playerList.size(); i++) {  ////add players
             controller.addPlayer(playerList.get(i).getUsername());
         }
 
-        controller.newMatch();   /////create a new match
+        controller.newMatch();
 
-        for(int i = 0; i < playerList.size(); i++) {
-            playerList.get(i).send(controller.showWindows());
-        }
+        //while(!controller.isGameEnded()) {
+        //    playerList.get(controller.whoIsNext()).threadSuspended = false;
+        //    while(playerList.get(controller.whoIsNext()).threadSuspended == false);
+        //}
 
     }
 

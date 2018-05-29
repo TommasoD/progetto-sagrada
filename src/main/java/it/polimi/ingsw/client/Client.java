@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.messages.LoginMessage;
-import it.polimi.ingsw.utils.Observable;
+import it.polimi.ingsw.utils.Observer;
 import it.polimi.ingsw.view.View;
 
 import java.io.DataInputStream;
@@ -11,16 +11,19 @@ import java.net.Socket;
 import java.util.Scanner;
 
 
-public class Client extends Observable {
+public class Client implements Observer {
     private String ip;
     private int port;
     private View view;
+    private DataInputStream socketIn;
+    private DataOutputStream socketOut;
+    private Socket socket;
 
     public Client(String ip, int port) {
         this.ip = ip;
         this.port = port;
         view = new View();
-        this.register(view);
+        view.register(this);
     }
 
     public static void main(String[] args) {
@@ -34,9 +37,9 @@ public class Client extends Observable {
     }
 
     public void startClient() throws IOException {
-        Socket socket = new Socket(ip, port);
-        DataInputStream socketIn = new DataInputStream(socket.getInputStream());
-        DataOutputStream socketOut = new DataOutputStream(socket.getOutputStream());
+        socket = new Socket(ip, port);
+        socketIn = new DataInputStream(socket.getInputStream());
+        socketOut = new DataOutputStream(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
 
         try {
@@ -52,7 +55,7 @@ public class Client extends Observable {
             while (!done) {
                 System.out.println("Insert username: ");
                 String inputLine = stdin.nextLine();
-                message = new LoginMessage("login", inputLine);
+                message = new LoginMessage(inputLine);
                 socketOut.writeUTF(message.serialize());
                 socketOut.flush();
 
@@ -63,10 +66,15 @@ public class Client extends Observable {
             }
 
             String s = socketIn.readUTF();
-            notify(s);
-            mex = stdin.nextLine();
-            socketOut.writeUTF(mex);
-            socketOut.flush();
+            view.print(s);
+
+            ///fino a fine partita
+            while(1 == 1) {
+                view.move();
+                System.out.println(socketIn.readUTF());
+            }
+
+
 
 
         } catch (IOException e) {
@@ -78,6 +86,17 @@ public class Client extends Observable {
             stdin.close();
             socketIn.close();
             socketOut.close();
+        }
+    }
+
+    public void update(Object message) {
+        try {
+            socketOut.writeUTF((String) message);
+            socketOut.flush();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 }
