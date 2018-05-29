@@ -6,17 +6,17 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-
 public class ClientHandler extends  Thread {
     private Socket socket;
     private String username;
     private DataInputStream input;
     private DataOutputStream output;
-    private Server server;
+    private GameManager gameManager;
     protected boolean threadSuspended = true;
+    protected String move;
 
 
-    public ClientHandler(Socket socket, Server server) {
+    public ClientHandler(Socket socket, GameManager gameManager) {
         this.socket = socket;
         try {
             input = new DataInputStream(socket.getInputStream());
@@ -26,7 +26,7 @@ public class ClientHandler extends  Thread {
             e.printStackTrace();
             System.exit(1);
         }
-        this.server = server;
+        this.gameManager = gameManager;
     }
 
     public void run() {
@@ -41,16 +41,24 @@ public class ClientHandler extends  Thread {
             while (!done) {
                 message = message.deserialize(input.readUTF());
                 String line = message.getUsername();
-                if (server.nameUsed(line)) {
+                if (gameManager.nameUsed(line)) {
                     output.writeUTF("Username " + line + " already used");
                     output.flush();
                 } else {
                     done = true;
+                    gameManager.playerNames.add(line);
                     username = line;
                     output.writeUTF("Welcome " + username);
                     output.flush();
                 }
             }
+
+            //String mex = input.readUTF();
+
+            ///this.send insert move
+            ///move = input.readUTF()
+            ///
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -67,6 +75,15 @@ public class ClientHandler extends  Thread {
         }
     }
 
+    public void send(String line) {
+        try {
+            output.writeUTF(line);
+            output.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
 
     public String getUsername() {
         return this.username;

@@ -1,14 +1,37 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.utils.Observer;
+
 import java.util.ArrayList;
 
-public class Server extends Thread {
-    protected ArrayList<ClientHandler> playerList = new ArrayList<ClientHandler>();
+public class GameManager extends Thread implements Observer {
+    protected ArrayList<ClientHandler> playerList;
+    protected ArrayList<String> playerNames;
+    private Controller controller;
+
+    public GameManager() {
+        playerList = new ArrayList<ClientHandler>();
+        playerNames = new ArrayList<String>();
+    }
 
     public void run() {
 
-        System.out.println("Run...");
+        for(int i = 0; i < playerList.size(); i++) {  ////add players
+            controller.addPlayer(playerList.get(i).getUsername());
+        }
 
+        controller.newMatch();   /////create a new match
+
+        for(int i = 0; i < playerList.size(); i++) {
+            playerList.get(i).send(controller.showWindows());
+        }
+
+    }
+
+
+
+    public void update(Object message) {
 
     }
 
@@ -21,4 +44,17 @@ public class Server extends Thread {
         }
         return false;
     }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
+    public Controller getController() {
+        return controller;
+    }
+
+    public String chooseWindow() {
+        return controller.showWindows();
+    }
+
 }

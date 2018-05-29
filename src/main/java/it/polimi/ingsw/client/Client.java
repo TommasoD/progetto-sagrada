@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.messages.LoginMessage;
+import it.polimi.ingsw.utils.Observable;
+import it.polimi.ingsw.view.View;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -8,13 +10,17 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Client {
+
+public class Client extends Observable {
     private String ip;
     private int port;
+    private View view;
 
     public Client(String ip, int port) {
         this.ip = ip;
         this.port = port;
+        view = new View();
+        this.register(view);
     }
 
     public static void main(String[] args) {
@@ -49,11 +55,20 @@ public class Client {
                 message = new LoginMessage("login", inputLine);
                 socketOut.writeUTF(message.serialize());
                 socketOut.flush();
+
                 String socketLine = socketIn.readUTF();
                 System.out.println(socketLine);
                 if (socketLine.equals("Welcome " + inputLine)) done = true;
 
             }
+
+            String s = socketIn.readUTF();
+            notify(s);
+            mex = stdin.nextLine();
+            socketOut.writeUTF(mex);
+            socketOut.flush();
+
+
         } catch (IOException e) {
             System.out.println("Connection closed");
         }
@@ -63,6 +78,6 @@ public class Client {
             stdin.close();
             socketIn.close();
             socketOut.close();
-            }
+        }
     }
 }
