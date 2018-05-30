@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Server {
 
@@ -22,7 +23,7 @@ public class Server {
     private GameManager gameManager;
     private Game model;
     private Controller controller;
-    private ArrayList<String> disconnectedPlayers;
+    //private ArrayList<String> disconnectedPlayers;
 
     public Server() {
 
@@ -37,9 +38,9 @@ public class Server {
             e.printStackTrace();
             System.exit(1);
         }
-        disconnectedPlayers = new ArrayList<String>();
+        //disconnectedPlayers = new ArrayList<String>();
         this.gameManager = new GameManager();
-        System.out.println("GameManager ready");
+        System.out.println("Server ready");
     }
 
     public void startServer() {
@@ -54,14 +55,17 @@ public class Server {
             System.exit(1);
         }
 
-
         //when the second player is connected the gameManager must wait N seconds before starting the game
-        for (int i = 0; i < 4; i++) {
+        //////verified time
+        long startTime = System.currentTimeMillis();
+        int i = 0;
+        while(i < 4 && (System.currentTimeMillis()-startTime)<10000) {
             try {
                 Socket socket = serverSocket.accept();
                 gameManager.playerList.add(new ClientHandler(socket, gameManager, i));
-                System.out.println("Client " + (i+1) + " connected");
+                System.out.println("Client " + (i + 1) + " connected");
                 gameManager.playerList.get(i).start();
+                i++;
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -72,9 +76,7 @@ public class Server {
         model = new Game();
         controller = new Controller(model);
         model.register(gameManager);
-        gameManager.setController(controller);
-
-        gameManager.start();  ///run on another Thread
+        controller.newMatch();
 
         while(1 == 1) {
             try {
@@ -92,8 +94,8 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        Server acceptor = new Server();
-        acceptor.startServer();
+        Server server= new Server();
+        server.startServer();
     }
 
 }
