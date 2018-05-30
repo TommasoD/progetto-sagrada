@@ -1,5 +1,4 @@
 package it.polimi.ingsw.server;
-import it.polimi.ingsw.messages.LoginMessage;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -10,8 +9,8 @@ import java.net.Socket;
 public class ClientHandler extends Thread {
     private Socket socket;
     private int index;
-    protected DataInputStream input;
-    protected DataOutputStream output;
+    private DataInputStream input;
+    private DataOutputStream output;
     private GameManager gameManager;
 
 
@@ -37,7 +36,8 @@ public class ClientHandler extends Thread {
             output.writeUTF("Connection established");
             output.flush();
             while(!done) {
-                //gameManager.notify(input.readUTF(), index);
+                String s = input.readUTF();
+                gameManager.notifyController(s, index);
             }
         }
         catch (IOException e) {
@@ -55,7 +55,6 @@ public class ClientHandler extends Thread {
     }
 
     public void send(String line) {
-
         try {
             output.writeUTF(line);
             output.flush();
@@ -63,7 +62,9 @@ public class ClientHandler extends Thread {
             e.printStackTrace();
             System.exit(1);
         }
-
     }
 
+    public int getIndex() {
+        return index;
+    }
 }

@@ -23,7 +23,6 @@ public class Server {
     private GameManager gameManager;
     private Game model;
     private Controller controller;
-    //private ArrayList<String> disconnectedPlayers;
 
     public Server() {
 
@@ -32,23 +31,24 @@ public class Server {
         port = reader.getPort();
 
         try {
-
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
-        //disconnectedPlayers = new ArrayList<String>();
-        this.gameManager = new GameManager();
+
+        gameManager = new GameManager();
+        model = new Game();
+        controller = new Controller(model);
+        model.register(gameManager);
+        gameManager.register(controller);
         System.out.println("Server ready");
     }
 
     public void startServer() {
 
-        InetAddress ip;
         try {
-            ip = InetAddress.getLocalHost();
-            System.out.println("My ip address: " + ip);
+            System.out.println("My ip address: " + InetAddress.getLocalHost());
         }
         catch (UnknownHostException e) {
             e.printStackTrace();
@@ -57,9 +57,9 @@ public class Server {
 
         //when the second player is connected the gameManager must wait N seconds before starting the game
         //////verified time
-        long startTime = System.currentTimeMillis();
+//        long startTime = System.currentTimeMillis();
         int i = 0;
-        while(i < 4 && (System.currentTimeMillis()-startTime)<10000) {
+        while(i < 4 /*&& (System.currentTimeMillis()-startTime)<10000*/) {
             try {
                 Socket socket = serverSocket.accept();
                 gameManager.playerList.add(new ClientHandler(socket, gameManager, i));
@@ -73,18 +73,15 @@ public class Server {
             }
         }
 
-        model = new Game();
-        controller = new Controller(model);
-        model.register(gameManager);
         controller.newMatch();
 
         while(1 == 1) {
             try {
                 Socket socket = serverSocket.accept();
-                DataOutputStream output = new DataOutputStream(socket.getOutputStream());
-                output.writeUTF("Too many players");
-                output.flush();
-                socket.close();
+                gameManager.playerList.add(new ClientHandler(socket, gameManager, i));
+                System.out.println("Client " + (i + 1) + " connected");
+                gameManager.playerList.get(i).start();
+                i++;
             } catch (IOException e) {
                 e.printStackTrace();
                 System.exit(1);

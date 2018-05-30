@@ -32,12 +32,21 @@ public class View extends Observable{
         String id = getIdMessage(message);
 
         //errors
+        if(id.equals("ok")){
+            System.out.println("Welcome to the game.");
+        }
         if(id.equals("error")) {
             ErrorMessage gson = new ErrorMessage();
             gson = gson.deserialize(message);
-            if (gson.getType() == 1) {
-                System.out.println("Too many players!!\nConnection closed");
+            if (gson.getType() == 3) {
+                System.out.println("Game already started!\nConnection closed");
                 throw new TooManyPlayersException();
+            }
+            if (gson.getType() == 1) {
+                System.out.println("Username already used. Insert a new one:");
+                String inputLine = stdin.nextLine();
+                LoginMessage mex = new LoginMessage(inputLine);
+                notify(mex.serialize());
             }
 
             //type = 2 is invalidMove

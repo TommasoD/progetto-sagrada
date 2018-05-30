@@ -74,7 +74,7 @@ public class Client implements Observer {
 
     public void update(Object message) {
         try {
-            socketOut.writeUTF((String) message);
+            socketOut.writeUTF((String)message);
             socketOut.flush();
         }
         catch (IOException e) {

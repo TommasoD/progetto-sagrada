@@ -13,15 +13,19 @@ public class GameManager extends Observable implements Observer {
 
 
     public void update(Object message) {
-
+        for(ClientHandler c : playerList){
+            c.send((String)message);
+        }
     }
 
     public void update(Object message, int id) {
-        
+        for(ClientHandler c : playerList){
+            if(c.getIndex() == id) c.send((String)message);
+        }
     }
 
-    private void controllerNotify(Object message) {
-        this.notify(message);
+    public void notifyController(String message, int player) {
+        notify(message, player);
     }
 /*
     public void login(int i) {
