@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.model.parsers.WindowParser;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
 public class WindowPatternFactory {
 
-    private XMLParserSAX reader;
+    private WindowParser reader;
 
     private ArrayList<String> list;
     private static final String[] windows = {
@@ -38,7 +40,7 @@ public class WindowPatternFactory {
     public WindowPatternFactory(){
         list = new ArrayList<String>();
         Collections.addAll(list, windows);
-        reader = new XMLParserSAX();
+        reader = new WindowParser();
     }
 
     public WindowPattern createWindow(String name){

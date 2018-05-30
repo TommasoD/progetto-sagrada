@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.parsers.WindowParser;
+
 public class WindowReaderTest {
 
     public static void main(String args[]) {
@@ -7,7 +9,7 @@ public class WindowReaderTest {
         String windowName = "window1";
 
         //read the window
-        XMLParserSAX reader = new XMLParserSAX();
+        WindowParser reader = new WindowParser();
         p.setPlayerWindow(reader.readWindowPattern(windowName));
 
         //show the window

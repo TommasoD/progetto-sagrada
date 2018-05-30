@@ -1,7 +1,5 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.parsers;
 import java.io.File;
-import java.io.IOException;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
@@ -32,8 +30,8 @@ public class NetworkParser {
             String path = System.getProperty("user.dir");
             try {
                 SAXParser saxParser = saxParserFactory.newSAXParser();
-                it.polimi.ingsw.model.NetworkParser.NetworkReader handler = new it.polimi.ingsw.model.NetworkParser.NetworkReader();
-                saxParser.parse(new File(path + "\\src\\main\\java\\it\\polimi\\ingsw\\model\\networkSetup.xml"), handler);
+                NetworkParser.NetworkReader handler = new NetworkParser.NetworkReader();
+                saxParser.parse(new File(path + "\\src\\main\\java\\it\\polimi\\ingsw\\model\\parsers\\networkSetup.xml"), handler);
             } catch (Exception e) {
                 e.printStackTrace();
                 System.exit(1);

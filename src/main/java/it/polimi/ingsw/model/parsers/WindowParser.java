@@ -1,15 +1,18 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.parsers;
 
 import java.io.File;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import it.polimi.ingsw.model.Slot;
+import it.polimi.ingsw.model.WindowPattern;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class XMLParserSAX {
+public class WindowParser {
 
     private WindowPattern playerWindow  = null;
 

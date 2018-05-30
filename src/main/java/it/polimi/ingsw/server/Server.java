@@ -2,7 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.NetworkParser;
+import it.polimi.ingsw.model.parsers.NetworkParser;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -26,10 +26,12 @@ public class Server {
 
     public Server() {
 
+        //possibly try-catch. SAXException
         reader.readNetworkSetup();
         port = reader.getPort();
 
         try {
+
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,7 +47,7 @@ public class Server {
         InetAddress ip;
         try {
             ip = InetAddress.getLocalHost();
-            System.out.println("Indirizzo ip: " + ip);
+            System.out.println("My ip address: " + ip);
         }
         catch (UnknownHostException e) {
             e.printStackTrace();
