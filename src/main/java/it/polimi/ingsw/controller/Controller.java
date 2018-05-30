@@ -1,12 +1,16 @@
 package it.polimi.ingsw.controller;
 import com.google.gson.stream.JsonReader;
+import it.polimi.ingsw.messages.ErrorMessage;
+import it.polimi.ingsw.messages.LoginMessage;
 import it.polimi.ingsw.messages.SetDieMessage;
 import it.polimi.ingsw.messages.ShowWindowsMessage;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.utils.Observer;
+
 import java.io.IOException;
 import java.io.StringReader;
 
-public class Controller {
+public class Controller implements Observer{
 
     private Game model;
     private RoundHandler handler;
@@ -89,33 +93,50 @@ public class Controller {
     }
 
     /*
-        receives an identifier of a player (playerIndex) and a serialized representation of a Gson message,
-        the message contains all the information regarding the player's move,
+        receives an identifier of a player (playerIndex) and a string representation of a Gson message,
+        the message contains all the information regarding the player's action,
         controller handles the move, validates/invalidates it, change model according to the move, returns a String
             describing the output of the move (valid/invalid)
      */
 
-    public synchronized String handleMove(int player, String gsonMessage){
+    public synchronized void update(Object gson, int player){
 
+        String gsonMessage = (String) gson;
         String id = getIdMessage(gsonMessage);
 
+        if(id.equals("login")){
+            LoginMessage message = new LoginMessage();
+            message = message.deserialize(gsonMessage);
+            if(model.isGameStarted()){
+                if(model.findAndReconnect(message.getUsername(), player)){
+                    model.okMessage(player);
+                }
+            }
+            else{
+                if(!model.find(message.getUsername())){
+                    addPlayer(message.getUsername());
+                    model.okMessage(player);
+                }
+                else model.errorMessage(1, player);
+            }
+        }
         if(id.equals("place")){
             SetDieMessage message = new SetDieMessage();
             message = message.deserialize(gsonMessage);
-            if(player != handler.getCurrentPlayer()) return "Invalid placement";
+            if(player != handler.getCurrentPlayer()) model.errorMessage(2, handler.getCurrentPlayer());
 
             Player p = model.getPlayers(player);
-            if(p.isDieUsed()) return "Invalid placement";
+            if(p.isDieUsed()) model.errorMessage(2, handler.getCurrentPlayer());
 
             if(p.isFirstDiePlaced()){
                 if(!p.getPlayerWindow().
                         isValid(message.getX(), message.getY(), model.getDieFromDraft(message.getIndex())))
-                            return("Invalid placement");
+                            model.errorMessage(2, handler.getCurrentPlayer());
             }
             else{
                 if(!p.getPlayerWindow().
                         isValidFirstMove(message.getX(), message.getY(), model.getDieFromDraft(message.getIndex())))
-                            return("Invalid placement");
+                    model.errorMessage(2, handler.getCurrentPlayer());
             }
 
             model.useDie(player, message.getX(), message.getY(), message.getIndex());
@@ -123,7 +144,7 @@ public class Controller {
             if(p.isDieUsed() && p.isToolCardUsed()){
                 nextPlayer(player);
             }
-            return "Die placed";
+            model.okMessage(handler.getCurrentPlayer());
         }
 
         if(id.equals("pass")){
@@ -143,8 +164,6 @@ public class Controller {
         if(id.equals("quit"){
             //setta il player come offline e chiama il metodo per finire il suo turno
         }*/
-
-        return null;
     }
 
     /*
@@ -201,6 +220,10 @@ public class Controller {
 
     public boolean isGameEnded(){
         return handler.getRound() > 10;
+    }
+
+    public void update(Object message) {
+
     }
 
 }

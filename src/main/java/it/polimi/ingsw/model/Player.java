@@ -6,6 +6,7 @@ public class Player {
 
     //attributes
     private String username;
+    private int id;
     private WindowPattern playerWindow;
     private PrivateObjective playerObjective;
     private boolean isOnline;
@@ -17,6 +18,17 @@ public class Player {
     /*
         constructors
      */
+
+    public Player(String username, WindowPattern playerWindow, int id) {
+        this.username = username;
+        this.id = id;
+        isOnline = true;
+        dieUsed = false;
+        toolCardUsed = false;
+        skipTurn = false;
+        firstDiePlaced = false;
+        this.playerWindow = playerWindow;
+    }
 
     public Player(String username, WindowPattern playerWindow) {
         this.username = username;
@@ -40,6 +52,15 @@ public class Player {
     /*
         getters and setters
      */
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;

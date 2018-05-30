@@ -86,6 +86,7 @@ class GameTest {
         assertEquals(2, g.draftSize());
         assertNotNull(g.getPlayers(0).getPlayerWindow().getWindowMatrix(2,2).getDie());
         assertTrue(g.getPlayers(0).isFirstDiePlaced());
+        g.dump();
     }
 
 }

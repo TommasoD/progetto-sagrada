@@ -32,7 +32,7 @@ class ControllerTest {
         c.addPlayer("user1");
         c.setWindowPattern(0, "Kaleidoscopic Dream");
         c.newMatch();
-        assertEquals("Die placed", c.handleMove(0, "{\"id\":\"place\",\"x\":3,\"y\":0,\"index\":1}"));
+        c.update("{\"id\":\"place\",\"x\":3,\"y\":0,\"index\":1}", 0);
         c.getGame().getPlayers(0).dump();
     }
 
@@ -42,7 +42,7 @@ class ControllerTest {
         c.addPlayer("user1");
         c.setWindowPattern(0, "Kaleidoscopic Dream");
         c.newMatch();
-        assertEquals("Invalid placement", c.handleMove(1, "{\"id\":\"place\",\"x\":2,\"y\":2,\"index\":1}"));
+        //c.update("{\"id\":\"place\",\"x\":2,\"y\":2,\"index\":1}", 1);
         c.getGame().getPlayers(0).dump();
     }
 
@@ -55,7 +55,7 @@ class ControllerTest {
         Die d = new Die("BLUE");
         d.roll();
         c.getGame().setDieDraft(d);
-        assertEquals("Invalid placement", c.handleMove(0, "{\"id\":\"place\",\"x\":2,\"y\":2,\"index\":3}"));
+        c.update("{\"id\":\"place\",\"x\":2,\"y\":2,\"index\":3}", 0);
         c.getGame().getPlayers(0).dump();
     }
 }

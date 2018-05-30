@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.messages.ErrorMessage;
 import it.polimi.ingsw.model.objectives.PrivateObjective;
 import it.polimi.ingsw.model.objectives.PublicObjectiveFactory;
 import it.polimi.ingsw.model.objectives.publicobjectives.*;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 
 public class Game extends Observable {
 
-    //variables
+    private boolean gameStarted;
     private DiceBag diceBag;
     private ArrayList<Die> draft;
     private ArrayList<Player> players;
@@ -17,13 +18,30 @@ public class Game extends Observable {
     private ArrayList<PrivateObjective> privateObjectives;
     private PublicObjective[] publicObjectiveActive;
 
+    /*
+        constructor
+     */
+
     public Game(){
+        gameStarted = false;
         this.diceBag = new DiceBag();
         this.draft = new ArrayList<Die>();
         this.players = new ArrayList<Player>();
         this.roundTrack = new ArrayList<Die>();
         this.publicObjectiveActive = new PublicObjective[3];
         this.privateObjectives = new ArrayList<PrivateObjective>();
+    }
+
+    /*
+        getters and setters
+     */
+
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
     }
 
     /*
@@ -40,6 +58,26 @@ public class Game extends Observable {
 
     public int playersSize(){
         return players.size();
+    }
+
+    public boolean find(String s){
+        for (Player p : players){
+            if(p.getUsername().equals(s)) return true;
+        }
+        return false;
+    }
+
+    public boolean findAndReconnect(String s, int id){
+        for(Player p : players){
+            if (p.getUsername().equals(s)){
+                if(!p.getOnline()){
+                    p.setOnline(true);
+                    p.setId(id);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /*
@@ -102,6 +140,9 @@ public class Game extends Observable {
      */
 
     public void initialize() {
+
+        gameStarted = true;
+
         //randomly assigns private objectives
         privateObjectives.add(new PrivateObjective("RED"));
         privateObjectives.add(new PrivateObjective("YELLOW"));
@@ -135,6 +176,18 @@ public class Game extends Observable {
         w.getWindowMatrix(x, y).setDie(d);
         if(!getPlayers(playerIndex).isFirstDiePlaced()) getPlayers(playerIndex).setFirstDiePlaced(true);
         notify(this.toString());
+    }
+
+    /*
+        notify methods
+     */
+
+    public void errorMessage(int i, int player){
+        notify(new ErrorMessage(i).serialize(), player);
+    }
+
+    public void okMessage(int player){
+
     }
 
     /*
@@ -181,4 +234,5 @@ public class Game extends Observable {
     public void dump(){
         System.out.println(this);
     }
+
 }
