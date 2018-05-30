@@ -1,16 +1,13 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.messages.LoginMessage;
 import it.polimi.ingsw.model.parsers.NetworkParser;
+import it.polimi.ingsw.server.TooManyPlayersException;
 import it.polimi.ingsw.utils.Observer;
 import it.polimi.ingsw.view.View;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Scanner;
-
 
 public class Client implements Observer {
     private String ip;
@@ -44,50 +41,32 @@ public class Client implements Observer {
         socket = new Socket(ip, port);
         socketIn = new DataInputStream(socket.getInputStream());
         socketOut = new DataOutputStream(socket.getOutputStream());
-        Scanner stdin = new Scanner(System.in);
 
         try {
 
+            //first message is "connection established, insert username"
             String mex = socketIn.readUTF();
-            System.out.println(mex);
-            if(mex.equals("Too many players")) throw new IOException();
+            view.firstPrint(mex);
 
             boolean done = false;
-            LoginMessage message;
 
-            //login
+            ///until the end of the game
             while (!done) {
-                System.out.println("Insert username: ");
-                String inputLine = stdin.nextLine();
-                message = new LoginMessage(inputLine);
-                socketOut.writeUTF(message.serialize());
-                socketOut.flush();
-
-                String socketLine = socketIn.readUTF();
-                System.out.println(socketLine);
-                if (socketLine.equals("Welcome " + inputLine)) done = true;
-
+                String s = socketIn.readUTF();
+                try {
+                    view.print(s);
+                }
+                catch (TooManyPlayersException e) {
+                    done = true;
+                }
             }
 
-            String s = socketIn.readUTF();
-            view.print(s);
-
-            ///fino a fine partita
-            while(1 == 1) {
-                view.move();
-                System.out.println(socketIn.readUTF());
-            }
-
-
-
-
-        } catch (IOException e) {
+        } catch (IOException e ) {
             System.out.println("Connection closed");
         }
 
         finally {
             socket.close();
-            stdin.close();
             socketIn.close();
             socketOut.close();
         }
@@ -103,4 +82,9 @@ public class Client implements Observer {
             System.exit(1);
         }
     }
+
+    public void update(Object message, int id) {
+        //empty body
+    }
+
 }
