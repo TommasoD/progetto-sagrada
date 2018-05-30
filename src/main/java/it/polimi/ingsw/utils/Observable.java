@@ -27,4 +27,12 @@ public class Observable<T> {
         }
     }
 
+    protected void notify(T message, int id){
+        synchronized (observers) {
+            for(Observer<T> observer : observers){
+                observer.update(message, id);
+            }
+        }
+    }
+
 }
