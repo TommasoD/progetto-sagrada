@@ -24,4 +24,7 @@ public class LogoutMessage extends Message {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 }

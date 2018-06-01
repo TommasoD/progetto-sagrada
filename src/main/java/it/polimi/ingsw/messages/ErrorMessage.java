@@ -7,7 +7,9 @@ public class ErrorMessage {
     private String id;
     private int type;
 
-    public ErrorMessage(){}
+    public ErrorMessage(){
+        id = "error";
+    }
 
     public ErrorMessage(int type){
         id = "error";

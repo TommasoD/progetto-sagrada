@@ -24,4 +24,7 @@ public class PassMessage {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 }

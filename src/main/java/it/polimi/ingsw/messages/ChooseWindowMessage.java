@@ -7,10 +7,12 @@ public class ChooseWindowMessage extends Message {
     private String id;
     private String windowName;
 
-    public ChooseWindowMessage(){}
+    public ChooseWindowMessage(){
+        id = "window";
+    }
 
     public ChooseWindowMessage(String windowName){
-        this.id = "window";
+        id = "window";
         this.windowName = windowName;
     }
 

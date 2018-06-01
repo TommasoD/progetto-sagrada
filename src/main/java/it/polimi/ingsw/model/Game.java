@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.objectives.PublicObjectiveFactory;
 import it.polimi.ingsw.model.objectives.publicobjectives.*;
 import it.polimi.ingsw.utils.Observable;
 
+import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 
@@ -15,7 +16,6 @@ public class Game extends Observable {
     private ArrayList<Die> draft;
     private ArrayList<Player> players;
     private ArrayList<Die> roundTrack;
-    private ArrayList<PrivateObjective> privateObjectives;
     private PublicObjective[] publicObjectiveActive;
 
     /*
@@ -29,7 +29,6 @@ public class Game extends Observable {
         this.players = new ArrayList<Player>();
         this.roundTrack = new ArrayList<Die>();
         this.publicObjectiveActive = new PublicObjective[3];
-        this.privateObjectives = new ArrayList<PrivateObjective>();
     }
 
     /*
@@ -42,6 +41,18 @@ public class Game extends Observable {
 
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
+    }
+
+    public List<Die> getDraft() {
+        return draft;
+    }
+
+    public List<Die> getRoundTrack() {
+        return roundTrack;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 
     /*
@@ -144,6 +155,7 @@ public class Game extends Observable {
         gameStarted = true;
 
         //randomly assigns private objectives
+        ArrayList<PrivateObjective> privateObjectives = new ArrayList<PrivateObjective>();
         privateObjectives.add(new PrivateObjective("RED"));
         privateObjectives.add(new PrivateObjective("YELLOW"));
         privateObjectives.add(new PrivateObjective("PURPLE"));
@@ -201,7 +213,7 @@ public class Game extends Observable {
                 sb.append(d.toString());
                 sb.append(" ");
             }
-            return sb.toString();
+            return sb.toString() + "\u001B[0m";
         } catch (NullPointerException e){
             return e.toString();
         }
@@ -214,7 +226,7 @@ public class Game extends Observable {
                 sb.append(d.toString());
                 sb.append(" ");
             }
-            return sb.toString();
+            return sb.toString() + "\u001B[0m";
         } catch (NullPointerException e){
             return e.toString();
         }
@@ -222,7 +234,7 @@ public class Game extends Observable {
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        String s = "Round Track List: " + roundTrackToString() + "\u001B[0m\nDraft Pool: " + draftToString() + "\u001B[0m\n\n";
+        String s = "Round Track List: " + roundTrackToString() + "\nDraft Pool: " + draftToString() + "\n\n";
         sb.append(s);
         for(int i = 0; i < playersSize(); i++){
             sb.append(players.get(i).toString());
