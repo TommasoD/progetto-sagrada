@@ -23,6 +23,7 @@ public class Server {
     private GameManager gameManager;
     private Game model;
     private Controller controller;
+    private Countdown countdown;
 
     public Server() {
 
@@ -37,6 +38,7 @@ public class Server {
             System.exit(1);
         }
 
+        countdown = new Countdown(this);
         gameManager = new GameManager();
         model = new Game();
         controller = new Controller(model);
@@ -59,12 +61,16 @@ public class Server {
         //////verified time
 //        long startTime = System.currentTimeMillis();
         int i = 0;
-        while(i < 4 /*&& (System.currentTimeMillis()-startTime)<10000*/) {
+        int num = 0;  ////usare la dimensione di un array di giocatori
+        while(i < 4) {
             try {
                 Socket socket = serverSocket.accept();
+                num++;
                 gameManager.playerList.add(new ClientHandler(socket, gameManager, i));
                 System.out.println("Client " + (i + 1) + " connected");
                 gameManager.playerList.get(i).start();
+                if(num == 2) countdown.start();
+                if(num > 2) countdown.reset();
                 i++;
 
             } catch (IOException e) {

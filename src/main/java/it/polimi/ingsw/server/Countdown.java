@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server;
 
-public class Countdown {
+public class Countdown extends Thread {
 
     /** Save the time istant when you stop */
     private long stopTempo;
@@ -11,7 +11,9 @@ public class Countdown {
     /** On/Off of the timer */
     private boolean isActive;
 
-    public Countdown() { resetAndStop(); }
+    private Server server;
+
+    public Countdown(Server server) { resetAndStop(); this.server = server;}
 
     /**Reset and stop the timer */
     public void resetAndStop() {
@@ -22,7 +24,7 @@ public class Countdown {
     }
 
     /** turn on the timer that begin from the last stop */
-    public void resume() {
+    public void resumeClock() {
         synchronized (this) {
             currentTempo = System.currentTimeMillis();
             isActive = true;
@@ -30,7 +32,7 @@ public class Countdown {
     }
 
     /** stop the timer */
-    public void stop() {
+    public void stopClock() {
         synchronized (this) {
             stopTempo += System.currentTimeMillis() - currentTempo;
             isActive = false;
@@ -40,7 +42,7 @@ public class Countdown {
     /** reset and start the timer */
     public void reset() {
         resetAndStop();
-        resume();
+        resumeClock();
     }
 
     /** return current time in milliseconds */
@@ -49,6 +51,21 @@ public class Countdown {
             return isActive ? (stopTempo + System.currentTimeMillis() - currentTempo)
                     : stopTempo;
         }
+    }
+
+    public void run() {
+
+        this.reset();
+        while(this.read() < 20000) {
+            System.out.println(this);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+
     }
 
     /** return current time in seconds */

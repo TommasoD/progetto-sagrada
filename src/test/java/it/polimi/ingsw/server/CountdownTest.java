@@ -10,7 +10,7 @@ class CountdownTest {
     @Test
     void methods() {
 
-        Countdown cd = new Countdown();
+        Countdown cd = new Countdown(new Server());
         cd.reset();
         while(cd.read() < 10) {};
         cd.stop();
