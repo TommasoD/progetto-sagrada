@@ -57,7 +57,7 @@ public class Countdown extends Thread {
 
         this.reset();
         while(this.read() < 20000) {
-            System.out.println(this);
+            System.out.print("\r" + this);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
