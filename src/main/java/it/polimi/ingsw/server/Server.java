@@ -73,8 +73,6 @@ public class Server {
             }
         }
 
-        controller.newMatch();
-
         while(1 == 1) {
             try {
                 Socket socket = serverSocket.accept();
