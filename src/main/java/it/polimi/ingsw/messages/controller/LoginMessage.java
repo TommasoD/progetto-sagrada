@@ -1,8 +1,9 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.controller;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.controller.Controller;
 
-public class LoginMessage extends Message {
+public class LoginMessage extends ControllerMessage {
 
     private String id;
     private String username;
@@ -26,11 +27,14 @@ public class LoginMessage extends Message {
         return gson.toJson(this);
     }
 
+    public void accept(Controller c, int player) {
+        c.visit(this, player);
+    }
+
     public LoginMessage deserialize(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, LoginMessage.class);
     }
-
 
     public String getId() {
         return id;

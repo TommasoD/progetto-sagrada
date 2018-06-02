@@ -1,12 +1,55 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.DiceBag;
+import it.polimi.ingsw.messages.controller.*;
+import it.polimi.ingsw.messages.client.ShowWindowsMessage;
 import it.polimi.ingsw.model.Die;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 class ControllerTest {
+
+    @Test
+    void visitLogin(){
+        Controller c = new Controller();
+        String s = new LoginMessage().serialize();
+        c.update(s, 2);
+    }
+
+    @Test
+    void visitWindow(){
+        Controller c = new Controller();
+        String s = new ChooseWindowMessage().serialize();
+        c.update(s, 2);
+    }
+
+    @Test
+    void visitLogout(){
+        Controller c = new Controller();
+        String s = new LogoutMessage().serialize();
+        c.update(s, 2);
+    }
+
+    @Test
+    void visitPass(){
+        Controller c = new Controller();
+        String s = new PassMessage().serialize();
+        c.update(s, 2);
+    }
+
+    @Test
+    void visitSetDie(){
+        Controller c = new Controller();
+        String s = new SetDieMessage().serialize();
+        c.update(s, 2);
+    }
+
+    @Test
+    void visitInCaseOfError(){
+        Controller c = new Controller();
+        String s = new ShowWindowsMessage().serialize();
+        c.update(s, 2);
+    }
 
     @Test
     void whoIsNextTest() {
@@ -26,7 +69,7 @@ class ControllerTest {
         assertFalse(c.isGameEnded());
     }
 
-    @Test
+    /*@Test
     void handleMoveTestCasePlaceValid(){
         Controller c = new Controller();
         c.addPlayer("user1");
@@ -57,5 +100,5 @@ class ControllerTest {
         c.getGame().setDieDraft(d);
         c.update("{\"id\":\"place\",\"x\":2,\"y\":2,\"index\":3}", 0);
         c.getGame().getPlayers(0).dump();
-    }
+    }*/
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 public class ToolCard {
 
+    private int id;
     private String name;
     private String description;
     private boolean alreadyUsed;
@@ -14,15 +15,24 @@ public class ToolCard {
         alreadyUsed = false;
     }
 
-    public ToolCard(String name, String description, boolean alreadyUsed){
+    public ToolCard(int id, String name, String description){
+        this.id = id;
         this.name = name;
         this.description = description;
-        this.alreadyUsed = alreadyUsed;
+        alreadyUsed = false;
     }
 
     /*
         getters and setters
      */
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -47,4 +57,5 @@ public class ToolCard {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

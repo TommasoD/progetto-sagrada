@@ -1,12 +1,13 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.client;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.model.Die;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.view.View;
 
 import java.util.List;
 
-public class UpdateModelMessage extends Message{
+public class UpdateModelMessage extends ClientMessage {
 
     private String id;
     private List<Player> players;
@@ -27,6 +28,10 @@ public class UpdateModelMessage extends Message{
     public String serialize() {
         Gson gson = new Gson();
         return gson.toJson(this);
+    }
+
+    public void accept(View v) {
+
     }
 
     public UpdateModelMessage deserialize(String s){

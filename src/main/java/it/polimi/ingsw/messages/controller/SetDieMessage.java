@@ -1,8 +1,9 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.controller;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.controller.Controller;
 
-public class SetDieMessage extends Message {
+public class SetDieMessage extends ControllerMessage {
 
     private String id;
     private int x;
@@ -23,6 +24,10 @@ public class SetDieMessage extends Message {
     public String serialize() {
         Gson gson = new Gson();
         return gson.toJson(this);
+    }
+
+    public void accept(Controller c, int player) {
+        c.visit(this, player);
     }
 
     public SetDieMessage deserialize(String s){

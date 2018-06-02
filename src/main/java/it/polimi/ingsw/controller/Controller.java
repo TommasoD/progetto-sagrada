@@ -1,20 +1,16 @@
 package it.polimi.ingsw.controller;
-import com.google.gson.stream.JsonReader;
-import it.polimi.ingsw.messages.ErrorMessage;
-import it.polimi.ingsw.messages.LoginMessage;
-import it.polimi.ingsw.messages.SetDieMessage;
-import it.polimi.ingsw.messages.ShowWindowsMessage;
+import it.polimi.ingsw.messages.client.ShowWindowsMessage;
+import it.polimi.ingsw.messages.controller.*;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.parsers.GsonParser;
 import it.polimi.ingsw.utils.Observer;
-
-import java.io.IOException;
-import java.io.StringReader;
 
 public class Controller implements Observer{
 
     private Game model;
     private RoundHandler handler;
     private WindowPatternFactory factory;
+    private GsonParser parser;
 
     /*
         constructors
@@ -22,12 +18,14 @@ public class Controller implements Observer{
 
     public Controller(Game model){
         this.model = model;
-        this.factory = new WindowPatternFactory();
+        factory = new WindowPatternFactory();
+        parser = new GsonParser();
     }
 
     public Controller(){
-        this.model = new Game();
-        this.factory = new WindowPatternFactory();
+        model = new Game();
+        factory = new WindowPatternFactory();
+        parser = new GsonParser();
     }
 
     /*
@@ -35,12 +33,15 @@ public class Controller implements Observer{
      */
 
     public Game getGame(){
-        return this.model;
+        return model;
+    }
+
+    public GsonParser getParser() {
+        return parser;
     }
 
     /*
         adds a new Player class to the model
-        server must call addPlayer() in the exact order in which every client sent the login message
      */
 
     public void addPlayer(String username){
@@ -53,9 +54,10 @@ public class Controller implements Observer{
      */
 
     public void newMatch(){
-        handler = new RoundHandler(model.playersSize());
+
         model.initialize();
-        model.setDraft();
+        handler = new RoundHandler(model.playersSize());
+        //il model deve notificare a tutti i giocatori le finestre che andranno a scegliere
     }
 
     /*
@@ -86,80 +88,6 @@ public class Controller implements Observer{
     }
 
     /*
-        receives an identifier of a player (playerIndex) and a string representation of a Gson message,
-        the message contains all the information regarding the player's action,
-        controller handles the move, validates/invalidates it, change model according to the move, returns a String
-            describing the output of the move (valid/invalid)
-     */
-
-    public synchronized void update(Object gson, int player){
-
-        String gsonMessage = (String) gson;
-        String id = getIdMessage(gsonMessage);
-
-        if(id.equals("login")){
-            LoginMessage message = new LoginMessage();
-            message = message.deserialize(gsonMessage);
-            if(model.isGameStarted()){
-                if(model.findAndReconnect(message.getUsername(), player)){
-                    model.okMessage(player);
-                }
-            }
-            else{
-                if(!model.find(message.getUsername())){
-                    addPlayer(message.getUsername());
-                    model.okMessage(player);
-                }
-                else model.errorMessage(1, player);
-            }
-        }
-        if(id.equals("place")){
-            SetDieMessage message = new SetDieMessage();
-            message = message.deserialize(gsonMessage);
-            if(player != handler.getCurrentPlayer()) model.errorMessage(2, handler.getCurrentPlayer());
-
-            Player p = model.getPlayers(player);
-            if(p.isDieUsed()) model.errorMessage(2, handler.getCurrentPlayer());
-
-            if(p.isFirstDiePlaced()){
-                if(!p.getPlayerWindow().
-                        isValid(message.getX(), message.getY(), model.getDieFromDraft(message.getIndex())))
-                            model.errorMessage(2, handler.getCurrentPlayer());
-            }
-            else{
-                if(!p.getPlayerWindow().
-                        isValidFirstMove(message.getX(), message.getY(), model.getDieFromDraft(message.getIndex())))
-                    model.errorMessage(2, handler.getCurrentPlayer());
-            }
-
-            model.useDie(player, message.getX(), message.getY(), message.getIndex());
-            p.setDieUsed(true);
-            if(p.isDieUsed() && p.isToolCardUsed()){
-                nextPlayer(player);
-            }
-            model.okMessage(handler.getCurrentPlayer());
-        }
-
-        if(id.equals("pass")){
-            nextPlayer(player);
-        }
-
-
-        /*if(id.equals("toolcard") {
-        //int cardId = getIdCard(String message);
-
-        //validità: token sufficienti? no=return, sì=switchcase
-
-        //validità: model.getToolCard(cardId).validation? no=return, sì=model.useToolCard(cardId)
-
-        }
-
-        if(id.equals("quit"){
-            //setta il player come offline e chiama il metodo per finire il suo turno
-        }*/
-    }
-
-    /*
         calls RoundHandler method nextTurn() recursively, skipping turns for offline players or
             players who already did their second turn (see tool card 8)
      */
@@ -185,29 +113,6 @@ public class Controller implements Observer{
     }
 
     /*
-        methods instantiating a reader to read Gson strings
-     */
-
-    private String getIdMessage(String s){
-        JsonReader jsonReader = new JsonReader(new StringReader(s));
-        String action;
-        try{
-            jsonReader.beginObject();
-            jsonReader.nextName();
-            action = jsonReader.nextString();
-            jsonReader.close();
-        } catch(IOException e){
-            action = "error";
-        }
-        return action;
-    }
-
-    private int getIdCard(String s){
-        //jsonReader here
-        return 0;
-    }
-
-    /*
         checks if game is ended (i.e. round 10 has concluded)
      */
 
@@ -215,8 +120,92 @@ public class Controller implements Observer{
         return handler.getRound() > 10;
     }
 
-    public void update(Object message) {
+    /*
+        receives an identifier of a player (int player) and a string representation of a Gson message (Object gson),
+        calls parse() method from GsonParser and uses visitor pattern to handle the returned Message
+     */
 
+    public synchronized void update(Object gson, int player) {
+        ControllerMessage message = parser.parseController((String) gson);
+        message.accept(this, player);
     }
+
+    public void update(Object message) {
+        throw new UnsupportedOperationException();
+    }
+
+    /*
+        visitor pattern methods
+     */
+
+    public void visit(ChooseWindowMessage message, int player){
+        System.out.println("messaggio scegli finestra ricevuto: " + message.getId() + "\nplayer: " + player);
+    }
+
+    public void visit(LoginMessage message, int player){
+        System.out.println("messaggio login ricevuto: " + message.getId() + "\nplayer: " + player);
+        /*
+            if(model.isGameStarted()){
+                if(model.findAndReconnect(message.getUsername(), player)){
+                    model.okMessage(player);
+                }
+            }
+            else{
+                if(!model.find(message.getUsername())){
+                    addPlayer(message.getUsername());
+                    model.okMessage(player);
+                }
+                else model.errorMessage(1, player);
+            }
+         */
+    }
+
+    public void visit(LogoutMessage message, int player){
+        System.out.println("messaggio logout ricevuto: " + message.getId() + "\nplayer: " + player);
+        //setta il player come offline e chiama il metodo per finire il suo turno
+    }
+
+    public void visit(PassMessage message, int player){
+        System.out.println("messaggio passa ricevuto: " + message.getId() + "\nplayer: " + player);
+
+        /*
+            if(player != handler.getCurrentPlayer()) model.errorMessage(2, handler.getCurrentPlayer());
+
+            Player p = model.getPlayers(player);
+            if(p.isDieUsed()) model.errorMessage(2, handler.getCurrentPlayer());
+
+            if(p.isFirstDiePlaced()){
+                if(!p.getPlayerWindow().
+                        isValid(message.getX(), message.getY(), model.getDieFromDraft(message.getIndex())))
+                            model.errorMessage(2, handler.getCurrentPlayer());
+            }
+            else{
+                if(!p.getPlayerWindow().
+                        isValidFirstMove(message.getX(), message.getY(), model.getDieFromDraft(message.getIndex())))
+                    model.errorMessage(2, handler.getCurrentPlayer());
+            }
+
+            model.useDie(player, message.getX(), message.getY(), message.getIndex());
+            p.setDieUsed(true);
+            if(p.isDieUsed() && p.isToolCardUsed()){
+                nextPlayer(player);
+            }
+            model.okMessage(handler.getCurrentPlayer());
+         */
+
+        /*
+            nextPlayer(player);
+         */
+    }
+
+    public void visit(SetDieMessage message, int player){
+        System.out.println("messaggio piazza dado ricevuto: " + message.getId() + "\nplayer: " + player);
+    }
+
+    public void visit(UnexpectedMessage message, int player){
+        System.out.println("unexpected message" + "\nplayer: " + player);
+    }
+
+
 
 }

@@ -1,10 +1,8 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.client;
 
-import it.polimi.ingsw.model.WindowPattern;
+import it.polimi.ingsw.messages.client.ShowWindowsMessage;
 import it.polimi.ingsw.model.WindowPatternFactory;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ShowWindowsMessageTest {
 

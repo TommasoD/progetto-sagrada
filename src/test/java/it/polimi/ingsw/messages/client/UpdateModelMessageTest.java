@@ -1,12 +1,11 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.client;
 
+import it.polimi.ingsw.messages.client.UpdateModelMessage;
 import it.polimi.ingsw.model.Die;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.WindowPatternFactory;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class UpdateModelMessageTest {
 

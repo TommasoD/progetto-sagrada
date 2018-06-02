@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
-import it.polimi.ingsw.messages.ErrorMessage;
+import it.polimi.ingsw.messages.client.ErrorMessage;
+import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.client.OkMessage;
 import it.polimi.ingsw.model.objectives.PrivateObjective;
 import it.polimi.ingsw.model.objectives.PublicObjectiveFactory;
 import it.polimi.ingsw.model.objectives.publicobjectives.*;
@@ -18,6 +20,8 @@ public class Game extends Observable {
     private ArrayList<Die> roundTrack;
     private PublicObjective[] publicObjectiveActive;
 
+    private static final int N_OBJECTIVES = 3;
+
     /*
         constructor
      */
@@ -28,7 +32,7 @@ public class Game extends Observable {
         this.draft = new ArrayList<Die>();
         this.players = new ArrayList<Player>();
         this.roundTrack = new ArrayList<Die>();
-        this.publicObjectiveActive = new PublicObjective[3];
+        this.publicObjectiveActive = new PublicObjective[N_OBJECTIVES];
     }
 
     /*
@@ -147,7 +151,11 @@ public class Game extends Observable {
     }
 
     /*
-        give players their private objective, select the public objectives
+        called when a new match starts:
+        - assigns players their private objective,
+        - selects the public objectives,
+        - creates the tool cards
+        - set the first draft
      */
 
     public void initialize() {
@@ -173,9 +181,16 @@ public class Game extends Observable {
 
         //randomly creates 3 public objectives
         PublicObjectiveFactory of = new PublicObjectiveFactory();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < N_OBJECTIVES; i++) {
             publicObjectiveActive[i] = of.getRandomObjective();
         }
+
+        //creates tool cards
+
+        //[...]
+
+        //first draft
+        setDraft();
     }
 
     /*
@@ -191,15 +206,19 @@ public class Game extends Observable {
     }
 
     /*
-        notify methods
+        notify GameManager of something
      */
 
-    public void errorMessage(int i, int player){
-        notify(new ErrorMessage(i).serialize(), player);
+    public void notifyMessage(Message message, int player){
+        notify(message, player);
+    }
+
+    public void errorMessage(int type, int player){
+        notify(new ErrorMessage(type).serialize(), player);
     }
 
     public void okMessage(int player){
-
+        notify(new OkMessage().serialize(), player);
     }
 
     /*

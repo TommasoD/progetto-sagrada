@@ -1,9 +1,10 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.client;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.model.WindowPattern;
+import it.polimi.ingsw.view.View;
 
-public class ShowWindowsMessage extends Message {
+public class ShowWindowsMessage extends ClientMessage {
 
     private String id;
     private WindowPattern w1;
@@ -26,6 +27,10 @@ public class ShowWindowsMessage extends Message {
     public String serialize() {
         Gson gson = new Gson();
         return gson.toJson(this);
+    }
+
+    public void accept(View v) {
+
     }
 
     public ShowWindowsMessage deserialize(String s){

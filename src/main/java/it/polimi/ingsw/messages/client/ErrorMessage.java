@@ -1,18 +1,12 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.messages.client;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.view.View;
 
-public class ErrorMessage extends Message{
+public class ErrorMessage extends ClientMessage {
 
     private String id;
     private int type;
-
-    /*
-        type 0 = unexpected error when parsing
-        type 1 =
-        type 2 =
-        type 3 =
-     */
 
     public ErrorMessage(){
         id = "error";
@@ -26,6 +20,10 @@ public class ErrorMessage extends Message{
     public String serialize() {
         Gson gson = new Gson();
         return gson.toJson(this);
+    }
+
+    public void accept(View v) {
+
     }
 
     public ErrorMessage deserialize(String s){

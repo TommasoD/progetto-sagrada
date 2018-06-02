@@ -1,10 +1,10 @@
 package it.polimi.ingsw.view;
 
 import com.google.gson.stream.JsonReader;
-import it.polimi.ingsw.messages.ErrorMessage;
-import it.polimi.ingsw.messages.LoginMessage;
-import it.polimi.ingsw.messages.SetDieMessage;
-import it.polimi.ingsw.messages.ShowWindowsMessage;
+import it.polimi.ingsw.messages.client.ErrorMessage;
+import it.polimi.ingsw.messages.controller.LoginMessage;
+import it.polimi.ingsw.messages.controller.SetDieMessage;
+import it.polimi.ingsw.messages.client.ShowWindowsMessage;
 import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.server.TooManyPlayersException;
 
