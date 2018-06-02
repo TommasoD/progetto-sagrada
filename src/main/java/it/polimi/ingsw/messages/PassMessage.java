@@ -2,7 +2,7 @@ package it.polimi.ingsw.messages;
 
 import com.google.gson.Gson;
 
-public class PassMessage {
+public class PassMessage extends Message{
 
     private String id;
 

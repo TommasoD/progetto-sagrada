@@ -2,10 +2,17 @@ package it.polimi.ingsw.messages;
 
 import com.google.gson.Gson;
 
-public class ErrorMessage {
+public class ErrorMessage extends Message{
 
     private String id;
     private int type;
+
+    /*
+        type 0 = unexpected error when parsing
+        type 1 =
+        type 2 =
+        type 3 =
+     */
 
     public ErrorMessage(){
         id = "error";

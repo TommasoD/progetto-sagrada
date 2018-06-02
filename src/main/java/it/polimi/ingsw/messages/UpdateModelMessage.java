@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.Player;
 
 import java.util.List;
 
-public class UpdateModelMessage {
+public class UpdateModelMessage extends Message{
 
     private String id;
     private List<Player> players;
