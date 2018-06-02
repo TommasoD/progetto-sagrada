@@ -63,14 +63,7 @@ public class Controller implements Observer{
      */
 
     public String showWindows(){
-        WindowPattern[] w = new WindowPattern[4];
-        for (int i = 0; i < 4; i++) {
-            w[i] = factory.getWindow();
-        }
-        return new ShowWindowsMessage(w[0].getName(), w[0].toString(),
-                    w[1].getName(), w[1].toString(),
-                    w[2].getName(), w[2].toString(),
-                    w[3].getName(), w[3].toString()).serialize();
+        return new ShowWindowsMessage(factory.getWindow(), factory.getWindow(), factory.getWindow(), factory.getWindow()).serialize();
     }
 
     /*
