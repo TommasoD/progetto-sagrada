@@ -5,7 +5,8 @@ import it.polimi.ingsw.messages.client.ShowWindowsMessage;
 import it.polimi.ingsw.model.Die;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+//import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
 
