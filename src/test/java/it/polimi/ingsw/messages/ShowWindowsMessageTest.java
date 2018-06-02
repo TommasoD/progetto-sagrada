@@ -1,5 +1,7 @@
 package it.polimi.ingsw.messages;
 
+import it.polimi.ingsw.model.WindowPattern;
+import it.polimi.ingsw.model.WindowPatternFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,15 +9,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class ShowWindowsMessageTest {
 
     @Test
-    void serialize() {
-        ShowWindowsMessage m = new ShowWindowsMessage("a", "o", "b", "o", "c", "o", "d", "o");
-        assertEquals("{\"id\":\"windows\",\"name1\":\"a\",\"w1\":\"o\",\"name2\":\"b\",\"w2\":\"o\",\"name3\":\"c\",\"w3\":\"o\",\"name4\":\"d\",\"w4\":\"o\"}", m.serialize());
-    }
+    void serialize_deserialize() {
+        WindowPatternFactory wf = new WindowPatternFactory();
+        ShowWindowsMessage m = new ShowWindowsMessage(wf.getWindow(), wf.getWindow(), wf.getWindow(), wf.getWindow());
+        String s = m.serialize();
+        System.out.println(s);
 
-    @Test
-    void deserialize() {
-        ShowWindowsMessage m = new ShowWindowsMessage();
-        m = m.deserialize("{\"id\":\"windows\",\"name1\":\"a\",\"w1\":\"o\",\"name2\":\"b\",\"w2\":\"o\",\"name3\":\"c\",\"w3\":\"o\",\"name4\":\"d\",\"w4\":\"o\"}");
-        assertEquals("windows", m.getId());
+        ShowWindowsMessage m2 = new ShowWindowsMessage();
+        m2 = m2.deserialize(s);
+
+        System.out.println(m2.getW1());
+        System.out.println(m2.getW2());
+        System.out.println(m2.getW3());
+        System.out.println(m2.getW4());
+
     }
 }
