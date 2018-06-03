@@ -14,6 +14,7 @@ public class Player {
     private boolean toolCardUsed;
     private boolean skipTurn;
     private boolean firstDiePlaced;
+    private boolean ready;
 
     /*
         constructors
@@ -27,6 +28,7 @@ public class Player {
         toolCardUsed = false;
         skipTurn = false;
         firstDiePlaced = false;
+        ready = false;
         this.playerWindow = playerWindow;
     }
 
@@ -37,6 +39,7 @@ public class Player {
         toolCardUsed = false;
         skipTurn = false;
         firstDiePlaced = false;
+        ready = false;
         this.playerWindow = playerWindow;
     }
 
@@ -47,6 +50,7 @@ public class Player {
         toolCardUsed = false;
         skipTurn = false;
         firstDiePlaced = false;
+        ready = false;
     }
 
     /*
@@ -123,6 +127,14 @@ public class Player {
 
     public void setFirstDiePlaced(boolean firstDiePlaced) {
         this.firstDiePlaced = firstDiePlaced;
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 
     /*

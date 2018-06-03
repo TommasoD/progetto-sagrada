@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 import it.polimi.ingsw.messages.client.ErrorMessage;
+import it.polimi.ingsw.messages.client.NewTurnMessage;
 import it.polimi.ingsw.messages.client.OkMessage;
 import it.polimi.ingsw.messages.client.ShowWindowsMessage;
 import it.polimi.ingsw.messages.controller.*;
@@ -60,6 +61,8 @@ public class Controller implements Observer{
     public void startMatch(){
         model.initialize();
         handler = new RoundHandler(model.playersSize());
+        model.notifyAllPlayers();
+        model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
     }
 
     /*
@@ -79,9 +82,7 @@ public class Controller implements Observer{
      */
 
     private void nextPlayer(int player){
-
         model.getPlayerFromId(player).resetTurn();
-
         /*
             try catch needs to be added in order to handle the nextRound exception !!!
          */
@@ -89,9 +90,7 @@ public class Controller implements Observer{
         while(!model.getPlayers(handler.getCurrentPlayer()).isOnline() || model.getPlayers(handler.getCurrentPlayer()).isSkipTurn()){
             handler.nextTurn();
         }
-
-        //invia messaggio nuovo turno al giocatore di turno
-
+        model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
         /*in case of new round: -if all players are offline except one -> end game
                                 -dice left from draft to track
                                 -create new draft
@@ -123,8 +122,10 @@ public class Controller implements Observer{
 
         setWindowPattern(player, message.getWindowName());
 
-        //se tutti i giocatori hanno scelto la finestra ->
-        //fermo il countdown, chiamo startMatch() e invio messaggio nuovo turno al giocatore di turno e l'update a tutti
+        if(model.allReadyToPlay()){
+            //fermo il countdown
+            startMatch();
+        }
     }
 
     public void visit(LoginMessage message, int player){
@@ -146,14 +147,12 @@ public class Controller implements Observer{
 
     public void visit(LogoutMessage message, int player){
         System.out.println(message.getId() + " message received from player " + player);
-
         model.getPlayerFromId(player).setOnline(false);
         nextPlayer(player);
     }
 
     public void visit(PassMessage message, int player){
         System.out.println(message.getId() + " message received from player " + player);
-
         nextPlayer(player);
     }
 
@@ -187,7 +186,6 @@ public class Controller implements Observer{
         }
         model.notifyMessage(new OkMessage(), player);
         model.notifyAllPlayers();
-
     }
 
     public void visit(UnexpectedMessage message, int player){
