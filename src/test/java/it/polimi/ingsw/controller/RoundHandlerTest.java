@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RoundHandlerTest {
@@ -29,6 +30,24 @@ class RoundHandlerTest {
         rh.dump();
         assertEquals(1, rh.getFirstPlayer());
         assertEquals(2, rh.getRound());
+    }
+
+    @Test
+    void isGameEndedTest() {
+        RoundHandler rh = new RoundHandler(4);
+        rh.nextRound();
+        assertFalse(rh.isGameEnded());
+        rh.nextRound();
+        assertFalse(rh.isGameEnded());
+    }
+
+    @Test
+    void isGameEndedTest2() {
+        RoundHandler rh = new RoundHandler(4);
+        for(int i = 0; i < 10; i++){
+            rh.nextRound();
+        }
+        assertTrue(rh.isGameEnded());
     }
 
     @Test

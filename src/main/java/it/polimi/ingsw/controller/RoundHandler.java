@@ -77,6 +77,14 @@ public class RoundHandler {
         if(firstPlayer >= nPlayers) firstPlayer = 0;
     }
 
+    /*
+        checks if game is ended (i.e. round 10 has concluded)
+     */
+
+    public boolean isGameEnded(){
+        return round > 10;
+    }
+
     public void dump(){
         for(int i = 0; i < 2*nPlayers; i++){
             System.out.println(turnOrder[i]);

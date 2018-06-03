@@ -71,9 +71,24 @@ public class Game extends Observable {
         return players.get(index);
     }
 
+    /*
+        returns the player corresponding to the id passed as argument
+     */
+
+    public Player getPlayerFromId(int id){
+        for(Player p : players){
+            if(p.getId() == id) return p;
+        }
+        return null;
+    }
+
     public int playersSize(){
         return players.size();
     }
+
+    /*
+        returns true if there's a player with a given username
+     */
 
     public boolean find(String s){
         for (Player p : players){
@@ -82,10 +97,15 @@ public class Game extends Observable {
         return false;
     }
 
+    /*
+        returns true if there's an offline player with a given username,
+        i.e. the player must be reconnected
+     */
+
     public boolean findAndReconnect(String s, int id){
         for(Player p : players){
             if (p.getUsername().equals(s)){
-                if(!p.getOnline()){
+                if(!p.isOnline()){
                     p.setOnline(true);
                     p.setId(id);
                     return true;

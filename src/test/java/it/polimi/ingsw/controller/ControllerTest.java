@@ -2,11 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.messages.controller.*;
 import it.polimi.ingsw.messages.client.ShowWindowsMessage;
-import it.polimi.ingsw.model.Die;
 import org.junit.jupiter.api.Test;
-
-//import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
 
@@ -50,24 +46,6 @@ class ControllerTest {
         Controller c = new Controller();
         String s = new ShowWindowsMessage().serialize();
         c.update(s, 2);
-    }
-
-    @Test
-    void whoIsNextTest() {
-        Controller c = new Controller();
-        c.addPlayer("user1");
-        c.addPlayer("user2");
-        c.newMatch();
-        assertEquals(0, c.whoIsNext());
-    }
-
-    @Test
-    void isGameEndedTest() {
-        Controller c = new Controller();
-        c.addPlayer("user1");
-        c.addPlayer("user2");
-        c.newMatch();
-        assertFalse(c.isGameEnded());
     }
 
     /*@Test

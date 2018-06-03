@@ -75,6 +75,36 @@ class GameTest {
     }
 
     @Test
+    void getPlayerFromIdTest(){
+        Game g = new Game();
+        WindowPatternFactory wf = new WindowPatternFactory();
+        Player p1 = new Player("player0", wf.createWindow("Kaleidoscopic Dream"), 0);
+        g.setPlayers(p1);
+        assertEquals(p1, g.getPlayerFromId(0));
+        assertNull(g.getPlayerFromId(1));
+    }
+
+    @Test
+    void findTest(){
+        Game g = new Game();
+        WindowPatternFactory wf = new WindowPatternFactory();
+        g.setPlayers(new Player("player0", wf.createWindow("Kaleidoscopic Dream"), 0));
+        assertTrue(g.find("player0"));
+        assertFalse(g.find("username"));
+    }
+
+    @Test
+    void findAndReconnectTest(){
+        Game g = new Game();
+        WindowPatternFactory wf = new WindowPatternFactory();
+        g.setPlayers(new Player("player0", wf.createWindow("Kaleidoscopic Dream"), 0));
+        g.getPlayerFromId(0).setOnline(false);
+        assertTrue(g.findAndReconnect("player0", 5));
+        assertFalse(g.findAndReconnect("username", 4));
+        assertTrue(g.getPlayerFromId(5).isOnline());
+    }
+
+    @Test
     void useDieTest(){
         Game g = new Game();
         WindowPatternFactory wf = new WindowPatternFactory();

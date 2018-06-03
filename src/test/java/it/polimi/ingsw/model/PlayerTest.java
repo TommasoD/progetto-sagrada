@@ -15,7 +15,7 @@ class PlayerTest {
     void onlineTest() {
         Player p = new Player("Giovanni");
         p.setOnline(true);
-        assertTrue(p.getOnline());
+        assertTrue(p.isOnline());
     }
 
     @Test

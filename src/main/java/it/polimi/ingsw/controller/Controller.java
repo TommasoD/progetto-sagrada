@@ -80,14 +80,6 @@ public class Controller implements Observer{
     }
 
     /*
-        returns an identifier of the current player in the current turn
-     */
-
-    public int whoIsNext(){
-        return handler.getCurrentPlayer();
-    }
-
-    /*
         calls RoundHandler method nextTurn() recursively, skipping turns for offline players or
             players who already did their second turn (see tool card 8)
      */
@@ -100,7 +92,7 @@ public class Controller implements Observer{
             try catch needs to be added in order to handle the nextRound exception !!!
          */
         handler.nextTurn();
-        while(!model.getPlayers(handler.getCurrentPlayer()).getOnline() || model.getPlayers(handler.getCurrentPlayer()).isSkipTurn()){
+        while(!model.getPlayers(handler.getCurrentPlayer()).isOnline() || model.getPlayers(handler.getCurrentPlayer()).isSkipTurn()){
             handler.nextTurn();
         }
 
@@ -110,14 +102,6 @@ public class Controller implements Observer{
                                 -skipTurn set to false for every player
                                 -model.notify
         */
-    }
-
-    /*
-        checks if game is ended (i.e. round 10 has concluded)
-     */
-
-    public boolean isGameEnded(){
-        return handler.getRound() > 10;
     }
 
     /*
@@ -139,11 +123,12 @@ public class Controller implements Observer{
      */
 
     public void visit(ChooseWindowMessage message, int player){
-        System.out.println("messaggio scegli finestra ricevuto: " + message.getId() + "\nplayer: " + player);
+        System.out.println(message.getId() + "message received from player " + player);
+
     }
 
     public void visit(LoginMessage message, int player){
-        System.out.println("messaggio login ricevuto: " + message.getId() + "\nplayer: " + player);
+        System.out.println(message.getId() + "message received from player " + player);
         /*
             if(model.isGameStarted()){
                 if(model.findAndReconnect(message.getUsername(), player)){
@@ -161,12 +146,20 @@ public class Controller implements Observer{
     }
 
     public void visit(LogoutMessage message, int player){
-        System.out.println("messaggio logout ricevuto: " + message.getId() + "\nplayer: " + player);
+        System.out.println(message.getId() + "message received from player " + player);
         //setta il player come offline e chiama il metodo per finire il suo turno
     }
 
     public void visit(PassMessage message, int player){
-        System.out.println("messaggio passa ricevuto: " + message.getId() + "\nplayer: " + player);
+        System.out.println(message.getId() + "message received from player " + player);
+
+        /*
+            nextPlayer(player);
+         */
+    }
+
+    public void visit(SetDieMessage message, int player){
+        System.out.println(message.getId() + "message received from player " + player);
 
         /*
             if(player != handler.getCurrentPlayer()) model.errorMessage(2, handler.getCurrentPlayer());
@@ -192,18 +185,10 @@ public class Controller implements Observer{
             }
             model.okMessage(handler.getCurrentPlayer());
          */
-
-        /*
-            nextPlayer(player);
-         */
-    }
-
-    public void visit(SetDieMessage message, int player){
-        System.out.println("messaggio piazza dado ricevuto: " + message.getId() + "\nplayer: " + player);
     }
 
     public void visit(UnexpectedMessage message, int player){
-        System.out.println("unexpected message" + "\nplayer: " + player);
+        System.out.println("unexpected message received from player " + player);
     }
 
 

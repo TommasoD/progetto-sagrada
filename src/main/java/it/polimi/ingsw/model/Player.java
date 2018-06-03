@@ -82,7 +82,7 @@ public class Player {
         return  this.playerObjective;
     }
 
-    public boolean getOnline() {
+    public boolean isOnline() {
         return isOnline;
     }
 
