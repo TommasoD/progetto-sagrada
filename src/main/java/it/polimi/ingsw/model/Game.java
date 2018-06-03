@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.messages.client.ErrorMessage;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.client.OkMessage;
+import it.polimi.ingsw.messages.client.UpdateModelMessage;
 import it.polimi.ingsw.model.objectives.PrivateObjective;
 import it.polimi.ingsw.model.objectives.PublicObjectiveFactory;
 import it.polimi.ingsw.model.objectives.publicobjectives.*;
@@ -63,7 +64,7 @@ public class Game extends Observable {
         players methods
      */
 
-    public void setPlayers(Player player) {
+    public void addPlayer(Player player) {
         players.add(player);
     }
 
@@ -217,11 +218,11 @@ public class Game extends Observable {
         standard player actions
      */
 
-    public void useDie(int playerIndex, int x, int y, int die) {
-        WindowPattern w = getPlayers(playerIndex).getPlayerWindow();
+    public void useDie(int playerId, int x, int y, int die) {
+        WindowPattern w = getPlayerFromId(playerId).getPlayerWindow();
         Die d = removeDieFromDraft(die);
         w.getWindowMatrix(x, y).setDie(d);
-        if(!getPlayers(playerIndex).isFirstDiePlaced()) getPlayers(playerIndex).setFirstDiePlaced(true);
+        if(!getPlayerFromId(playerId).isFirstDiePlaced()) getPlayerFromId(playerId).setFirstDiePlaced(true);
         notify(this.toString());
     }
 
@@ -230,15 +231,11 @@ public class Game extends Observable {
      */
 
     public void notifyMessage(Message message, int player){
-        notify(message, player);
+        notify(message.serialize(), player);
     }
 
-    public void errorMessage(int type, int player){
-        notify(new ErrorMessage(type).serialize(), player);
-    }
-
-    public void okMessage(int player){
-        notify(new OkMessage().serialize(), player);
+    public void notifyAllPlayers(){
+        notify(new UpdateModelMessage(players, draft, roundTrack).serialize());
     }
 
     /*

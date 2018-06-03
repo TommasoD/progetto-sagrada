@@ -1,6 +1,5 @@
 package it.polimi.ingsw.messages.client;
 
-import it.polimi.ingsw.messages.client.UpdateModelMessage;
 import it.polimi.ingsw.model.Die;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
@@ -13,8 +12,8 @@ class UpdateModelMessageTest {
     void serialize_deserialize() {
         Game g = new Game();
         WindowPatternFactory wf = new WindowPatternFactory();
-        g.setPlayers(new Player("Username", wf.createWindow("Kaleidoscopic Dream")));
-        g.setPlayers(new Player("Username2", wf.createWindow("Bellesguard")));
+        g.addPlayer(new Player("Username", wf.createWindow("Kaleidoscopic Dream")));
+        g.addPlayer(new Player("Username2", wf.createWindow("Bellesguard")));
         g.setDraft();
         UpdateModelMessage m = new UpdateModelMessage(g.getPlayers(), g.getDraft(), g.getRoundTrack());
         String s = m.serialize();

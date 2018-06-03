@@ -1,4 +1,6 @@
 package it.polimi.ingsw.controller;
+import it.polimi.ingsw.messages.client.ErrorMessage;
+import it.polimi.ingsw.messages.client.OkMessage;
 import it.polimi.ingsw.messages.client.ShowWindowsMessage;
 import it.polimi.ingsw.messages.controller.*;
 import it.polimi.ingsw.model.*;
@@ -41,31 +43,23 @@ public class Controller implements Observer{
     }
 
     /*
-        adds a new Player class to the model
+        adds default players to the game, waiting for username and window from each client
      */
 
-    public void addPlayer(String username){
-        Player p = new Player(username);
-        model.setPlayers(p);
+    public void newMatch(int nPlayers){
+        for(int i = 0; i < nPlayers; i++){
+            model.addPlayer(new Player("player" + i, factory.getWindow(), i));
+        }
+        //parte il countdown per l'inizio partita: i giocatori che non scelgono username o finestra avranno quelli default
     }
 
     /*
         creates a new RoundHandler class and initializes the model class
      */
 
-    public void newMatch(){
-
+    public void startMatch(){
         model.initialize();
         handler = new RoundHandler(model.playersSize());
-        //il model deve notificare a tutti i giocatori le finestre che andranno a scegliere
-    }
-
-    /*
-        creates four windows, puts them in a Message type class and returns the Message serialized as a String
-     */
-
-    public String showWindows(){
-        return new ShowWindowsMessage(factory.getWindow(), factory.getWindow(), factory.getWindow(), factory.getWindow()).serialize();
     }
 
     /*
@@ -73,9 +67,9 @@ public class Controller implements Observer{
         then assigns that window to the correct player
      */
 
-    public void setWindowPattern(int playerIndex, String windowName){
+    public void setWindowPattern(int playerId, String windowName){
         factory = new WindowPatternFactory();
-        Player p = model.getPlayers(playerIndex);
+        Player p = model.getPlayerFromId(playerId);
         p.setPlayerWindow(factory.createWindow(windowName));
     }
 
@@ -86,7 +80,7 @@ public class Controller implements Observer{
 
     private void nextPlayer(int player){
 
-        model.getPlayers(player).resetTurn();
+        model.getPlayerFromId(player).resetTurn();
 
         /*
             try catch needs to be added in order to handle the nextRound exception !!!
@@ -95,6 +89,8 @@ public class Controller implements Observer{
         while(!model.getPlayers(handler.getCurrentPlayer()).isOnline() || model.getPlayers(handler.getCurrentPlayer()).isSkipTurn()){
             handler.nextTurn();
         }
+
+        //invia messaggio nuovo turno al giocatore di turno
 
         /*in case of new round: -if all players are offline except one -> end game
                                 -dice left from draft to track
@@ -123,68 +119,75 @@ public class Controller implements Observer{
      */
 
     public void visit(ChooseWindowMessage message, int player){
-        System.out.println(message.getId() + "message received from player " + player);
+        System.out.println(message.getId() + " message received from player " + player);
 
+        setWindowPattern(player, message.getWindowName());
+
+        //se tutti i giocatori hanno scelto la finestra ->
+        //fermo il countdown, chiamo startMatch() e invio messaggio nuovo turno al giocatore di turno e l'update a tutti
     }
 
     public void visit(LoginMessage message, int player){
-        System.out.println(message.getId() + "message received from player " + player);
-        /*
-            if(model.isGameStarted()){
-                if(model.findAndReconnect(message.getUsername(), player)){
-                    model.okMessage(player);
-                }
+        System.out.println(message.getId() + " message received from player " + player);
+
+        if(model.isGameStarted()){
+            if(model.findAndReconnect(message.getUsername(), player)){
+                model.notifyMessage(new OkMessage(), player);
             }
-            else{
-                if(!model.find(message.getUsername())){
-                    addPlayer(message.getUsername());
-                    model.okMessage(player);
-                }
-                else model.errorMessage(1, player);
+        }
+        else{
+            if(!model.find(message.getUsername())){
+                model.getPlayerFromId(player).setUsername(message.getUsername());
+                model.notifyMessage(new ShowWindowsMessage(factory.getWindow(), factory.getWindow(), factory.getWindow(), factory.getWindow()), player);
             }
-         */
+            else model.notifyMessage(new ErrorMessage(1), player);
+        }
     }
 
     public void visit(LogoutMessage message, int player){
-        System.out.println(message.getId() + "message received from player " + player);
-        //setta il player come offline e chiama il metodo per finire il suo turno
+        System.out.println(message.getId() + " message received from player " + player);
+
+        model.getPlayerFromId(player).setOnline(false);
+        nextPlayer(player);
     }
 
     public void visit(PassMessage message, int player){
-        System.out.println(message.getId() + "message received from player " + player);
+        System.out.println(message.getId() + " message received from player " + player);
 
-        /*
-            nextPlayer(player);
-         */
+        nextPlayer(player);
     }
 
     public void visit(SetDieMessage message, int player){
-        System.out.println(message.getId() + "message received from player " + player);
+        System.out.println(message.getId() + " message received from player " + player);
 
-        /*
-            if(player != handler.getCurrentPlayer()) model.errorMessage(2, handler.getCurrentPlayer());
+        Player p = model.getPlayerFromId(player);
 
-            Player p = model.getPlayers(player);
-            if(p.isDieUsed()) model.errorMessage(2, handler.getCurrentPlayer());
+        if(p != model.getPlayers(handler.getCurrentPlayer()) || p.isDieUsed()){
+            model.notifyMessage(new ErrorMessage(2), player);
+            return;
+        }
 
-            if(p.isFirstDiePlaced()){
-                if(!p.getPlayerWindow().
-                        isValid(message.getX(), message.getY(), model.getDieFromDraft(message.getIndex())))
-                            model.errorMessage(2, handler.getCurrentPlayer());
+        if(p.isFirstDiePlaced()){
+            if(!p.getPlayerWindow().isValid(message.getX(), message.getY(), model.getDieFromDraft(message.getIndex()))){
+                model.notifyMessage(new ErrorMessage(2), player);
+                return;
             }
-            else{
-                if(!p.getPlayerWindow().
-                        isValidFirstMove(message.getX(), message.getY(), model.getDieFromDraft(message.getIndex())))
-                    model.errorMessage(2, handler.getCurrentPlayer());
+        }
+        else{
+            if(!p.getPlayerWindow().isValidFirstMove(message.getX(), message.getY(), model.getDieFromDraft(message.getIndex()))){
+                model.notifyMessage(new ErrorMessage(), player);
+                return;
             }
+        }
 
-            model.useDie(player, message.getX(), message.getY(), message.getIndex());
-            p.setDieUsed(true);
-            if(p.isDieUsed() && p.isToolCardUsed()){
-                nextPlayer(player);
-            }
-            model.okMessage(handler.getCurrentPlayer());
-         */
+        model.useDie(player, message.getX(), message.getY(), message.getIndex());
+        p.setDieUsed(true);
+        if(p.isDieUsed() && p.isToolCardUsed()){
+            nextPlayer(player);
+        }
+        model.notifyMessage(new OkMessage(), player);
+        model.notifyAllPlayers();
+
     }
 
     public void visit(UnexpectedMessage message, int player){

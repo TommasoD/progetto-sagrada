@@ -8,6 +8,9 @@ public class ErrorMessage extends ClientMessage {
     private String id;
     private int type;
 
+    //type 1 -> username already used
+    //type 2 -> invalid move
+
     public ErrorMessage(){
         id = "error";
     }

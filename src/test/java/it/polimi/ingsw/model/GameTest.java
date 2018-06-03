@@ -36,8 +36,8 @@ class GameTest {
     @Test
     void setDraftTest(){
         Game g = new Game();
-        g.setPlayers(new Player("user"));
-        g.setPlayers(new Player("user2"));
+        g.addPlayer(new Player("user"));
+        g.addPlayer(new Player("user2"));
         g.setDraft();
         System .out.println(g.draftToString());
         assertEquals(5, g.draftSize());
@@ -57,8 +57,8 @@ class GameTest {
     @Test
     void diceLeft(){
         Game g = new Game();
-        g.setPlayers(new Player("user"));
-        g.setPlayers(new Player("user2"));
+        g.addPlayer(new Player("user"));
+        g.addPlayer(new Player("user2"));
         g.setDraft();
         g.diceLeft();
         System.out.println(g.roundTrackToString());
@@ -70,7 +70,7 @@ class GameTest {
     void playersSize(){
         Game g = new Game();
         assertEquals(0, g.playersSize());
-        g.setPlayers(new Player("username"));
+        g.addPlayer(new Player("username"));
         assertEquals(1, g.playersSize());
     }
 
@@ -79,7 +79,7 @@ class GameTest {
         Game g = new Game();
         WindowPatternFactory wf = new WindowPatternFactory();
         Player p1 = new Player("player0", wf.createWindow("Kaleidoscopic Dream"), 0);
-        g.setPlayers(p1);
+        g.addPlayer(p1);
         assertEquals(p1, g.getPlayerFromId(0));
         assertNull(g.getPlayerFromId(1));
     }
@@ -88,7 +88,7 @@ class GameTest {
     void findTest(){
         Game g = new Game();
         WindowPatternFactory wf = new WindowPatternFactory();
-        g.setPlayers(new Player("player0", wf.createWindow("Kaleidoscopic Dream"), 0));
+        g.addPlayer(new Player("player0", wf.createWindow("Kaleidoscopic Dream"), 0));
         assertTrue(g.find("player0"));
         assertFalse(g.find("username"));
     }
@@ -97,7 +97,7 @@ class GameTest {
     void findAndReconnectTest(){
         Game g = new Game();
         WindowPatternFactory wf = new WindowPatternFactory();
-        g.setPlayers(new Player("player0", wf.createWindow("Kaleidoscopic Dream"), 0));
+        g.addPlayer(new Player("player0", wf.createWindow("Kaleidoscopic Dream"), 0));
         g.getPlayerFromId(0).setOnline(false);
         assertTrue(g.findAndReconnect("player0", 5));
         assertFalse(g.findAndReconnect("username", 4));
@@ -109,13 +109,13 @@ class GameTest {
         Game g = new Game();
         WindowPatternFactory wf = new WindowPatternFactory();
         WindowPattern w = wf.createWindow("Kaleidoscopic Dream");
-        g.setPlayers(new Player("user", w));
+        g.addPlayer(new Player("user", w, 0));
         g.setDraft();
         assertEquals(3, g.draftSize());
         g.useDie(0, 2,2, 2);
         assertEquals(2, g.draftSize());
-        assertNotNull(g.getPlayers(0).getPlayerWindow().getWindowMatrix(2,2).getDie());
-        assertTrue(g.getPlayers(0).isFirstDiePlaced());
+        assertNotNull(g.getPlayerFromId(0).getPlayerWindow().getWindowMatrix(2,2).getDie());
+        assertTrue(g.getPlayerFromId(0).isFirstDiePlaced());
         g.dump();
     }
 
