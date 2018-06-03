@@ -11,20 +11,20 @@ class CountdownTest {
 
         Countdown cd = new Countdown(new Server());
         cd.reset();
-        while(cd.read() < 10000) {};
+        while(cd.read() < 1000) {};
         cd.stopClock();
-        assertEquals("" + 10, cd.toString());
+        assertEquals("" + 1, cd.toString());
         cd.resetAndStop();
         assertEquals("" + 0, cd.toString());
         cd.reset();
-        while(cd.read() < 10000) {};
-        assertEquals("" + 10, cd.toString());
+        while(cd.read() < 1000) {};
+        assertEquals("" + 1, cd.toString());
         cd.stopClock();
         cd.resumeClock();
-        assertEquals("" + 10, cd.toString());
-        while(cd.read() < 20000) {};
+        assertEquals("" + 1, cd.toString());
+        while(cd.read() < 2000) {};
         cd.stopClock();
-        assertEquals("" + 20, cd.toString());
+        assertEquals("" + 2, cd.toString());
 
     }
 }

@@ -1,5 +1,5 @@
 package it.polimi.ingsw.model;
-import it.polimi.ingsw.model.parsers.WindowParser;
+import it.polimi.ingsw.parsers.WindowParser;
 
 import java.util.ArrayList;
 import java.util.Collections;
