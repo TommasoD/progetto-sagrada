@@ -2,7 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.parsers.NetworkParser;
+import it.polimi.ingsw.parsers.NetworkParser;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -38,6 +38,7 @@ public class Server {
             System.exit(1);
         }
 
+
         countdown = new Countdown(this);
         gameManager = new GameManager();
         model = new Game();
@@ -62,6 +63,7 @@ public class Server {
 //        long startTime = System.currentTimeMillis();
         int i = 0;
         int num = 0;  ////usare la dimensione di un array di giocatori
+
         while(i < 4) {
             try {
                 Socket socket = serverSocket.accept();
