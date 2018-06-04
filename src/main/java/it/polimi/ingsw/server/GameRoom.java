@@ -18,6 +18,7 @@ public class GameRoom {
         return connections.size();
     }
 
+
     public synchronized void addSocketConnection(SocketConnection playerSocket) {
         for (SocketConnection socketConnection : connections) {
             try {

@@ -77,7 +77,6 @@ public class Server {
             gameManager.playerList.get(i).start();
         }
 
-
 /*
         while(1 == 1) {
             try {
