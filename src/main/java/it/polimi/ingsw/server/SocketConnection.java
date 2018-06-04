@@ -1,16 +1,16 @@
 package it.polimi.ingsw.server;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class SocketConnection extends Thread {
 
     private Socket socket;
     private int id;
 
-    private DataInputStream input;
+    private Scanner stdin = new Scanner(System.in);
     private DataOutputStream output;
     private GameRoom gameRoom;
 
@@ -19,7 +19,7 @@ public class SocketConnection extends Thread {
         this.id = index;
         this.gameRoom = gameRoom;
         try {
-            input = new DataInputStream(socket.getInputStream());
+            stdin = new Scanner(System.in);
             output = new DataOutputStream(socket.getOutputStream());
         }
         catch (IOException e) {
@@ -34,18 +34,18 @@ public class SocketConnection extends Thread {
 
     public void run() {
 
-        boolean done = false;
-
         try {
-            output.writeUTF("Waiting for other players...");
+            output.writeUTF("Waiting for other players...");   ////////DA RIFARE!!!
             output.flush();
-            while(!done) {
-                input.readUTF();
+            while(!gameRoom.getGameReady()) {
+                //stdin.nextLine();
             }
         }
         catch (IOException e) {
             gameRoom.removeSocketConnection(id);
         }
+
+
     }
 
     public DataOutputStream getOutput() {

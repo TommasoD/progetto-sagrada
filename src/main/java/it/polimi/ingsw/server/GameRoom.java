@@ -8,10 +8,16 @@ public class GameRoom {
 
     private ArrayList<SocketConnection> connections = new ArrayList<SocketConnection>();
     private Countdown timer = new Countdown();
+    private boolean gameReady;
 
     public GameRoom() {
         super();
         timer.start();
+        gameReady = false;
+    }
+
+    public boolean getGameReady() {
+        return gameReady;
     }
 
     public int getSize() {
@@ -32,7 +38,10 @@ public class GameRoom {
         playerSocket.start();
 
         if (connections.size() >= 2) timer.reset();
-        if (connections.size() == 4) timer.setDone();
+        if (connections.size() == 4) {
+            timer.setDone();
+            gameReady = true;
+        }
 
     }
 

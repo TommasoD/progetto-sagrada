@@ -72,13 +72,13 @@ public class Server {
         controller.newMatch(gameRoom.getSize());
 
         //create client handler
+
         for (int i = 0; i < gameRoom.getSize(); i ++) {
             gameManager.playerList.add(new ClientHandler(gameRoom.getConnections().get(i).getSocket(), gameManager, i));
             gameManager.playerList.get(i).start();
         }
 
-/*
-        while(1 == 1) {
+        /*while(1 == 1) {
             try {
                 Socket socket = serverSocket.accept();
                 gameManager.playerList.add(new ClientHandler(socket, gameManager, i));
@@ -89,7 +89,7 @@ public class Server {
                 e.printStackTrace();
                 System.exit(1);
             }
-        }*/
+       }  */
 
     }
 
