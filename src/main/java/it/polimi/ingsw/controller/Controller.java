@@ -59,6 +59,7 @@ public class Controller implements Observer{
      */
 
     public void startMatch(){
+        model.setGameStarted(true);
         model.initialize();
         handler = new RoundHandler(model.playersSize());
         model.notifyAllPlayers();
@@ -67,13 +68,14 @@ public class Controller implements Observer{
 
     /*
         receives a window identifier (name) and a player identifier (number), creates the window calling a factory
-        then assigns that window to the correct player
+        then assigns that window to the correct player and set the player as ready to play
      */
 
     public void setWindowPattern(int playerId, String windowName){
         factory = new WindowPatternFactory();
         Player p = model.getPlayerFromId(playerId);
         p.setPlayerWindow(factory.createWindow(windowName));
+        p.setReady(true);
     }
 
     /*
@@ -135,6 +137,7 @@ public class Controller implements Observer{
             if(model.findAndReconnect(message.getUsername(), player)){
                 model.notifyMessage(new OkMessage(), player);
             }
+            else model.notifyMessage(new ErrorMessage(0), player);
         }
         else{
             if(!model.find(message.getUsername())){

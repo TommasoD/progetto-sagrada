@@ -1,7 +1,7 @@
 package it.polimi.ingsw.messages.client;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.client.ClientManager;
 
 public class ErrorMessage extends ClientMessage {
 
@@ -27,8 +27,8 @@ public class ErrorMessage extends ClientMessage {
         return gson.toJson(this);
     }
 
-    public void accept(View v) {
-
+    public void accept(ClientManager c, int player) {
+        c.visit(this, player);
     }
 
     public ErrorMessage deserialize(String s){

@@ -3,7 +3,7 @@ package it.polimi.ingsw.messages.client;
 import com.google.gson.Gson;
 import it.polimi.ingsw.model.Die;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.client.ClientManager;
 
 import java.util.List;
 
@@ -30,8 +30,8 @@ public class UpdateModelMessage extends ClientMessage {
         return gson.toJson(this);
     }
 
-    public void accept(View v) {
-
+    public void accept(ClientManager c, int player) {
+        c.visit(this, player);
     }
 
     public UpdateModelMessage deserialize(String s){

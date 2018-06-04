@@ -191,9 +191,6 @@ public class Game extends Observable {
      */
 
     public void initialize() {
-
-        gameStarted = true;
-
         //randomly assigns private objectives
         ArrayList<PrivateObjective> privateObjectives = new ArrayList<PrivateObjective>();
         privateObjectives.add(new PrivateObjective("RED"));

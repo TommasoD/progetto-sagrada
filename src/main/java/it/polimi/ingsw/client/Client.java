@@ -3,7 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.parsers.NetworkParser;
 import it.polimi.ingsw.server.TooManyPlayersException;
 import it.polimi.ingsw.utils.Observer;
-import it.polimi.ingsw.view.View;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -13,7 +13,7 @@ public class Client implements Observer {
     private String ip;
     private int port;
     NetworkParser reader = new NetworkParser();
-    private View view;
+    private ClientManager clientManager;
     private DataInputStream socketIn;
     private DataOutputStream socketOut;
     private Socket socket;
@@ -23,8 +23,8 @@ public class Client implements Observer {
         this.port = reader.getPort();
         this.ip = reader.getIp();
 
-        view = new View();
-        view.register(this);
+        clientManager = new ClientManager();
+        clientManager.register(this);
     }
 
     public static void main(String[] args) {
@@ -53,14 +53,14 @@ public class Client implements Observer {
             }
 
             //login message
-            view.loginPrint();
+            clientManager.loginPrint();
             done = false;
 
             ///until the end of the game
             while (!done) {
                 String s = socketIn.readUTF();
                 try {
-                    view.print(s);
+                    clientManager.print(s);
                 }
                 catch (TooManyPlayersException e) {
                     done = true;

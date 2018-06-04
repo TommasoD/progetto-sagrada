@@ -1,7 +1,9 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.client;
 
 import com.google.gson.stream.JsonReader;
+import it.polimi.ingsw.messages.client.ClientMessage;
 import it.polimi.ingsw.messages.client.ErrorMessage;
+import it.polimi.ingsw.messages.controller.ChooseWindowMessage;
 import it.polimi.ingsw.messages.controller.LoginMessage;
 import it.polimi.ingsw.messages.controller.SetDieMessage;
 import it.polimi.ingsw.messages.client.ShowWindowsMessage;
@@ -13,9 +15,9 @@ import java.io.StringReader;
 import java.util.Scanner;
 
 
-public class View extends Observable{
+public class ClientManager extends Observable{
 
-    //View observes Client
+    //ClientManager observes Client
 
     private Scanner stdin = new Scanner(System.in);
 
@@ -38,15 +40,15 @@ public class View extends Observable{
         if(id.equals("error")) {
             ErrorMessage gson = new ErrorMessage();
             gson = gson.deserialize(message);
-            if (gson.getType() == 3) {
-                System.out.println("Game already started!\nConnection closed");
-                throw new TooManyPlayersException();
-            }
             if (gson.getType() == 1) {
                 System.out.println("Username already used. Insert a new one:");
                 String inputLine = stdin.nextLine();
                 LoginMessage mex = new LoginMessage(inputLine);
                 notify(mex.serialize());
+            }
+            if (gson.getType() == 0) {
+                System.out.println("Not a player. A match is being played, try again later.");
+                throw new TooManyPlayersException();
             }
 
             //type = 2 is invalidMove
@@ -63,7 +65,9 @@ public class View extends Observable{
             System.out.println("\nInsert the name of desired Window:");
             String line = stdin.nextLine();
             /////controlla la validità della finestra scelta
-            notify(line);
+
+            ChooseWindowMessage m = new ChooseWindowMessage(line);
+            notify(m.serialize());
         }
 
         if (id.equals("place")) {
@@ -83,6 +87,10 @@ public class View extends Observable{
                 notify(toolCardId);*/
             }
         }
+
+    }
+
+    public void visit(ClientMessage message, int player){
 
     }
 
