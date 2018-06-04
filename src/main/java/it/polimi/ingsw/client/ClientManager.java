@@ -36,8 +36,12 @@ public class ClientManager extends Observable{
      */
 
     public void loginPrint() {
+
+        this.cleanInputStream();
+
         view.print("Insert username: ");
         String inputLine = stdin.nextLine();
+        //System.out.println(inputLine);
         LoginMessage gson = new LoginMessage(inputLine);
         notify(gson.serialize());
     }
@@ -151,6 +155,19 @@ public class ClientManager extends Observable{
 
     public void visit(OkMessage message){
         view.print("Action successful");
+    }
+
+    private void cleanInputStream() {
+        try {        ////////clean System.in
+            int length = System.in.available();
+            //System.out.println(length);
+            while(length > 0) {
+                length -= stdin.nextLine().length() + 1;
+                //System.out.println(length);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
