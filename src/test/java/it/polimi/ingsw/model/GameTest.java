@@ -75,6 +75,19 @@ class GameTest {
     }
 
     @Test
+    void allReadyToPlay(){
+        Game g = new Game();
+        for(int i = 0; i < 4; i++){
+            g.addPlayer(new Player("p" + i));
+        }
+        assertFalse(g.allReadyToPlay());
+        for(Player p : g.getPlayers()){
+            p.setReady(true);
+        }
+        assertTrue(g.allReadyToPlay());
+    }
+
+    @Test
     void getPlayerFromIdTest(){
         Game g = new Game();
         WindowPatternFactory wf = new WindowPatternFactory();

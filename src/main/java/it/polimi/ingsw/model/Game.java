@@ -83,6 +83,17 @@ public class Game extends Observable {
         return null;
     }
 
+    /*
+        returns true if all players are ready to play, i.e. they've already chosen both username and window
+     */
+
+    public boolean allReadyToPlay(){
+        for(Player p : players){
+            if(!p.isReady()) return false;
+        }
+        return true;
+    }
+
     public int playersSize(){
         return players.size();
     }
