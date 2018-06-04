@@ -1,6 +1,5 @@
 package it.polimi.ingsw.messages.client;
 
-import it.polimi.ingsw.messages.client.OkMessage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

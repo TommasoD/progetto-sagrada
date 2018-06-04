@@ -1,8 +1,7 @@
 package it.polimi.ingsw.parsers;
 
 import com.google.gson.stream.JsonReader;
-import it.polimi.ingsw.messages.client.ClientMessage;
-import it.polimi.ingsw.messages.client.ErrorMessage;
+import it.polimi.ingsw.messages.client.*;
 import it.polimi.ingsw.messages.controller.*;
 
 import java.io.IOException;
@@ -36,10 +35,28 @@ public class GsonParser {
     }
 
     public ClientMessage parseClient(String gson){
-
-        //client messages to be implemented
-
-        return new ErrorMessage(0);
+        String id = getIdMessage(gson);
+        if(id.equals("turn")){
+            NewTurnMessage m = new NewTurnMessage();
+            return m.deserialize(gson);
+        }
+        if(id.equals("ok")){
+            OkMessage m = new OkMessage();
+            return m.deserialize(gson);
+        }
+        if(id.equals("windows")){
+            ShowWindowsMessage m = new ShowWindowsMessage();
+            return m.deserialize(gson);
+        }
+        if(id.equals("update")){
+            UpdateModelMessage m = new UpdateModelMessage();
+            return m.deserialize(gson);
+        }
+        if(id.equals("error")){
+            ErrorMessage m = new ErrorMessage();
+            return m.deserialize(gson);
+        }
+        return new ErrorMessage(3);
     }
 
     private String getIdMessage(String gson) {
