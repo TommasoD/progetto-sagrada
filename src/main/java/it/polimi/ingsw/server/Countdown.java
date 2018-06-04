@@ -11,7 +11,12 @@ public class Countdown extends Thread {
     /** On/Off of the timer */
     private boolean isActive;
 
-    public Countdown() { resetAndStop();}
+    private boolean done;
+
+    public Countdown() {
+        resetAndStop();
+        done = false;
+    }
 
     /**Reset and stop the timer */
     public void resetAndStop() {
@@ -54,8 +59,8 @@ public class Countdown extends Thread {
     public void run() {
 
         //this.reset();
-        while(this.read() < 20000) {
-            System.out.print("\r" + this);
+        while((this.read() < 20000) && (!done)) {
+            if (isActive) System.out.print("\r" + this);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -71,4 +76,7 @@ public class Countdown extends Thread {
         return "" + read()/1000;
     }
 
+    public void setDone() {
+        done = true;
+    }
 }

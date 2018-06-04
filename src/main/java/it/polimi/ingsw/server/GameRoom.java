@@ -29,7 +29,9 @@ public class GameRoom {
         }
         connections.add(playerSocket);
         playerSocket.start();
+
         if (connections.size() >= 2) timer.reset();
+        if (connections.size() == 4) timer.setDone();
 
     }
 
