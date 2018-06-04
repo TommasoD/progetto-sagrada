@@ -19,8 +19,8 @@ public class View extends Observable{
 
     private Scanner stdin = new Scanner(System.in);
 
-    public void firstPrint(String message) {
-        System.out.println(message + "\nInsert username: ");
+    public void loginPrint() {
+        System.out.println("Insert username: ");
         String inputLine = stdin.nextLine();
         LoginMessage gson = new LoginMessage(inputLine);
         notify(gson.serialize());

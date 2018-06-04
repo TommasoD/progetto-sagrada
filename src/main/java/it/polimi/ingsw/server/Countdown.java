@@ -11,9 +11,7 @@ public class Countdown extends Thread {
     /** On/Off of the timer */
     private boolean isActive;
 
-    private Server server;
-
-    public Countdown(Server server) { resetAndStop(); this.server = server;}
+    public Countdown() { resetAndStop();}
 
     /**Reset and stop the timer */
     public void resetAndStop() {
@@ -55,7 +53,7 @@ public class Countdown extends Thread {
 
     public void run() {
 
-        this.reset();
+        //this.reset();
         while(this.read() < 20000) {
             System.out.print("\r" + this);
             try {

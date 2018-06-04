@@ -18,16 +18,14 @@ public class Server {
 
     private int port;
     NetworkParser reader = new NetworkParser();
-
     private ServerSocket serverSocket;
     private GameManager gameManager;
+    private GameRoom gameRoom;
     private Game model;
     private Controller controller;
-    private Countdown countdown;
 
     public Server() {
 
-        //possibly try-catch. SAXException
         reader.readNetworkSetup();
         port = reader.getPort();
 
@@ -38,18 +36,17 @@ public class Server {
             System.exit(1);
         }
 
-
-        countdown = new Countdown(this);
         gameManager = new GameManager();
         model = new Game();
         controller = new Controller(model);
         model.register(gameManager);
         gameManager.register(controller);
+        gameRoom = new GameRoom();
+
         System.out.println("Server ready");
     }
 
     public void startServer() {
-
         try {
             System.out.println("My ip address: " + InetAddress.getLocalHost());
         }
@@ -58,22 +55,13 @@ public class Server {
             System.exit(1);
         }
 
-        //when the second player is connected the gameManager must wait N seconds before starting the game
-        //////verified time
-//        long startTime = System.currentTimeMillis();
-        int i = 0;
-        int num = 0;  ////usare la dimensione di un array di giocatori
-
-        while(i < 4) {
+        int socketId = 0;
+        while(gameRoom.getSize()<4) {
             try {
                 Socket socket = serverSocket.accept();
-                num++;
-                gameManager.playerList.add(new ClientHandler(socket, gameManager, i));
-                System.out.println("Client " + (i + 1) + " connected");
-                gameManager.playerList.get(i).start();
-                if(num == 2) countdown.start();
-                if(num > 2) countdown.reset();
-                i++;
+                socketId++;
+                gameRoom.addSocketConnection(new SocketConnection(gameRoom, socket, socketId));
+                System.out.println("Client " + socketId + " connected");
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -81,6 +69,16 @@ public class Server {
             }
         }
 
+        controller.newMatch(gameRoom.getSize());
+
+        //create client handler
+        for (int i = 0; i < gameRoom.getSize(); i ++) {
+            gameManager.playerList.add(new ClientHandler(gameRoom.getConnections().get(i).getSocket(), gameManager, i));
+            gameManager.playerList.get(i).start();
+        }
+
+
+/*
         while(1 == 1) {
             try {
                 Socket socket = serverSocket.accept();
@@ -92,7 +90,7 @@ public class Server {
                 e.printStackTrace();
                 System.exit(1);
             }
-        }
+        }*/
 
     }
 

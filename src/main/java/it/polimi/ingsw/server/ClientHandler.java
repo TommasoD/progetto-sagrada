@@ -33,7 +33,7 @@ public class ClientHandler extends Thread {
         boolean done = false;
 
         try {
-            output.writeUTF("Connection established");
+            output.writeUTF("Game ready");
             output.flush();
             while(!done) {
                 String s = input.readUTF();

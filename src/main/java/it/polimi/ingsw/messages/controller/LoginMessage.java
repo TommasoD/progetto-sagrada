@@ -17,11 +17,6 @@ public class LoginMessage extends ControllerMessage {
         this.username = username;
     }
 
-    public LoginMessage(String id, String username){
-        this.id = id;
-        this.username = username;
-    }
-
     public String serialize() {
         Gson gson = new Gson();
         return gson.toJson(this);

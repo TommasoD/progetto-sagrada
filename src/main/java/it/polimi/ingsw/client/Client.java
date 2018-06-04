@@ -43,12 +43,18 @@ public class Client implements Observer {
         socketOut = new DataOutputStream(socket.getOutputStream());
 
         try {
+            boolean done = false;
 
             //first message is "connection established, insert username"
-            String mex = socketIn.readUTF();
-            view.firstPrint(mex);
+            while (!done) {
+                String mex = socketIn.readUTF();
+                System.out.println(mex);
+                if (mex.equals("Game ready")) done = true;
+            }
 
-            boolean done = false;
+            //login message
+            view.loginPrint();
+            done = false;
 
             ///until the end of the game
             while (!done) {
