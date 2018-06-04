@@ -29,9 +29,10 @@ public class ShowWindowsMessage extends ClientMessage {
         return gson.toJson(this);
     }
 
-    public void accept(ClientManager c, int player) {
-        c.visit(this, player);
+    public void accept(ClientManager c) {
+        c.visit(this);
     }
+
 
     public ShowWindowsMessage deserialize(String s){
         Gson gson = new Gson();

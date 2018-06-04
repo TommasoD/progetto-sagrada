@@ -126,14 +126,14 @@ public class WindowPattern {
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        String s = "\u001B[0m" + name + "\n" + "Tokens left: " + difficultyToken + "\n";
+        String s = "\u001B[0m" + name + " (" + difficultyToken + " tokens available)\n";
         sb.append(s);
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){
                 sb.append(windowMatrix[j][i]);
                 sb.append(" ");
             }
-            sb.append("\n");
+            sb.append("\u001B[0m\n");
         }
         return sb.toString();
     }

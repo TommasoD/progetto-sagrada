@@ -5,6 +5,6 @@ import it.polimi.ingsw.client.ClientManager;
 
 public abstract class ClientMessage extends Message {
 
-    public abstract void accept(ClientManager c, int player);
+    public abstract void accept(ClientManager c);
 
 }

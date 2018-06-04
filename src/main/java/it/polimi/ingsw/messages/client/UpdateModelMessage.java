@@ -30,8 +30,8 @@ public class UpdateModelMessage extends ClientMessage {
         return gson.toJson(this);
     }
 
-    public void accept(ClientManager c, int player) {
-        c.visit(this, player);
+    public void accept(ClientManager c) {
+        c.visit(this);
     }
 
     public UpdateModelMessage deserialize(String s){

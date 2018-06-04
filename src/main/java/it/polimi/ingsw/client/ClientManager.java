@@ -1,14 +1,14 @@
 package it.polimi.ingsw.client;
 
 import com.google.gson.stream.JsonReader;
-import it.polimi.ingsw.messages.client.ClientMessage;
-import it.polimi.ingsw.messages.client.ErrorMessage;
+import it.polimi.ingsw.messages.client.*;
 import it.polimi.ingsw.messages.controller.ChooseWindowMessage;
 import it.polimi.ingsw.messages.controller.LoginMessage;
 import it.polimi.ingsw.messages.controller.SetDieMessage;
-import it.polimi.ingsw.messages.client.ShowWindowsMessage;
+import it.polimi.ingsw.parsers.GsonParser;
 import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.server.TooManyPlayersException;
+import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -17,23 +17,37 @@ import java.util.Scanner;
 
 public class ClientManager extends Observable{
 
-    //ClientManager observes Client
+    private Scanner stdin;
+    private GsonParser parser;
+    private View view;
 
-    private Scanner stdin = new Scanner(System.in);
+    /*
+        constructor
+     */
+
+    public ClientManager(){
+        stdin = new Scanner(System.in);
+        parser = new GsonParser();
+        view = new View();
+    }
+
+    /*
+        called right after the start of the match
+     */
 
     public void loginPrint() {
-        System.out.println("Insert username: ");
+        view.print("Insert username: ");
         String inputLine = stdin.nextLine();
         LoginMessage gson = new LoginMessage(inputLine);
         notify(gson.serialize());
     }
 
+    public void print(String gson){
 
-    public void print(String message) throws TooManyPlayersException {
+        ClientMessage message = parser.parseClient((String) gson);
+        message.accept(this);
 
-        String id = getIdMessage(message);
-
-        //errors
+        /*
         if(id.equals("ok")){
             System.out.println("Welcome to the game.");
         }
@@ -82,29 +96,61 @@ public class ClientManager extends Observable{
                 int y = stdin.nextInt();
                 notify(new SetDieMessage(x, y, die).serialize());
             } else if(line.equals("2")) {
-                /*System.out.println("Choose a Tool Card: ");
+                *//*System.out.println("Choose a Tool Card: ");
                 int toolCardId = stdin.nextInt();
-                notify(toolCardId);*/
+                notify(toolCardId);*//*
             }
+        }*/
+
+    }
+
+    public void visit(NewTurnMessage message){
+        view.print("Make a move: \n1. Place a die\n2. Use a tool card");
+        int move = stdin.nextInt();
+        if(move == 1){
+            view.print("Choose a die and insert its position: ");
+            int die = stdin.nextInt();
+            System.out.print("Choose the column (from left to right): ");
+            int x = stdin.nextInt();
+            System.out.print("Choose the row (from top to bottom): ");
+            int y = stdin.nextInt();
+            notify(new SetDieMessage(x, y, die).serialize());
         }
-
+        else view.print("Invalid move");
     }
 
-    public void visit(ClientMessage message, int player){
-
-    }
-
-    private String getIdMessage(String s){
-        JsonReader jsonReader = new JsonReader(new StringReader(s));
-        String action;
-        try{
-            jsonReader.beginObject();
-            jsonReader.nextName();
-            action = jsonReader.nextString();
-            jsonReader.close();
-        } catch(IOException e){
-            action = "error";
+    public void visit(ErrorMessage message) {
+        if (message.getType() == 0) {
+            view.print("Not a player. A match is being played, try again later.");
+            //throw new TooManyPlayersException();
+            //System.exit(1) ?
         }
-        return action;
+        if (message.getType() == 1) {
+            view.print("Username already used. Insert a new one:");
+            String inputLine = stdin.nextLine();
+            LoginMessage mex = new LoginMessage(inputLine);
+            notify(mex.serialize());
+        }
     }
+
+    public void visit(ShowWindowsMessage message){
+        view.printWindows(message);
+        String line = stdin.nextLine();
+
+        //controlla la validità della finestra scelta
+
+        view.print("Wait for the start of the match");
+        ChooseWindowMessage m = new ChooseWindowMessage(line);
+        notify(m.serialize());
+    }
+
+    public void visit(UpdateModelMessage message){
+        view.printUpdate(message);
+        view.print("Wait for your turn");
+    }
+
+    public void visit(OkMessage message){
+        view.print("Action successful");
+    }
+
 }
