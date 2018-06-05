@@ -66,14 +66,18 @@ class ToolCardCheckTest {
         WindowPattern w = factory.createWindow("Kaleidoscopic Dream");
         ToolCardCheck tc = new ToolCardCheck();
         Die d = new Die("BLUE");
-        d.setValue(1);
+        d.setValue(5);
         Die d2 = new Die("YELLOW");
-        d2.setValue(3);
+        d2.setValue(5);
         w.getWindowMatrix(0, 1).setDie(d);
         w.getWindowMatrix(0,0).setDie(d2);
         Die d3 = new Die("BLUE");
         w.getWindowMatrix(3, 2).setDie(d3);
         assertTrue(tc.toolCard4(w, 0, 0, 4, 3, 0, 1, 2, 3));
+        assertFalse(tc.toolCard4(w, 0, 0, 4, 3, 0, 0, 1, 2));
+        assertFalse(tc.toolCard4(w, 0, 0, 2, 1, 0, 1, 2, 1));
+        assertFalse(tc.toolCard4(w, 0, 2, 2, 1, 0, 1, 2, 1));
+        assertFalse(tc.toolCard4(w, 0, 0, 2, 1, 0, 2, 2, 1));
 
     }
 
