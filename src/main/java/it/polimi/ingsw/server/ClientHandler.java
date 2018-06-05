@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.messages.controller.LogoutMessage;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -41,8 +43,10 @@ public class ClientHandler extends Thread {
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
+            //send mex to controller to set offline the player
+            gameManager.notifyController(new LogoutMessage().serialize(), index);
+            //delete client handler from game manager
+            System.out.println("Player " + index + " disconnected");
         }
 
         try {

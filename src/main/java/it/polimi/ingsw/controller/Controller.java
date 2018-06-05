@@ -151,7 +151,6 @@ public class Controller implements Observer{
     public void visit(LogoutMessage message, int player){
         System.out.println(message.getId() + " message received from player " + player);
         model.getPlayerFromId(player).setOnline(false);
-        nextPlayer(player);
     }
 
     public void visit(PassMessage message, int player){
