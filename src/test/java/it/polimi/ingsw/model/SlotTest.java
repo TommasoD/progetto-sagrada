@@ -84,4 +84,16 @@ class SlotTest {
         Die d = new Die("RED");
         assertEquals(true, s.isValid(d));
     }
+
+
+    @Test
+    void removeDie() {
+        Slot s = new Slot("none", "none");
+        s.setDie(new Die("RED"));
+        s.removeDie();
+        assertNull(s.getDie());
+    }
+
+
+
 }

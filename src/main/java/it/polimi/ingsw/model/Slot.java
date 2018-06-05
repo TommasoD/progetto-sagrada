@@ -35,6 +35,12 @@ public class Slot {
         this.die = die;
     }
 
+    public Die removeDie() {
+        Die d = this.die;
+        this.die = null;
+        return d;
+    }
+
     /*
         validation methods:
             checkColorRule() check the rules related to colors

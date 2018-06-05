@@ -132,4 +132,25 @@ class GameTest {
         g.dump();
     }
 
+    @Test
+    void moveDieTest() {
+        Game g = new Game();
+        WindowPatternFactory wf = new WindowPatternFactory();
+        WindowPattern w = wf.createWindow("Kaleidoscopic Dream");
+        g.addPlayer(new Player("user", w, 0));
+        Die d = new Die("RED");
+        d.setValue("6");
+        g.getPlayerFromId(0).getPlayerWindow().getWindowMatrix(0,0).setDie(d);
+        g.moveDie(0,0,0,1,1);
+        assertEquals(d,g.getPlayerFromId(0).getPlayerWindow().getWindowMatrix(1,1).getDie());
+    }
+
+    @Test
+    void useToolCardTest() {
+        Game g = new Game();
+        g.initialize();
+        g.useToolCard(5);
+        assertTrue(g.getToolCard(5).isAlreadyUsed());
+    }
+
 }

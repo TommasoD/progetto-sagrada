@@ -241,6 +241,40 @@ public class Game extends Observable {
         notify(this.toString());
     }
 
+    //x and y old coordinates. a nd b new coordinates
+    public void moveDie(int playerId, int x, int y, int a, int b) {
+        WindowPattern w = getPlayerFromId(playerId).getPlayerWindow();
+        Die d = w.getWindowMatrix(x, y).removeDie();
+        w.getWindowMatrix(a, b).setDie(d);
+    }
+
+    /*
+
+    ToolCards Methods
+
+     */
+
+    public void useToolCard(int i) {
+        toolCards.get(i).setAsAlreadyUsed();
+    }
+
+
+    public ArrayList<ToolCard> getToolCards () {
+        return toolCards;
+    }
+
+
+
+    public ToolCard getToolCard(int i) {
+        return toolCards.get(i);
+    }
+
+
+
+    public ArrayList<PublicObjective> getPublicObjectiveActive() {
+        return publicObjectiveActive;
+    }
+
     /*
         notify GameManager of something
      */
