@@ -16,6 +16,10 @@ public class GameRoom {
         gameReady = false;
     }
 
+    public Countdown getTimer() {
+        return timer;
+    }
+
     public boolean getGameReady() {
         return gameReady;
     }
