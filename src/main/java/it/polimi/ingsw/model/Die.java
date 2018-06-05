@@ -111,6 +111,10 @@ public class Die {
             return "\u001B[0m";
         }
 
+        public void flipDie() {
+            this.setValue(7 - this.getValueAsInt());
+        }
+
         @Override
         public String toString() {
             return colorToString() + valueToString();
@@ -123,5 +127,15 @@ public class Die {
         void dump(){
             System.out.println(this);
         }
+
+        public void increaseValue() {
+            if (this.getValueAsInt()!=6) this.setValue(this.getValueAsInt()+1);
+        }
+
+        public void decreaseValue() {
+            if (this.getValueAsInt()!=1) this.setValue(this.getValueAsInt()-1);
+         }
+
+
 
 }

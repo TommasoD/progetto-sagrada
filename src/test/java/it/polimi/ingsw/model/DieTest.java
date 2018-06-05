@@ -57,4 +57,51 @@ class DieTest {
         assertEquals(6, d.getValueAsInt());
     }
 
+    @Test
+    void flipDieTest() {
+        Die d = new Die("RED");
+        d.setValue("6");
+        d.flipDie();
+        assertEquals(1, d.getValueAsInt());
+    }
+
+    @Test
+    void flipDieTest2() {
+        Die d = new Die("RED");
+        d.setValue("6");
+        d.flipDie();
+        assertEquals("1", d.getValue());
+    }
+
+    @Test
+    void increaseValueTest() {
+        Die d = new Die("RED");
+        d.setValue("6");
+        d.increaseValue();
+        assertEquals(6, d.getValueAsInt());
+    }
+
+    @Test
+    void increaseValueTest2() {
+        Die d = new Die("RED");
+        d.setValue("3");
+        d.increaseValue();
+        assertEquals(4, d.getValueAsInt());
+    }
+
+    @Test
+    void decreaseValueTest() {
+        Die d = new Die("RED");
+        d.setValue("1");
+        d.decreaseValue();
+        assertEquals(1, d.getValueAsInt());
+    }
+
+    @Test
+    void decreaseValueTest2() {
+        Die d = new Die("RED");
+        d.setValue("6");
+        d.decreaseValue();
+        assertEquals(5, d.getValueAsInt());
+    }
 }
