@@ -46,6 +46,43 @@ class WindowPatternTest {
     }
 
     @Test
+    void validWithoutColors() {
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern w = factory.createWindow("Kaleidoscopic Dream");
+        Die d = new Die("BLUE");
+        d.roll();
+        Die d2 = new Die("YELLOW");
+        d2.setValue(5);
+        w.getWindowMatrix(3, 3).setDie(d);
+        assertTrue(w.isValidWithoutColors(2, 2, d2));
+        assertFalse(w.isValidWithoutColors(0, 0, d2));
+        w.getWindowMatrix(0, 1).setDie(d);
+        assertTrue(w.isValidWithoutColors(1,2, d2));
+        d2.setValue(4);
+        assertFalse(w.isValidWithoutColors(1,2, d2));
+        d2.setValue(1);
+        assertFalse(w.isValidWithoutColors(4, 0, d2));
+    }
+
+    @Test
+    void validWithoutValues() {
+        WindowPatternFactory factory = new WindowPatternFactory();
+        WindowPattern w = factory.createWindow("Kaleidoscopic Dream");
+        Die d = new Die("BLUE");
+        d.roll();
+        Die d2 = new Die("YELLOW");
+        d2.setValue(2);
+        w.getWindowMatrix(3, 3).setDie(d);
+        assertFalse(w.isValidWithoutValues(2, 2, d2));
+        assertFalse(w.isValidWithoutValues(0, 0, d2));
+        w.getWindowMatrix(0, 1).setDie(d);
+        assertTrue(w.isValidWithoutValues(1, 2, d2));
+        d2.setValue(4);
+        assertFalse(w.isValidWithoutValues(1,0, d2));
+        assertFalse(w.isValidWithoutValues(4, 2, d2));
+    }
+
+    @Test
     void notValidColorRuleSlot() {
         WindowPatternFactory factory = new WindowPatternFactory();
         WindowPattern w = factory.createWindow("Kaleidoscopic Dream");

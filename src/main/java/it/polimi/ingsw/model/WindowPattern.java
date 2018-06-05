@@ -75,6 +75,42 @@ public class WindowPattern {
         return allAdjacent(x, y);
     }
 
+    public boolean isValidWithoutColors(int x, int y, Die die) {
+
+        if(windowMatrix[x][y].isNotEmpty()) return false;
+        if(!windowMatrix[x][y].checkValueRule(die)) return false;
+
+        //check colors and values in orthogonal slots:
+
+        if(colorsAndValues(x-1, y, die)) return false;
+        if(colorsAndValues(x+1, y, die)) return false;
+        if(colorsAndValues(x, y-1, die)) return false;
+        if(colorsAndValues(x, y+1, die)) return false;
+
+        //check empty/full slots around:
+
+        return allAdjacent(x, y);
+
+    }
+
+    public boolean isValidWithoutValues(int x, int y, Die die) {
+
+        if(windowMatrix[x][y].isNotEmpty()) return false;
+        if(!windowMatrix[x][y].checkColorRule(die)) return false;
+
+        //check colors and values in orthogonal slots:
+
+        if(colorsAndValues(x-1, y, die)) return false;
+        if(colorsAndValues(x+1, y, die)) return false;
+        if(colorsAndValues(x, y-1, die)) return false;
+        if(colorsAndValues(x, y+1, die)) return false;
+
+        //check empty/full slots around:
+
+        return allAdjacent(x, y);
+
+    }
+
     public boolean isValidFirstMove(int x, int y, Die die) {
 
         //regarding the selected slot:
