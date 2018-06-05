@@ -56,7 +56,7 @@ public class WindowParser {
         try {
             SAXParser saxParser = saxParserFactory.newSAXParser();
             WindowReader handler = new WindowReader();
-            saxParser.parse(new File(path + "\\src\\main\\resources\\" + windowName + ".xml"), handler);
+            saxParser.parse(new File(path + "/src/main/resources/" + windowName + ".xml"), handler);
         } catch ( Exception e) {
             e.printStackTrace();
             System.exit(1);
