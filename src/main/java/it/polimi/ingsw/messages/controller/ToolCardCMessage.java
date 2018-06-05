@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.Controller;
 public class ToolCardCMessage extends ControllerMessage {
 
     private String id;
+    private int num;
     private int x;
     private int y;
     private int a;
@@ -20,8 +21,9 @@ public class ToolCardCMessage extends ControllerMessage {
         id = "toolcardC";
     }
 
-    public ToolCardCMessage(int x, int y, int a, int b, int x2, int y2, int a2, int b2){
+    public ToolCardCMessage(int num, int x, int y, int a, int b, int x2, int y2, int a2, int b2){
         id = "toolcardC";
+        this.num = num;
         this.x = x;
         this.y = y;
         this.a = a;
@@ -115,5 +117,13 @@ public class ToolCardCMessage extends ControllerMessage {
 
     public void setB2(int b2) {
         this.b2 = b2;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
     }
 }
