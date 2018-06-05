@@ -4,6 +4,7 @@ import com.google.gson.stream.JsonReader;
 import it.polimi.ingsw.messages.client.*;
 import it.polimi.ingsw.messages.controller.ChooseWindowMessage;
 import it.polimi.ingsw.messages.controller.LoginMessage;
+import it.polimi.ingsw.messages.controller.PassMessage;
 import it.polimi.ingsw.messages.controller.SetDieMessage;
 import it.polimi.ingsw.parsers.GsonParser;
 import it.polimi.ingsw.utils.Observable;
@@ -109,9 +110,9 @@ public class ClientManager extends Observable{
     }
 
     public void visit(NewTurnMessage message){
-        view.print("Make a move: \n1. Place a die\n2. Use a tool card");
-        int move = stdin.nextInt();
-        if(move == 1){
+        view.print("Make a move (help to see all supported moves)");
+        String move = stdin.nextLine();
+        if(move.equals("place")){
             view.print("Choose a die and insert its position: ");
             int die = stdin.nextInt();
             System.out.print("Choose the column (from left to right): ");
@@ -120,14 +121,19 @@ public class ClientManager extends Observable{
             int y = stdin.nextInt();
             notify(new SetDieMessage(x, y, die).serialize());
         }
+        if(move.equals("end")){
+            notify(new PassMessage());
+        }
+        if(move.equals("help")){
+            view.print("place\tplace a die on the Window\ntool card\tuse a Tool Card\nend\tend your turn");
+        }
         else view.print("Invalid move");
     }
 
     public void visit(ErrorMessage message) {
         if (message.getType() == 0) {
             view.print("Not a player. A match is being played, try again later.");
-            //throw new TooManyPlayersException();
-            //System.exit(1) ?
+            System.exit(1);
         }
         if (message.getType() == 1) {
             view.print("Username already used. Insert a new one:");
