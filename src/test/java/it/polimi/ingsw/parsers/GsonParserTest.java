@@ -54,6 +54,30 @@ class GsonParserTest {
     }
 
     @Test
+    void parseToolcardA(){
+        GsonParser gp = new GsonParser();
+        ToolCardAMessage m = new ToolCardAMessage();
+        Message message = gp.parseController(m.serialize());
+        assertTrue(message instanceof ToolCardAMessage);
+    }
+
+    @Test
+    void parseToolcardB(){
+        GsonParser gp = new GsonParser();
+        ToolCardBMessage m = new ToolCardBMessage();
+        Message message = gp.parseController(m.serialize());
+        assertTrue(message instanceof ToolCardBMessage);
+    }
+
+    @Test
+    void parseToolcardC(){
+        GsonParser gp = new GsonParser();
+        ToolCardCMessage m = new ToolCardCMessage();
+        Message message = gp.parseController(m.serialize());
+        assertTrue(message instanceof ToolCardCMessage);
+    }
+
+    @Test
     void parseUnexpectedController(){
         GsonParser gp = new GsonParser();
         Message message = gp.parseController("test");

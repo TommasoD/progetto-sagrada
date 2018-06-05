@@ -191,6 +191,24 @@ public class Controller implements Observer{
         }
     }
 
+    public void visit(ToolCardAMessage message){
+
+        //[...]
+
+    }
+
+    public void visit(ToolCardBMessage message){
+
+        //[...]
+
+    }
+
+    public void visit(ToolCardCMessage message){
+
+        //[...]
+
+    }
+
     public void visit(UnexpectedMessage message, int player){
         System.out.println("unexpected message received from player " + player);
     }

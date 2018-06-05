@@ -31,6 +31,18 @@ public class GsonParser {
             LogoutMessage m = new LogoutMessage();
             return m.deserialize(gson);
         }
+        if(id.equals("toolcardA")){
+            ToolCardAMessage m = new ToolCardAMessage();
+            return m.deserialize(gson);
+        }
+        if(id.equals("toolcardB")){
+            ToolCardBMessage m = new ToolCardBMessage();
+            return m.deserialize(gson);
+        }
+        if(id.equals("toolcardC")){
+            ToolCardCMessage m = new ToolCardCMessage();
+            return m.deserialize(gson);
+        }
         return new UnexpectedMessage();
     }
 
@@ -50,6 +62,10 @@ public class GsonParser {
         }
         if(id.equals("update")){
             UpdateModelMessage m = new UpdateModelMessage();
+            return m.deserialize(gson);
+        }
+        if(id.equals("end")){
+            EndTurnMessage m = new EndTurnMessage();
             return m.deserialize(gson);
         }
         if(id.equals("error")){
