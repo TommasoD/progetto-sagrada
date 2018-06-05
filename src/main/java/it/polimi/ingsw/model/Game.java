@@ -6,6 +6,7 @@ import it.polimi.ingsw.messages.client.UpdateModelMessage;
 import it.polimi.ingsw.model.objectives.PrivateObjective;
 import it.polimi.ingsw.model.objectives.PublicObjectiveFactory;
 import it.polimi.ingsw.model.objectives.publicobjectives.*;
+import it.polimi.ingsw.parsers.ToolCardParser;
 import it.polimi.ingsw.utils.Observable;
 
 import java.util.List;
@@ -19,9 +20,12 @@ public class Game extends Observable {
     private ArrayList<Die> draft;
     private ArrayList<Player> players;
     private ArrayList<Die> roundTrack;
-    private PublicObjective[] publicObjectiveActive;
+    private ArrayList<PublicObjective> publicObjectiveActive;
+    private ArrayList<ToolCard> toolCards;
+    private ToolCardParser reader;
 
     private static final int N_OBJECTIVES = 3;
+    private static final int N_TOOL_CARD = 12;
 
     /*
         constructor
@@ -33,7 +37,9 @@ public class Game extends Observable {
         this.draft = new ArrayList<Die>();
         this.players = new ArrayList<Player>();
         this.roundTrack = new ArrayList<Die>();
-        this.publicObjectiveActive = new PublicObjective[N_OBJECTIVES];
+        this.publicObjectiveActive = new ArrayList<PublicObjective>(N_OBJECTIVES);
+        this.toolCards = new ArrayList<ToolCard>(N_TOOL_CARD);
+        this.reader = new ToolCardParser();
     }
 
     /*
@@ -211,10 +217,11 @@ public class Game extends Observable {
         //randomly creates 3 public objectives
         PublicObjectiveFactory of = new PublicObjectiveFactory();
         for (int i = 0; i < N_OBJECTIVES; i++) {
-            publicObjectiveActive[i] = of.getRandomObjective();
+            publicObjectiveActive.add(of.getRandomObjective());
         }
 
         //creates tool cards
+        toolCards.addAll(reader.readToolCards());
 
         //[...]
 
@@ -230,7 +237,7 @@ public class Game extends Observable {
         WindowPattern w = getPlayerFromId(playerId).getPlayerWindow();
         Die d = removeDieFromDraft(die);
         w.getWindowMatrix(x, y).setDie(d);
-        if(!getPlayerFromId(playerId).isFirstDiePlaced()) getPlayerFromId(playerId).setFirstDiePlaced(true);
+        getPlayerFromId(playerId).setFirstDiePlaced(true);
         notify(this.toString());
     }
 
