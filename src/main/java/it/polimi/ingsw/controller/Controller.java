@@ -1,8 +1,5 @@
 package it.polimi.ingsw.controller;
-import it.polimi.ingsw.messages.client.ErrorMessage;
-import it.polimi.ingsw.messages.client.NewTurnMessage;
-import it.polimi.ingsw.messages.client.OkMessage;
-import it.polimi.ingsw.messages.client.ShowWindowsMessage;
+import it.polimi.ingsw.messages.client.*;
 import it.polimi.ingsw.messages.controller.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.parsers.GsonParser;
@@ -84,6 +81,7 @@ public class Controller implements Observer{
      */
 
     private void nextPlayer(int player){
+        model.notifyMessage(new EndTurnMessage(), player);
         model.getPlayerFromId(player).resetTurn();
         /*
             try catch needs to be added in order to handle the nextRound exception !!!
@@ -176,18 +174,21 @@ public class Controller implements Observer{
         }
         else{
             if(!p.getPlayerWindow().isValidFirstMove(message.getX(), message.getY(), model.getDieFromDraft(message.getIndex()))){
-                model.notifyMessage(new ErrorMessage(), player);
+                model.notifyMessage(new ErrorMessage(2), player);
                 return;
             }
         }
 
         model.useDie(player, message.getX(), message.getY(), message.getIndex());
         p.setDieUsed(true);
+        model.notifyMessage(new OkMessage(), player);
+        model.notifyAllPlayers();
         if(p.isDieUsed() && p.isToolCardUsed()){
             nextPlayer(player);
         }
-        model.notifyMessage(new OkMessage(), player);
-        model.notifyAllPlayers();
+        else{
+            model.notifyMessage(new NewTurnMessage(), player);
+        }
     }
 
     public void visit(UnexpectedMessage message, int player){

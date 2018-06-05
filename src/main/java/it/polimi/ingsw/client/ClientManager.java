@@ -42,92 +42,19 @@ public class ClientManager extends Observable{
 
         view.print("Insert username: ");
         String inputLine = stdin.nextLine();
-        //System.out.println(inputLine);
         LoginMessage gson = new LoginMessage(inputLine);
         notify(gson.serialize());
     }
 
-    public void print(String gson){
-
+    public void handleMove(String gson){
         ClientMessage message = parser.parseClient((String) gson);
         message.accept(this);
-
-        /*
-        if(id.equals("ok")){
-            System.out.println("Welcome to the game.");
-        }
-        if(id.equals("error")) {
-            ErrorMessage gson = new ErrorMessage();
-            gson = gson.deserialize(message);
-            if (gson.getType() == 1) {
-                System.out.println("Username already used. Insert a new one:");
-                String inputLine = stdin.nextLine();
-                LoginMessage mex = new LoginMessage(inputLine);
-                notify(mex.serialize());
-            }
-            if (gson.getType() == 0) {
-                System.out.println("Not a player. A match is being played, try again later.");
-                throw new TooManyPlayersException();
-            }
-
-            //type = 2 is invalidMove
-        }
-
-        if(id.equals("windows")) {
-            ShowWindowsMessage gson = new ShowWindowsMessage();
-            gson = gson.deserialize(message);
-            System.out.println("\nChoose a Window\n");
-            System.out.println(gson.getW1());
-            System.out.println(gson.getW2());
-            System.out.println(gson.getW3());
-            System.out.println(gson.getW4());
-            System.out.println("\nInsert the name of desired Window:");
-            String line = stdin.nextLine();
-            /////controlla la validità della finestra scelta
-
-            ChooseWindowMessage m = new ChooseWindowMessage(line);
-            notify(m.serialize());
-        }
-
-        if (id.equals("place")) {
-            System.out.println("Choose your move\n1. Place a die\n2. Use Tool Card");
-            String line = stdin.nextLine();
-            if(line.equals("1")) {
-                System.out.print("Choose a die: "); ////stampo draft
-                int die = stdin.nextInt();
-                System.out.print("Choose a x_place: ");  ////stampa la window
-                int x = stdin.nextInt();
-                System.out.print("Choose a y_place: ");  ////stampa la window
-                int y = stdin.nextInt();
-                notify(new SetDieMessage(x, y, die).serialize());
-            } else if(line.equals("2")) {
-                *//*System.out.println("Choose a Tool Card: ");
-                int toolCardId = stdin.nextInt();
-                notify(toolCardId);*//*
-            }
-        }*/
-
     }
 
     public void visit(NewTurnMessage message){
-        view.print("Make a move (help to see all supported moves)");
-        String move = stdin.nextLine();
-        if(move.equals("place")){
-            view.print("Choose a die and insert its position: ");
-            int die = stdin.nextInt();
-            System.out.print("Choose the column (from left to right): ");
-            int x = stdin.nextInt();
-            System.out.print("Choose the row (from top to bottom): ");
-            int y = stdin.nextInt();
-            notify(new SetDieMessage(x, y, die).serialize());
-        }
-        if(move.equals("end")){
-            notify(new PassMessage());
-        }
-        if(move.equals("help")){
-            view.print("place\tplace a die on the Window\ntool card\tuse a Tool Card\nend\tend your turn");
-        }
-        else view.print("Invalid move");
+        view.print("It's your turn.");
+        cleanInputStream();
+        playerAction();
     }
 
     public void visit(ErrorMessage message) {
@@ -141,6 +68,10 @@ public class ClientManager extends Observable{
             LoginMessage mex = new LoginMessage(inputLine);
             notify(mex.serialize());
         }
+        if (message.getType() == 2) {
+            view.print("Invalid move.");
+            playerAction();
+        }
     }
 
     public void visit(ShowWindowsMessage message){
@@ -149,31 +80,65 @@ public class ClientManager extends Observable{
 
         //controlla la validità della finestra scelta
 
-        view.print("Wait for the start of the match");
+        view.print("Wait for the start of the match.");
         ChooseWindowMessage m = new ChooseWindowMessage(line);
         notify(m.serialize());
     }
 
     public void visit(UpdateModelMessage message){
         view.printUpdate(message);
-        view.print("Wait for your turn");
     }
 
     public void visit(OkMessage message){
-        view.print("Action successful");
+        view.print("Action successful!");
     }
 
+    public void visit(EndTurnMessage message){
+        view.printEndOfTurn();
+    }
+
+    /*
+        clean System.in
+     */
+
     private void cleanInputStream() {
-        try {        ////////clean System.in
+        try {
             int length = System.in.available();
-            //System.out.println(length);
             while(length > 0) {
                 length -= stdin.nextLine().length() + 1;
-                //System.out.println(length);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /*
+        handle the player's turn
+     */
+
+    private void playerAction(){
+        view.print("Make a move ('help' to see more)");
+        String move = stdin.nextLine();
+        if(move.equals("place")){
+            view.print("Choose a die and insert its position: ");
+            int die = Integer.parseInt(stdin.nextLine());
+            view.print("Choose the column (from left to right): ");
+            int x = Integer.parseInt(stdin.nextLine());
+            view.print("Choose the row (from top to bottom): ");
+            int y = Integer.parseInt(stdin.nextLine());
+            notify(new SetDieMessage(x, y, die).serialize());
+        }
+        else if(move.equals("end")){
+            notify(new PassMessage().serialize());
+        }
+        else if(move.equals("help")){
+            view.print("'place' -> place a die on your Window.\n" +
+                    "'end' -> end your turn.");
+            playerAction();
+        }
+        else{
+            view.print("Unsupported move.");
+            playerAction();
+        }
+    }
 }

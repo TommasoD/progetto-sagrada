@@ -59,7 +59,7 @@ public class Client implements Observer {
             ///until the end of the game
             while (!done) {
                 String s = socketIn.readUTF();
-                clientManager.print(s);
+                clientManager.handleMove(s);
             }
 
         } catch (IOException e ) {
