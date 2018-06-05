@@ -10,7 +10,6 @@ public class SocketConnection extends Thread {
     private Socket socket;
     private int id;
 
-    private DataInputStream input;
     private DataOutputStream output;
     private GameRoom gameRoom;
 
@@ -19,7 +18,6 @@ public class SocketConnection extends Thread {
         this.id = index;
         this.gameRoom = gameRoom;
         try {
-            input = new DataInputStream(socket.getInputStream());
             output = new DataOutputStream(socket.getOutputStream());
         }
         catch (IOException e) {
@@ -35,17 +33,16 @@ public class SocketConnection extends Thread {
     public void run() {
 
         try {
-            output.writeUTF("Waiting for other players...");   ////////DA RIFARE!!!
+            output.writeUTF("Waiting for other players...");
             output.flush();
             while(!gameRoom.getGameReady()) {
-                input.readUTF();
+                //output.writeUTF("");
+                //output.flush();
             }
         }
         catch (IOException e) {
             gameRoom.removeSocketConnection(id);
         }
-
-
     }
 
     public DataOutputStream getOutput() {

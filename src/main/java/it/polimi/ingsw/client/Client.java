@@ -12,7 +12,7 @@ import java.net.Socket;
 public class Client implements Observer {
     private String ip;
     private int port;
-    NetworkParser reader = new NetworkParser();
+    private NetworkParser reader = new NetworkParser();
     private ClientManager clientManager;
     private DataInputStream socketIn;
     private DataOutputStream socketOut;
@@ -49,7 +49,7 @@ public class Client implements Observer {
             while (!done) {
                 String mex = socketIn.readUTF();
                 System.out.println(mex);
-                if (mex.equals("Game ready")) done = true;
+                if(mex.equals("Game ready")) done = true;
             }
 
             //login message

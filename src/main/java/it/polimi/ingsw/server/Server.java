@@ -72,29 +72,39 @@ public class Server {
         controller.newMatch(gameRoom.getSize());
 
         //create client handler
-
-        for (int i = 0; i < gameRoom.getSize(); i ++) {
-            gameManager.playerList.add(new ClientHandler(gameRoom.getConnections().get(i).getSocket(), gameManager, i));
+        int i = 0;
+        for (SocketConnection s : gameRoom.getConnections()) {
+            gameManager.playerList.add(new ClientHandler(s.getSocket(), gameManager, i));
             gameManager.playerList.get(i).start();
+            i++;
         }
 
-        /*while(1 == 1) {
+        while(1 == 1) {
             try {
                 Socket socket = serverSocket.accept();
-                gameManager.playerList.add(new ClientHandler(socket, gameManager, i));
                 System.out.println("Client " + (i + 1) + " connected");
-                gameManager.playerList.get(i).start();
+                if(!model.isGameStarted()) {
+                    DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+                    out.writeUTF("A new game is starting. Try connecting later.");
+                    out.flush();
+                    out.close();
+                    socket.close();
+                }
+                else{
+                    gameManager.playerList.add(new ClientHandler(socket, gameManager, i));
+                    gameManager.playerList.get(i).start();
+                }
                 i++;
             } catch (IOException e) {
                 e.printStackTrace();
                 System.exit(1);
             }
-       }  */
+       }
 
     }
 
     public static void main(String[] args) {
-        Server server= new Server();
+        Server server = new Server();
         server.startServer();
     }
 
