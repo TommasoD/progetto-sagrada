@@ -1,18 +1,17 @@
 package it.polimi.ingsw.client;
 
-import com.google.gson.stream.JsonReader;
 import it.polimi.ingsw.messages.client.*;
 import it.polimi.ingsw.messages.controller.ChooseWindowMessage;
 import it.polimi.ingsw.messages.controller.LoginMessage;
 import it.polimi.ingsw.messages.controller.PassMessage;
 import it.polimi.ingsw.messages.controller.SetDieMessage;
 import it.polimi.ingsw.parsers.GsonParser;
+import it.polimi.ingsw.parsers.NetworkParser;
 import it.polimi.ingsw.utils.Observable;
-import it.polimi.ingsw.server.TooManyPlayersException;
 import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
-import java.io.StringReader;
+import java.net.Socket;
 import java.util.Scanner;
 
 
@@ -21,15 +20,38 @@ public class ClientManager extends Observable{
     private Scanner stdin;
     private GsonParser parser;
     private View view;
+    private Socket socket;
+    private ClientConnection network;
 
     /*
         constructor
      */
 
-    public ClientManager(){
+    private ClientManager(){
         stdin = new Scanner(System.in);
         parser = new GsonParser();
         view = new View();
+    }
+
+    private void startClient(){
+        NetworkParser reader = new NetworkParser();
+        reader.readNetworkSetup();
+        String ip = reader.getIp();
+        int port = reader.getPort();
+
+        try {
+            socket = new Socket(ip, port);
+        } catch (IOException e) {
+            try {
+                socket.close();
+            } catch (Exception e1) {
+                System.out.println("Error in socket\nConnection closed");
+            }
+            System.exit(1);
+        }
+
+        network = new ClientConnection(socket, this);
+        network.start();
     }
 
     /*
@@ -140,5 +162,10 @@ public class ClientManager extends Observable{
             view.print("Unsupported move.");
             playerAction();
         }
+    }
+
+    public static void main(String[] args) {
+        ClientManager client = new ClientManager();
+        client.startClient();
     }
 }
