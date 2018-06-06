@@ -1,8 +1,8 @@
 package it.polimi.ingsw.messages.controller;
 
-import it.polimi.ingsw.messages.controller.LoginMessage;
 import org.junit.jupiter.api.Test;
 
+import static it.polimi.ingsw.messages.controller.LoginMessage.deserializeLoginMessage;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LoginMessageTest {
@@ -15,8 +15,7 @@ class LoginMessageTest {
 
     @Test
     void deserialize() {
-        LoginMessage m = new LoginMessage();
-        m = m.deserialize("{\"id\":\"login\",\"username\":\"user\"}");
+        LoginMessage m = deserializeLoginMessage("{\"id\":\"login\",\"username\":\"user\"}");
         assertEquals("login", m.getId());
         assertEquals("user", m.getUsername());
     }

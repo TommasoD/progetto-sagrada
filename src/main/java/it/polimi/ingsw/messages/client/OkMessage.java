@@ -20,7 +20,7 @@ public class OkMessage extends ClientMessage {
         c.visit(this);
     }
 
-    public OkMessage deserialize(String s){
+    public static OkMessage deserializeOkMessage(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, OkMessage.class);
     }

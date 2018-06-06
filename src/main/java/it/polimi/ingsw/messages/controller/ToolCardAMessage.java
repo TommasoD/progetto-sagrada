@@ -29,7 +29,7 @@ public class ToolCardAMessage extends ControllerMessage {
         c.visit(this, player);
     }
 
-    public ToolCardAMessage deserialize(String s){
+    public static ToolCardAMessage deserializeToolCardAMessage(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, ToolCardAMessage.class);
     }

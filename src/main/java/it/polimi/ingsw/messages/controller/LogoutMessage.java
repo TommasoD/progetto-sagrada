@@ -20,7 +20,7 @@ public class LogoutMessage extends ControllerMessage {
         c.visit(this, player);
     }
 
-    public LogoutMessage deserialize(String s){
+    public static LogoutMessage deserializeLogoutMessage(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, LogoutMessage.class);
     }

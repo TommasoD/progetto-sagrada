@@ -34,7 +34,7 @@ public class UpdateModelMessage extends ClientMessage {
         c.visit(this);
     }
 
-    public UpdateModelMessage deserialize(String s){
+    public static UpdateModelMessage deserializeUpdateModelMessage(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, UpdateModelMessage.class);
     }

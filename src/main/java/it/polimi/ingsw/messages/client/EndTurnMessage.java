@@ -20,7 +20,7 @@ public class EndTurnMessage extends ClientMessage {
         c.visit(this);
     }
 
-    public EndTurnMessage deserialize(String s){
+    public static EndTurnMessage deserializeEndTurnMessage(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, EndTurnMessage.class);
     }

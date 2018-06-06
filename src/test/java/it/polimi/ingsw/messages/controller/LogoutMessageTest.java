@@ -1,8 +1,8 @@
 package it.polimi.ingsw.messages.controller;
 
-import it.polimi.ingsw.messages.controller.LogoutMessage;
 import org.junit.jupiter.api.Test;
 
+import static it.polimi.ingsw.messages.controller.LogoutMessage.deserializeLogoutMessage;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LogoutMessageTest {
@@ -15,8 +15,7 @@ class LogoutMessageTest {
 
     @Test
     void deserialize() {
-        LogoutMessage m = new LogoutMessage();
-        m = m.deserialize("{\"id\":\"quit\"}");
+        LogoutMessage m = deserializeLogoutMessage("{\"id\":\"quit\"}");
         assertEquals("quit", m.getId());
     }
 

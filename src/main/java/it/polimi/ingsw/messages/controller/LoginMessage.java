@@ -26,7 +26,7 @@ public class LoginMessage extends ControllerMessage {
         c.visit(this, player);
     }
 
-    public LoginMessage deserialize(String s){
+    public static LoginMessage deserializeLoginMessage(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, LoginMessage.class);
     }

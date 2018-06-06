@@ -26,7 +26,7 @@ public class ChooseWindowMessage extends ControllerMessage {
         c.visit(this, player);
     }
 
-    public ChooseWindowMessage deserialize(String s){
+    public static ChooseWindowMessage deserializeChooseWindowMessage(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, ChooseWindowMessage.class);
     }

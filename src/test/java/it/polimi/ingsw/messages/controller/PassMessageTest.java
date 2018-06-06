@@ -1,8 +1,8 @@
 package it.polimi.ingsw.messages.controller;
 
-import it.polimi.ingsw.messages.controller.PassMessage;
 import org.junit.jupiter.api.Test;
 
+import static it.polimi.ingsw.messages.controller.PassMessage.deserializePassMessage;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PassMessageTest {
@@ -15,8 +15,7 @@ class PassMessageTest {
 
     @Test
     void deserialize() {
-        PassMessage m = new PassMessage();
-        m = m.deserialize("{\"id\":\"pass\"}");
+        PassMessage m = deserializePassMessage("{\"id\":\"pass\"}");
         assertEquals("pass", m.getId());
     }
 

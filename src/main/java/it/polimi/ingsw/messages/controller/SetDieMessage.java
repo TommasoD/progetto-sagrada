@@ -30,7 +30,7 @@ public class SetDieMessage extends ControllerMessage {
         c.visit(this, player);
     }
 
-    public SetDieMessage deserialize(String s){
+    public static SetDieMessage deserializeSetDieMessage(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, SetDieMessage.class);
     }

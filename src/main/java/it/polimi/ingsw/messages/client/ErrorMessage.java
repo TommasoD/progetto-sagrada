@@ -32,7 +32,7 @@ public class ErrorMessage extends ClientMessage {
         c.visit(this);
     }
 
-    public ErrorMessage deserialize(String s){
+    public static ErrorMessage deserializeErrorMessage(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, ErrorMessage.class);
     }

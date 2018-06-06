@@ -2,6 +2,7 @@ package it.polimi.ingsw.messages.client;
 
 import org.junit.jupiter.api.Test;
 
+import static it.polimi.ingsw.messages.client.OkMessage.deserializeOkMessage;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OkMessageTest {
@@ -14,8 +15,7 @@ class OkMessageTest {
 
     @Test
     void deserialize() {
-        OkMessage m = new OkMessage();
-        m = m.deserialize("{\"id\":\"ok\"}");
+        OkMessage m = deserializeOkMessage("{\"id\":\"ok\"}");
         assertEquals("ok", m.getId());
     }
 }

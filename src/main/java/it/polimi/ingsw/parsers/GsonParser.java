@@ -7,41 +7,49 @@ import it.polimi.ingsw.messages.controller.*;
 import java.io.IOException;
 import java.io.StringReader;
 
+import static it.polimi.ingsw.messages.client.EndTurnMessage.deserializeEndTurnMessage;
+import static it.polimi.ingsw.messages.client.ErrorMessage.deserializeErrorMessage;
+import static it.polimi.ingsw.messages.client.LoginRequestMessage.deserializeLoginRequestMessage;
+import static it.polimi.ingsw.messages.client.NewTurnMessage.deserializeNewTurnMessage;
+import static it.polimi.ingsw.messages.client.OkMessage.deserializeOkMessage;
+import static it.polimi.ingsw.messages.client.ShowWindowsMessage.deserializeShowWindowsMessage;
+import static it.polimi.ingsw.messages.client.UpdateModelMessage.deserializeUpdateModelMessage;
+import static it.polimi.ingsw.messages.controller.ChooseWindowMessage.deserializeChooseWindowMessage;
+import static it.polimi.ingsw.messages.controller.LoginMessage.deserializeLoginMessage;
+import static it.polimi.ingsw.messages.controller.LogoutMessage.deserializeLogoutMessage;
+import static it.polimi.ingsw.messages.controller.PassMessage.deserializePassMessage;
+import static it.polimi.ingsw.messages.controller.SetDieMessage.deserializeSetDieMessage;
+import static it.polimi.ingsw.messages.controller.ToolCardAMessage.deserializeToolCardAMessage;
+import static it.polimi.ingsw.messages.controller.ToolCardBMessage.deserializeToolCardBMessage;
+import static it.polimi.ingsw.messages.controller.ToolCardCMessage.deserializeToolCardCMessage;
+
 public class GsonParser {
 
     public ControllerMessage parseController(String gson) {
         String id = getIdMessage(gson);
         if(id.equals("login")){
-            LoginMessage m = new LoginMessage();
-            return m.deserialize(gson);
+            return deserializeLoginMessage(gson);
         }
         if(id.equals("window")){
-            ChooseWindowMessage m = new ChooseWindowMessage();
-            return m.deserialize(gson);
+            return deserializeChooseWindowMessage(gson);
         }
         if(id.equals("pass")){
-            PassMessage m = new PassMessage();
-            return m.deserialize(gson);
+            return deserializePassMessage(gson);
         }
         if(id.equals("place")){
-            SetDieMessage m = new SetDieMessage();
-            return m.deserialize(gson);
+            return deserializeSetDieMessage(gson);
         }
         if(id.equals("quit")){
-            LogoutMessage m = new LogoutMessage();
-            return m.deserialize(gson);
+            return deserializeLogoutMessage(gson);
         }
         if(id.equals("toolcardA")){
-            ToolCardAMessage m = new ToolCardAMessage();
-            return m.deserialize(gson);
+            return deserializeToolCardAMessage(gson);
         }
         if(id.equals("toolcardB")){
-            ToolCardBMessage m = new ToolCardBMessage();
-            return m.deserialize(gson);
+            return deserializeToolCardBMessage(gson);
         }
         if(id.equals("toolcardC")){
-            ToolCardCMessage m = new ToolCardCMessage();
-            return m.deserialize(gson);
+            return deserializeToolCardCMessage(gson);
         }
         return new UnexpectedMessage();
     }
@@ -49,32 +57,25 @@ public class GsonParser {
     public ClientMessage parseClient(String gson){
         String id = getIdMessage(gson);
         if(id.equals("turn")){
-            NewTurnMessage m = new NewTurnMessage();
-            return m.deserialize(gson);
+            return deserializeNewTurnMessage(gson);
         }
         if(id.equals("ok")){
-            OkMessage m = new OkMessage();
-            return m.deserialize(gson);
+            return deserializeOkMessage(gson);
         }
         if(id.equals("login")){
-            LoginRequestMessage m = new LoginRequestMessage();
-            return m.deserialize(gson);
+            return deserializeLoginRequestMessage(gson);
         }
         if(id.equals("windows")){
-            ShowWindowsMessage m = new ShowWindowsMessage();
-            return m.deserialize(gson);
+            return deserializeShowWindowsMessage(gson);
         }
         if(id.equals("update")){
-            UpdateModelMessage m = new UpdateModelMessage();
-            return m.deserialize(gson);
+            return deserializeUpdateModelMessage(gson);
         }
         if(id.equals("end")){
-            EndTurnMessage m = new EndTurnMessage();
-            return m.deserialize(gson);
+            return deserializeEndTurnMessage(gson);
         }
         if(id.equals("error")){
-            ErrorMessage m = new ErrorMessage();
-            return m.deserialize(gson);
+            return deserializeErrorMessage(gson);
         }
         return new ErrorMessage(3);
     }

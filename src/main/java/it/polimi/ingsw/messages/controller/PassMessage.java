@@ -20,7 +20,7 @@ public class PassMessage extends ControllerMessage {
         c.visit(this, player);
     }
 
-    public PassMessage deserialize(String s){
+    public static PassMessage deserializePassMessage(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, PassMessage.class);
     }

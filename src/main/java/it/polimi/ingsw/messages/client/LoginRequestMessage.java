@@ -20,7 +20,7 @@ public class LoginRequestMessage extends ClientMessage {
         c.visit(this);
     }
 
-    public LoginRequestMessage deserialize(String s){
+    public static LoginRequestMessage deserializeLoginRequestMessage(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, LoginRequestMessage.class);
     }

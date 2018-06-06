@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.WindowPatternFactory;
 import org.junit.jupiter.api.Test;
 
+import static it.polimi.ingsw.messages.client.UpdateModelMessage.deserializeUpdateModelMessage;
+
 class UpdateModelMessageTest {
 
     @Test
@@ -18,8 +20,7 @@ class UpdateModelMessageTest {
         UpdateModelMessage m = new UpdateModelMessage(g.getPlayers(), g.getDraft(), g.getRoundTrack());
         String s = m.serialize();
         System.out.println(s + "\n\n\n");
-        UpdateModelMessage m2 = new UpdateModelMessage();
-        m2 = m2.deserialize(s);
+        UpdateModelMessage m2 = deserializeUpdateModelMessage(s);
         StringBuilder sb = new StringBuilder();
         for (Die d : m2.getDraft()) {
             sb.append(d.toString());

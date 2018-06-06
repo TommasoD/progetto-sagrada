@@ -14,7 +14,7 @@ public class UnexpectedMessage extends ControllerMessage {
         return gson.toJson(this);
     }
 
-    public UnexpectedMessage deserialize(String s){
+    public static UnexpectedMessage deserializeUnexpectedMessage(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, UnexpectedMessage.class);
     }

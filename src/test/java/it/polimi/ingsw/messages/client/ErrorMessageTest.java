@@ -1,8 +1,8 @@
 package it.polimi.ingsw.messages.client;
 
-import it.polimi.ingsw.messages.client.ErrorMessage;
 import org.junit.jupiter.api.Test;
 
+import static it.polimi.ingsw.messages.client.ErrorMessage.deserializeErrorMessage;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ErrorMessageTest {
@@ -15,8 +15,7 @@ class ErrorMessageTest {
 
     @Test
     void deserialize() {
-        ErrorMessage m = new ErrorMessage();
-        m = m.deserialize("{\"id\":\"error\",\"type\":1}");
+        ErrorMessage m = deserializeErrorMessage("{\"id\":\"error\",\"type\":1}");
         assertEquals("error", m.getId());
         assertEquals(1, m.getType());
     }

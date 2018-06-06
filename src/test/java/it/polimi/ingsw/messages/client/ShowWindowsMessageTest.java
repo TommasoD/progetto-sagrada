@@ -1,8 +1,9 @@
 package it.polimi.ingsw.messages.client;
 
-import it.polimi.ingsw.messages.client.ShowWindowsMessage;
 import it.polimi.ingsw.model.WindowPatternFactory;
 import org.junit.jupiter.api.Test;
+
+import static it.polimi.ingsw.messages.client.ShowWindowsMessage.deserializeShowWindowsMessage;
 
 class ShowWindowsMessageTest {
 
@@ -13,8 +14,7 @@ class ShowWindowsMessageTest {
         String s = m.serialize();
         System.out.println(s);
 
-        ShowWindowsMessage m2 = new ShowWindowsMessage();
-        m2 = m2.deserialize(s);
+        ShowWindowsMessage m2 = deserializeShowWindowsMessage(s);
 
         System.out.println(m2.getW1());
         System.out.println(m2.getW2());

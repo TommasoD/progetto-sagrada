@@ -20,7 +20,7 @@ public class NewTurnMessage extends ClientMessage {
         c.visit(this);
     }
 
-    public NewTurnMessage deserialize(String s){
+    public static NewTurnMessage deserializeNewTurnMessage(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, NewTurnMessage.class);
     }

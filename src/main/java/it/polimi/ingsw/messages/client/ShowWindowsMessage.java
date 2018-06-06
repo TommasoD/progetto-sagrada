@@ -34,7 +34,7 @@ public class ShowWindowsMessage extends ClientMessage {
     }
 
 
-    public ShowWindowsMessage deserialize(String s){
+    public static ShowWindowsMessage deserializeShowWindowsMessage(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, ShowWindowsMessage.class);
     }

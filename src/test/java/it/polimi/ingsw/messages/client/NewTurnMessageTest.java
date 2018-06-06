@@ -2,6 +2,7 @@ package it.polimi.ingsw.messages.client;
 
 import org.junit.jupiter.api.Test;
 
+import static it.polimi.ingsw.messages.client.NewTurnMessage.deserializeNewTurnMessage;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NewTurnMessageTest {
@@ -14,8 +15,7 @@ class NewTurnMessageTest {
 
     @Test
     void deserialize() {
-        NewTurnMessage m = new NewTurnMessage();
-        m = m.deserialize("{\"id\":\"turn\"}");
+        NewTurnMessage m = deserializeNewTurnMessage("{\"id\":\"turn\"}");
         assertEquals("turn", m.getId());
     }
 
