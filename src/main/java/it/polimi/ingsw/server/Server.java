@@ -56,9 +56,13 @@ public class Server {
         }
 
         int socketId = 0;
-        while(gameRoom.getSize()<4) {
+        while(gameRoom.getSize() < 4) {
             try {
                 Socket socket = serverSocket.accept();
+                if(gameRoom.getTimer().read() >= 20000) {
+                    socket.close();
+                    break;
+                }
                 socketId++;
                 gameRoom.addSocketConnection(new SocketConnection(gameRoom, socket, socketId));
                 System.out.println("Client " + socketId + " connected");

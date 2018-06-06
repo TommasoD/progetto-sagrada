@@ -35,7 +35,7 @@ public class ClientHandler extends Thread {
         boolean done = false;
 
         try {
-            output.writeUTF("Game ready");
+            output.writeUTF("\nGame ready\n");
             output.flush();
             while(!done) {
                 String s = input.readUTF();

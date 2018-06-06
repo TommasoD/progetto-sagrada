@@ -32,7 +32,7 @@ public class GameRoom {
     public synchronized void addSocketConnection(SocketConnection playerSocket) {
         for (SocketConnection socketConnection : connections) {
             try {
-                socketConnection.getOutput().writeUTF("New player connected");
+                socketConnection.getOutput().writeUTF("\nNew player connected\n");
             }
             catch (IOException e) {
                 e.printStackTrace();
@@ -56,7 +56,7 @@ public class GameRoom {
 
         for (SocketConnection socketConnection : connections) {
             try {
-                socketConnection.getOutput().writeUTF("A player disconnected");
+                socketConnection.getOutput().writeUTF("\nA player disconnected\n");
             }
             catch (IOException e) {
                 e.printStackTrace();

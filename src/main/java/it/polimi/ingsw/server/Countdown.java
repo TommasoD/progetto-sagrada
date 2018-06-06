@@ -1,5 +1,10 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.parsers.NetworkParser;
+
+import java.io.IOException;
+import java.net.Socket;
+
 public class Countdown extends Thread {
 
     /** Save the time istant when you stop */
@@ -68,7 +73,22 @@ public class Countdown extends Thread {
                 System.exit(1);
             }
         }
+        this.stopClock();
+        if(this.read() >= 20000) {
+            try {
+                this.serverBreak();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
+    }
+
+    private void serverBreak() throws IOException {
+        NetworkParser reader = new NetworkParser();
+        reader.readNetworkSetup();
+        Socket socket = new Socket(reader.getIp(), reader.getPort());
+        socket.close();
     }
 
     /** return current time in seconds */

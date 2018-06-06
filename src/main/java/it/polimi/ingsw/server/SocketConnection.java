@@ -35,11 +35,11 @@ public class SocketConnection extends Thread {
     public void run() {
 
         try {
-            output.writeUTF("Waiting for other players...");
+            output.writeUTF("Waiting for other players...\n");
             output.flush();
             String s;
-            while(!gameRoom.getGameReady()) {
-                output.writeUTF(gameRoom.getTimer().toString());
+            while(!gameRoom.getGameReady() && gameRoom.getTimer().read() < 20000) {
+                output.writeUTF("\r" + gameRoom.getTimer().toString());
                 output.flush();
                 try {
                     Thread.sleep(1000);
@@ -47,6 +47,7 @@ public class SocketConnection extends Thread {
                     e.printStackTrace();
                 }
             }
+            /////gameReady -> true
         }
         catch (IOException e) {
             gameRoom.removeSocketConnection(id);
