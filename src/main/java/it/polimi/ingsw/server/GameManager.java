@@ -4,7 +4,7 @@ import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.utils.Observer;
 import java.util.ArrayList;
 
-public class GameManager extends Observable implements Observer {
+public class GameManager extends Observable<String> implements Observer<String> {
     protected ArrayList<ClientHandler> playerList;
 
     public GameManager() {
@@ -12,15 +12,15 @@ public class GameManager extends Observable implements Observer {
     }
 
 
-    public void update(Object message) {
+    public void update(String message) {
         for(ClientHandler c : playerList){
-            c.send((String)message);
+            c.send(message);
         }
     }
 
-    public void update(Object message, int id) {
+    public void update(String message, int id) {
         for(ClientHandler c : playerList){
-            if(c.getIndex() == id) c.send((String)message);
+            if(c.getIndex() == id) c.send(message);
         }
     }
 

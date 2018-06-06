@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.parsers.GsonParser;
 import it.polimi.ingsw.utils.Observer;
 
-public class Controller implements Observer{
+public class Controller implements Observer<String>{
 
     private Game model;
     private RoundHandler handler;
@@ -116,12 +116,12 @@ public class Controller implements Observer{
         calls parse() method from GsonParser and uses visitor pattern to handle the returned Message
      */
 
-    public synchronized void update(Object gson, int player) {
-        ControllerMessage message = parser.parseController((String) gson);
+    public synchronized void update(String gson, int player) {
+        ControllerMessage message = parser.parseController(gson);
         message.accept(this, player);
     }
 
-    public void update(Object message) {
+    public void update(String message) {
         throw new UnsupportedOperationException();
     }
 

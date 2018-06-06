@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model;
-import it.polimi.ingsw.messages.client.ErrorMessage;
 import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.client.OkMessage;
 import it.polimi.ingsw.messages.client.UpdateModelMessage;
 import it.polimi.ingsw.model.objectives.PrivateObjective;
 import it.polimi.ingsw.model.objectives.PublicObjectiveFactory;
@@ -13,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 
-public class Game extends Observable {
+public class Game extends Observable<String> {
 
     private boolean gameStarted;
     private DiceBag diceBag;
@@ -249,29 +247,22 @@ public class Game extends Observable {
     }
 
     /*
-
-    ToolCards Methods
-
+        ToolCards Methods
      */
 
     public void useToolCard(int i) {
         toolCards.get(i).setAsAlreadyUsed();
     }
 
-
-    public ArrayList<ToolCard> getToolCards () {
+    public List getToolCards () {
         return toolCards;
     }
-
-
 
     public ToolCard getToolCard(int i) {
         return toolCards.get(i);
     }
 
-
-
-    public ArrayList<PublicObjective> getPublicObjectiveActive() {
+    public List getPublicObjectiveActive() {
         return publicObjectiveActive;
     }
 
