@@ -5,35 +5,35 @@
     <toolcard id = "1" name = "Grozing Pliers" description = "After drafting increase or decrease the value of the drafted by 1
 1 may not change to 6, or 6 to 1" > </toolcard>
 
-    <toolcard id = "2" name = "Englomise Brush" description = "Muovi un qualsiasi dado nella tua vetrata ignorando le restrizioni di colore.
-Devi rispettare tutte le altre restrizioni di piazzamento" > </toolcard>
+    <toolcard id = "2" name = "Englomise Brush" description = "Move any one die in your window ignoring the color restrictions.
+You must obey all other placement restrictions." > </toolcard>
 
-    <toolcard id = "3" name = "Copper Foil Burnisher" description = "Muovi un qualsiasi dado nella tua vetrata ignorando le restrizioni di valore.
-Devi rispettare tutte le altre restrizioni di piazzamento" > </toolcard>
+    <toolcard id = "3" name = "Copper Foil Burnisher" description = "Move any one die in your window ignoring shade restrictions.
+You must obey all other placement restrictions." > </toolcard>
 
-    <toolcard id = "4" name = "Lathekin" description = "Muovi esattamente due dadi, rispettando tutte le restrizioni di piazzamento" > </toolcard>
+    <toolcard id = "4" name = "Lathekin" description = "Move exactly two dice, obeying all placement restrictions." > </toolcard>
 
-    <toolcard id = "5" name = "Lens Cutter" description = "Dopo aver scelto un dado, scambia quel dado con un dado sul Tracciato dei Round" > </toolcard>
+    <toolcard id = "5" name = "Lens Cutter" description = "After drafting, swap the drafted die with a die from the Round Track." > </toolcard>
 
-    <toolcard id = "6" name = "Flux Brush" description = "Dopo aver scelto un dado, tira nuovamente quel dado.
-Se non puoi piazzarlo, riponilo nella Riserva" > </toolcard>
+    <toolcard id = "6" name = "Flux Brush" description = "After drafting, re-roll the drafted die.
+If it cannot be placed return it to the Draft Pool." > </toolcard>
 
-    <toolcard id = "7" name = "Glazing Hammer" description = "Tira nuovamente tutti i dadi della Riserva.
-Questa carta può essera usata solo durante il tuo secondo turno, prima di scegliere il secondo dado" > </toolcard>
+    <toolcard id = "7" name = "Glazing Hammer" description = "Re-roll all dice in the Draft Pool.
+This may only be used on your second turn before drafting." > </toolcard>
 
-    <toolcard id = "8" name = "Running Pliers" description = "Dopo il tuo primo turno scegli immediatamente un altro dado.
-Salta il tuo secondo turno in questo round" > </toolcard>
+    <toolcard id = "8" name = "Running Pliers" description = "After your first turn, immediately draft a die.
+Skip your next turn this round." > </toolcard>
 
-    <toolcard id = "9" name = "Cork-backed Straightedge" description = "Dopo aver scelto un dado, piazzalo in una casella che non sia adiacente a un altro dado.
-Devi rispettare tutte le restrizioni di piazzamento" > </toolcard>
+    <toolcard id = "9" name = "Cork-backed Straightedge" description = "After drafting, place the die in a spot that is not adjacent to another die.
+You must obey all other placement restrictions." > </toolcard>
 
-    <toolcard id = "10" name = "Grinding Stone" description = "Dopo aver scelto un dado, giralo sulla faccia opposta.
-6 diventa 1, 5 diventa 2, 4 diventa 3 ecc." > </toolcard>
+    <toolcard id = "10" name = "Grinding Stone" description = "After drafting, flip the die to its opposite side.
+6 flips to 1, 5 flips to 2, 4 to 3, etc." > </toolcard>
 
-    <toolcard id = "11" name = "Flux Remover" description = "Dopo aver scelto un dado, riponilo nel Sacchetto, poi pescane uno dal Sacchetto.
-Scegli il valore del nuovo dado e piazzalo, rispettando tutte le restrizioni di piazzamento" > </toolcard>
+    <toolcard id = "11" name = "Flux Remover" description = "After drafting, return the die to the Dice Bag and pull 1 die from the bag.
+Choose a value and place the new die, obeying all placement restrictions, or return it to the Draft Pool." > </toolcard>
 
-    <toolcard id = "12" name = "Tap Wheel" description = "Muovi fino a due dadi dello stesso colore di un solo dado sul Tracciato dei Round.
-Devi rispettare tutte le restrizioni di piazzamento" > </toolcard>
+    <toolcard id = "12" name = "Tap Wheel" description = "Move up to two dice of the same color that match the color of a die on the Round Track.
+You must obey all placement restrictions." > </toolcard>
 
 </toolcards>

@@ -104,4 +104,11 @@ public class Slot {
         System.out.println(this);
     }
 
+    public String getColorRule() {
+        return colorRule;
+    }
+
+    public String getValueRule() {
+        return valueRule;
+    }
 }
