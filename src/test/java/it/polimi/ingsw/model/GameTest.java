@@ -148,9 +148,12 @@ class GameTest {
     @Test
     void useToolCardTest() {
         Game g = new Game();
+        WindowPatternFactory wf = new WindowPatternFactory();
+        g.addPlayer(new Player("user", wf.createWindow("Kaleidoscopic Dream"), 0));
         g.initialize();
-        g.useToolCard(5);
-        assertTrue(g.getToolCard(5).isAlreadyUsed());
+        g.useToolCard(5, 0);
+        assertTrue(g.getToolCard(4).isAlreadyUsed());
+        assertEquals(3, g.getPlayerFromId(0).getPlayerWindow().getDifficultyToken());
     }
 
 }

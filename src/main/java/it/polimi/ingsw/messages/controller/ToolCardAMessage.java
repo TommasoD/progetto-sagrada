@@ -26,7 +26,7 @@ public class ToolCardAMessage extends ControllerMessage {
     }
 
     public void accept(Controller c, int player) {
-        c.visit(this);
+        c.visit(this, player);
     }
 
     public ToolCardAMessage deserialize(String s){

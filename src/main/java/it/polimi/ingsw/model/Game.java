@@ -64,6 +64,14 @@ public class Game extends Observable<String> {
         return players;
     }
 
+    public List<ToolCard> getToolCards () {
+        return toolCards;
+    }
+
+    public List<PublicObjective> getPublicObjectiveActive() {
+        return publicObjectiveActive;
+    }
+
     /*
         players methods
      */
@@ -228,7 +236,7 @@ public class Game extends Observable<String> {
     }
 
     /*
-        standard player actions
+        standard player action: set a die inside a player's window
      */
 
     public void useDie(int playerId, int x, int y, int die) {
@@ -239,7 +247,10 @@ public class Game extends Observable<String> {
         notify(this.toString());
     }
 
-    //x and y old coordinates. a nd b new coordinates
+    /*
+        standard player action: move a die inside a player's window
+        x, y old coordinates, a, b new coordinates
+     */
     public void moveDie(int playerId, int x, int y, int a, int b) {
         WindowPattern w = getPlayerFromId(playerId).getPlayerWindow();
         Die d = w.getWindowMatrix(x, y).removeDie();
@@ -247,23 +258,31 @@ public class Game extends Observable<String> {
     }
 
     /*
-        ToolCards Methods
+        reduces the tokens of a player and sets a toolcard as already used
      */
 
-    public void useToolCard(int i) {
-        toolCards.get(i).setAsAlreadyUsed();
+    public void useToolCard(int toolcard, int player) {
+        getPlayerFromId(player).setToolCardUsed(true);
+        int cost = toolCards.get(toolcard - 1).isAlreadyUsed() ? 2 : 1;
+        getPlayerFromId(player).getPlayerWindow().decreaseDifficultyToken(cost);
+        toolCards.get(toolcard - 1).setAsAlreadyUsed();
     }
 
-    public List getToolCards () {
-        return toolCards;
+    /*
+        return true if the player has enough tokens to use the card
+     */
+
+    public boolean canUseToolCard(int toolcard, int player){
+        int cost = toolCards.get(toolcard - 1).isAlreadyUsed() ? 2 : 1;
+        return getPlayerFromId(player).getPlayerWindow().getDifficultyToken() < cost;
     }
+
+    /*
+        returns the toolcard at the given
+     */
 
     public ToolCard getToolCard(int i) {
         return toolCards.get(i);
-    }
-
-    public List getPublicObjectiveActive() {
-        return publicObjectiveActive;
     }
 
     /*
@@ -274,7 +293,11 @@ public class Game extends Observable<String> {
         notify(message.serialize(), player);
     }
 
-    public void notifyAllPlayers(){
+    public void notifyAllPlayers(Message message){
+        notify(message.serialize());
+    }
+
+    public void notifyUpdate(){
         notify(new UpdateModelMessage(players, draft, roundTrack).serialize());
     }
 

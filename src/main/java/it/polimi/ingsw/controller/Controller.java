@@ -9,6 +9,7 @@ public class Controller implements Observer<String>{
 
     private Game model;
     private RoundHandler handler;
+    private ToolCardCheck checker;
     private WindowPatternFactory factory;
     private GsonParser parser;
 
@@ -20,12 +21,14 @@ public class Controller implements Observer<String>{
         this.model = model;
         factory = new WindowPatternFactory();
         parser = new GsonParser();
+        checker = new ToolCardCheck();
     }
 
     public Controller(){
         model = new Game();
         factory = new WindowPatternFactory();
         parser = new GsonParser();
+        checker = new ToolCardCheck();
     }
 
     /*
@@ -71,7 +74,7 @@ public class Controller implements Observer<String>{
         model.setGameStarted(true);
         model.initialize();
         handler = new RoundHandler(model.playersSize());
-        model.notifyAllPlayers();
+        model.notifyUpdate();
         model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
     }
 
@@ -85,6 +88,22 @@ public class Controller implements Observer<String>{
         Player p = model.getPlayerFromId(playerId);
         p.setPlayerWindow(factory.createWindow(windowName));
         p.setReady(true);
+    }
+
+    /*
+        when a tool card is used, some changes in the model must be made (tokens decreased, card set as used)
+        then the player is notified of the result (action successful) and everyone gets an update of the board
+        in case the player has already done both his moves (set a die and use a card), his turn ends
+     */
+
+    private void toolCardUsed(int toolcard, int player){
+        model.useToolCard(toolcard, player);
+        model.notifyMessage(new OkMessage(), player);
+        model.notifyUpdate();
+        Player p = model.getPlayerFromId(player);
+        if(p.isDieUsed() && p.isToolCardUsed()){
+            nextPlayer(player);
+        }
     }
 
     /*
@@ -119,10 +138,6 @@ public class Controller implements Observer<String>{
     public synchronized void update(String gson, int player) {
         ControllerMessage message = parser.parseController(gson);
         message.accept(this, player);
-    }
-
-    public void update(String message) {
-        throw new UnsupportedOperationException();
     }
 
     /*
@@ -161,6 +176,7 @@ public class Controller implements Observer<String>{
     public void visit(LogoutMessage message, int player){
         System.out.println(message.getId() + " message received from player " + player);
         model.getPlayerFromId(player).setOnline(false);
+        //notificare tutti gli altri giocatori della disconnessione
     }
 
     public void visit(PassMessage message, int player){
@@ -170,14 +186,11 @@ public class Controller implements Observer<String>{
 
     public void visit(SetDieMessage message, int player){
         System.out.println(message.getId() + " message received from player " + player);
-
         Player p = model.getPlayerFromId(player);
-
         if(p != model.getPlayers(handler.getCurrentPlayer()) || p.isDieUsed()){
             model.notifyMessage(new ErrorMessage(2), player);
             return;
         }
-
         if(p.isFirstDiePlaced()){
             if(!p.getPlayerWindow().isValid(message.getX(), message.getY(), model.getDieFromDraft(message.getIndex()))){
                 model.notifyMessage(new ErrorMessage(2), player);
@@ -190,41 +203,68 @@ public class Controller implements Observer<String>{
                 return;
             }
         }
-
         model.useDie(player, message.getX(), message.getY(), message.getIndex());
         p.setDieUsed(true);
         model.notifyMessage(new OkMessage(), player);
-        model.notifyAllPlayers();
+        model.notifyUpdate();
         if(p.isDieUsed() && p.isToolCardUsed()){
             nextPlayer(player);
         }
-        else{
-            model.notifyMessage(new NewTurnMessage(), player);
+    }
+
+    /*
+        tool cards type A change one die from the draft pool according to an identifier
+     */
+
+    public void visit(ToolCardAMessage message, int player){
+        System.out.println(message.getId() + " message received from player " + player);
+        if(!model.canUseToolCard(message.getNum(), player)){
+            model.notifyMessage(new ErrorMessage(3), player);
+            return;
         }
+        if(message.getNum() ==  1){
+            Die d = model.getDieFromDraft(message.getDieIndex());
+            if(!checker.toolCard1(d, message.getAction())){
+                model.notifyMessage(new ErrorMessage(2), player);
+                return;
+            }
+            if (message.getAction() == 0) d.decreaseValue();
+            else d.increaseValue();
+        }
+        if(message.getNum() ==  5){
+            Die d = model.removeDieFromDraft(message.getDieIndex());
+            model.setDieDraft(model.removeDieFromRoundTrack(message.getAction()));
+            model.setDieRoundTrack(d);
+        }
+        toolCardUsed(message.getNum(), player);
     }
 
-    public void visit(ToolCardAMessage message){
+    public void visit(ToolCardBMessage message, int player){
 
         //[...]
 
     }
 
-    public void visit(ToolCardBMessage message){
+    public void visit(ToolCardCMessage message, int player){
 
         //[...]
 
     }
 
-    public void visit(ToolCardCMessage message){
-
-        //[...]
-
-    }
+    /*
+        when GsonParser fails to identify a Json String
+     */
 
     public void visit(UnexpectedMessage message, int player){
         System.out.println("unexpected message received from player " + player);
     }
 
+    /*
+        unsupported method
+     */
 
+    public void update(String message) {
+        throw new UnsupportedOperationException();
+    }
 
 }
