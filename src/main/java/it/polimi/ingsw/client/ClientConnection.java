@@ -1,7 +1,5 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.parsers.NetworkParser;
-import it.polimi.ingsw.server.TooManyPlayersException;
 import it.polimi.ingsw.utils.Observer;
 
 import java.io.DataInputStream;
@@ -9,39 +7,31 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class Client implements Observer {
-    private String ip;
-    private int port;
-    private NetworkParser reader = new NetworkParser();
+public class ClientConnection extends Thread implements Observer {
+
     private ClientManager clientManager;
     private DataInputStream socketIn;
     private DataOutputStream socketOut;
-    private Socket socket;
 
-    public Client() {
-        reader.readNetworkSetup();
-        this.port = reader.getPort();
-        this.ip = reader.getIp();
+    public ClientConnection(Socket socket, ClientManager clientManager) {
 
-        clientManager = new ClientManager();
+        try {
+            socketIn = new DataInputStream(socket.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            socketOut = new DataOutputStream(socket.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        this.clientManager = clientManager;
         clientManager.register(this);
     }
 
-    public static void main(String[] args) {
-        Client client = new Client();
-        try {
-            client.startClient();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-    }
-
-    public void startClient() throws IOException {
-        socket = new Socket(ip, port);
-        socketIn = new DataInputStream(socket.getInputStream());
-        socketOut = new DataOutputStream(socket.getOutputStream());
-
+    @Override
+    public void run(){
         try {
             boolean done = false;
 
@@ -67,9 +57,16 @@ public class Client implements Observer {
         }
 
         finally {
-            socket.close();
-            socketIn.close();
-            socketOut.close();
+            try {
+                socketIn.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                socketOut.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
