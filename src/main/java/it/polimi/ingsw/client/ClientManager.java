@@ -11,7 +11,9 @@ import it.polimi.ingsw.utils.Observer;
 import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.Scanner;
 
 
@@ -43,22 +45,34 @@ public class ClientManager implements Observer<String> {
         NetworkParser reader = new NetworkParser();
         reader.readNetworkSetup();
         int port = reader.getPort();
-        String ip = reader.getIp();
 
-        /*
-            da aggiungere: richiesta dell'ip del server
-            se errato -> carica da file
-         */
 
-        try {
-            socket = new Socket(ip, port);
-        } catch (IOException e) {
+        System.out.print("Insert a valid IP address: ");
+        String ip = stdin.nextLine();
+
+        socket = new Socket();
+        try{
+            System.out.print("Connecting...\n");
+            socket.connect(new InetSocketAddress(ip, port), 5000);
+        } catch (Exception e) {
+            System.out.println("IP address is not valid\nA default IP address is used");
             try {
                 socket.close();
             } catch (Exception e1) {
-                System.out.println("Error in socket\nConnection closed");
+                e1.printStackTrace();
             }
-            System.exit(1);
+            try {
+                ip = reader.getIp();
+                socket = new Socket(ip, port);
+            } catch (IOException e2) {
+                try {
+                    socket.close();
+                } catch (Exception e1) {
+                    System.out.println("Error in socket\nConnection closed");
+                }
+                System.exit(1);
+            }
+
         }
 
         network = new ClientConnection(socket);

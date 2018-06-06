@@ -35,7 +35,7 @@ public class SocketConnection extends Thread {
     public void run() {
 
         try {
-            output.writeUTF("Waiting for other players...\n");
+            output.writeUTF("Waiting for other players\n");
             output.flush();
             String s;
             while(!gameRoom.getGameReady() && gameRoom.getTimer().read() < 20000) {

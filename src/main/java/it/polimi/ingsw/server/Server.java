@@ -48,7 +48,7 @@ public class Server {
 
     public void startServer() {
         try {
-            System.out.println("My ip address: " + InetAddress.getLocalHost());
+            System.out.println("My ip address: " + InetAddress.getLocalHost().getHostAddress());
         }
         catch (UnknownHostException e) {
             e.printStackTrace();
