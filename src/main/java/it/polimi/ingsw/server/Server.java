@@ -83,6 +83,8 @@ public class Server {
             i++;
         }
 
+        controller.newLoginRequest();
+
         while(1 == 1) {
             try {
                 Socket socket = serverSocket.accept();

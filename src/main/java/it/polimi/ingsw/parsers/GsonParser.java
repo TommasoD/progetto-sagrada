@@ -56,6 +56,10 @@ public class GsonParser {
             OkMessage m = new OkMessage();
             return m.deserialize(gson);
         }
+        if(id.equals("login")){
+            LoginRequestMessage m = new LoginRequestMessage();
+            return m.deserialize(gson);
+        }
         if(id.equals("windows")){
             ShowWindowsMessage m = new ShowWindowsMessage();
             return m.deserialize(gson);

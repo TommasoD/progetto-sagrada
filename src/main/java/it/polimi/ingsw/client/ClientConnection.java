@@ -1,19 +1,18 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.utils.Observer;
+import it.polimi.ingsw.utils.Observable;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class ClientConnection extends Thread implements Observer {
+public class ClientConnection extends Observable<String> implements Runnable {
 
-    private ClientManager clientManager;
     private DataInputStream socketIn;
     private DataOutputStream socketOut;
 
-    public ClientConnection(Socket socket, ClientManager clientManager) {
+    public ClientConnection(Socket socket) {
 
         try {
             socketIn = new DataInputStream(socket.getInputStream());
@@ -26,30 +25,23 @@ public class ClientConnection extends Thread implements Observer {
             e.printStackTrace();
         }
 
-        this.clientManager = clientManager;
-        clientManager.register(this);
     }
 
-    @Override
     public void run(){
         try {
             boolean done = false;
 
-            //first message is "connection established, insert username"
             while (!done) {
                 String mex = socketIn.readUTF();
-                if(!mex.equals("0")) System.out.println(mex);
-                if(mex.equals("Game ready")) done = true;
+                System.out.print(mex);
+                if(mex.equals("\nGame ready\n")) done = true;
             }
 
-            //login message
-            clientManager.loginPrint();
             done = false;
 
-            ///until the end of the game
-            while (!done) {
+            while (!done) {                         //until the end of the game
                 String s = socketIn.readUTF();
-                clientManager.handleMove(s);
+                notify(s);
             }
 
         } catch (IOException e ) {
@@ -70,19 +62,14 @@ public class ClientConnection extends Thread implements Observer {
         }
     }
 
-    public void update(Object message) {
+    public void send(String message) {
         try {
-            socketOut.writeUTF((String)message);
+            socketOut.writeUTF(message);
             socketOut.flush();
         }
         catch (IOException e) {
             e.printStackTrace();
-            System.exit(1);
         }
-    }
-
-    public void update(Object message, int id) {
-        //empty body
     }
 
 }

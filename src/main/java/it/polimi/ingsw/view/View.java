@@ -27,16 +27,15 @@ public class View {
         for(Player p : message.getPlayers()){
             p.dump();
         }
-        System.out.println("\n\n");
     }
 
     public void printWindows(ShowWindowsMessage message){
-        System.out.println("Choose your Window:\n");
+        System.out.println("You have to choose one of the following windows:\n");
         System.out.println(message.getW1());
         System.out.println(message.getW2());
         System.out.println(message.getW3());
         System.out.println(message.getW4());
-        System.out.println("\nInsert the name of the desired Window:");
+        System.out.println("Digit 'window' to enter setup.");
     }
 
     public void printEndOfTurn(){

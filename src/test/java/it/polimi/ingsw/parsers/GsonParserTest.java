@@ -113,6 +113,14 @@ class GsonParserTest {
     }
 
     @Test
+    void parseLoginRequest(){
+        GsonParser gp = new GsonParser();
+        LoginRequestMessage m = new LoginRequestMessage();
+        Message message = gp.parseClient(m.serialize());
+        assertTrue(message instanceof LoginRequestMessage);
+    }
+
+    @Test
     void parseOk(){
         GsonParser gp = new GsonParser();
         OkMessage m = new OkMessage();

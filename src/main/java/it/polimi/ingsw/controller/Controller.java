@@ -48,7 +48,19 @@ public class Controller implements Observer{
         for(int i = 0; i < nPlayers; i++){
             model.addPlayer(new Player("player" + i, factory.getWindow(), i));
         }
+    }
+
+    /*
+        sends a login request to all the players in the game
+     */
+
+    public void newLoginRequest(){
         //parte il countdown per l'inizio partita: i giocatori che non scelgono username o finestra avranno quelli default
+        for(Player p : model.getPlayers()){
+            if(p.isOnline()){
+                model.notifyMessage(new LoginRequestMessage(), p.getId());
+            }
+        }
     }
 
     /*
