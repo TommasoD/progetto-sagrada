@@ -18,9 +18,15 @@ public class Countdown extends Thread {
 
     private boolean done;
 
+    private static final int MAX_TIME = 30000;
+
     public Countdown() {
         resetAndStop();
         done = false;
+    }
+
+    public int getMaxTime() {
+        return MAX_TIME;
     }
 
     /**Reset and stop the timer */
@@ -64,7 +70,7 @@ public class Countdown extends Thread {
     public void run() {
 
         //this.reset();
-        while((this.read() < 20000) && (!done)) {
+        while((this.read() < MAX_TIME) && (!done)) {
             if (isActive) System.out.print("\r" + this);
             try {
                 Thread.sleep(1000);
@@ -74,7 +80,7 @@ public class Countdown extends Thread {
             }
         }
         this.stopClock();
-        if(this.read() >= 20000) {
+        if(this.read() >= MAX_TIME) {
             try {
                 this.serverBreak();
             } catch (IOException e) {

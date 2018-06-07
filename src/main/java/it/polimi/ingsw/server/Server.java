@@ -59,7 +59,7 @@ public class Server {
         while(gameRoom.getSize() < 4) {
             try {
                 Socket socket = serverSocket.accept();
-                if(gameRoom.getTimer().read() >= 20000) {
+                if(gameRoom.getTimer().read() >= gameRoom.getTimer().getMaxTime()) {
                     socket.close();
                     break;
                 }
