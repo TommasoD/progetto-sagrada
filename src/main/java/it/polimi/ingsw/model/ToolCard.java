@@ -58,4 +58,12 @@ public class ToolCard {
         this.description = description;
     }
 
+    public String toString(){
+        return "Tool Card " + (id + 1) + "\n" + name + "\n" + "Already Used: " + alreadyUsed + "\nEffect: " + description + "\n";
+    }
+
+    public void dump(){
+        System.out.println(this);
+    }
+
 }

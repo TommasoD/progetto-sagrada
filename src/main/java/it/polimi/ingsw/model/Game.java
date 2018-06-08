@@ -229,8 +229,6 @@ public class Game extends Observable<String> {
         //creates tool cards
         toolCards.addAll(reader.readToolCards());
 
-        //[...]
-
         //first draft
         setDraft();
     }
@@ -269,12 +267,13 @@ public class Game extends Observable<String> {
     }
 
     /*
-        return true if the player has enough tokens to use the card
+        return true if the player has enough tokens to use the card and has not used a tool card yet
      */
 
     public boolean canUseToolCard(int toolcard, int player){
+        if(getPlayerFromId(player).isToolCardUsed()) return false;
         int cost = toolCards.get(toolcard - 1).isAlreadyUsed() ? 2 : 1;
-        return getPlayerFromId(player).getPlayerWindow().getDifficultyToken() < cost;
+        return getPlayerFromId(player).getPlayerWindow().getDifficultyToken() > cost;
     }
 
     /*
