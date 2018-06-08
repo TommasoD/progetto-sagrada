@@ -114,21 +114,29 @@ public class Controller implements Observer<String>{
     private void nextPlayer(int player){
         model.notifyMessage(new EndTurnMessage(), player);
         model.getPlayerFromId(player).resetTurn();
+        if(model.getPlayerFromId(player).isFirstTurnDone()) model.getPlayerFromId(player).setSecondTurnDone(true);
+        else model.getPlayerFromId(player).setFirstTurnDone(true);
+
         /*
             try catch needs to be added in order to handle the nextRound exception !!!
          */
         handler.nextTurn();
-        while(!model.getPlayers(handler.getCurrentPlayer()).isOnline() || model.getPlayers(handler.getCurrentPlayer()).isSkipTurn()){
+        while(!model.getPlayers(handler.getCurrentPlayer()).isOnline() ||
+                model.getPlayers(handler.getCurrentPlayer()).isSecondTurnDone()){
             handler.nextTurn();
         }
-        model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
+
         // TODO : gestione del nuovo round
         /*in case of new round: -if all players are offline except one -> end game
                                 -dice left from draft to track
                                 -create new draft
-                                -skipTurn set to false for every player
+                                -firstTurnDone and secondTurnDone set to false for every player
                                 -model.notify
         */
+
+        // if handler.isGameEnded -> GAME OVER!
+        // else
+        model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
     }
 
     /*
@@ -214,7 +222,7 @@ public class Controller implements Observer<String>{
         tool cards type A change one die from the draft pool according to an identifier
             - tool card 1 increase or decrease the value of the chosen die
             - tool card 5 switch a die from the draft with a selected one in the round track
-            - tool card 6 lets the player re-roll a die from the draft
+            - tool card 6 allows the player re-roll a die from the draft
             - tool card 10 flips a die
             - tool card 11 puts a die from the draft back in the bag, then a new die is taken from the bag and
                 a new value is given to it
@@ -249,19 +257,26 @@ public class Controller implements Observer<String>{
         toolCardUsed(message.getNum(), player);
     }
 
+    /*
+        tool cards type B move one die in the window of a player
+            - tool card 2 ignores color restrictions
+            - tool card 3 ignores value restrictions
+     */
+
     public void visit(ToolCardBMessage message, int player){
         printMessage(message.getId(), player);
+        WindowPattern w = model.getPlayerFromId(player).getPlayerWindow();
         if(!model.canUseToolCard(message.getNum(), player)){
             model.notifyMessage(new ErrorMessage(3), player);
             return;
         }
         if(message.getNum() ==  2 &&
-                !checker.toolCard2(model.getPlayerFromId(player).getPlayerWindow(), message.getX(), message.getY(), message.getA(), message.getB())){
+                !checker.toolCard2(w, message.getX(), message.getY(), message.getA(), message.getB())){
             model.notifyMessage(new ErrorMessage(2), player);
             return;
         }
         if(message.getNum() ==  3 &&
-                !checker.toolCard3(model.getPlayerFromId(player).getPlayerWindow(), message.getX(), message.getY(), message.getA(), message.getB())){
+                !checker.toolCard3(w, message.getX(), message.getY(), message.getA(), message.getB())){
             model.notifyMessage(new ErrorMessage(2), player);
             return;
         }
@@ -269,26 +284,86 @@ public class Controller implements Observer<String>{
         toolCardUsed(message.getNum(), player);
     }
 
+    /*
+        tool cards type C move two dice in the window of a player
+            - tool card 4 does not have an restriction
+            - tool card 12 moves two dice of the same color of a die from the round track
+     */
+
     public void visit(ToolCardCMessage message, int player){
         printMessage(message.getId(), player);
+        WindowPattern w = model.getPlayerFromId(player).getPlayerWindow();
         if(!model.canUseToolCard(message.getNum(), player)){
             model.notifyMessage(new ErrorMessage(3), player);
             return;
         }
         if(message.getNum() ==  4 &&
-                !checker.toolCard4(model.getPlayerFromId(player).getPlayerWindow(), message.getX(), message.getY(), message.getA(),
+                !checker.toolCard4(w, message.getX(), message.getY(), message.getA(),
                         message.getB(), message.getX2(), message.getY2(), message.getA2(), message.getB2())){
             model.notifyMessage(new ErrorMessage(2), player);
             return;
         }
         if(message.getNum() ==  12 &&
-                !checker.toolCard12(model.getDraft(), model.getPlayerFromId(player).getPlayerWindow(), message.getX(), message.getY(), message.getA(),
+                !checker.toolCard12(model.getRoundTrack(), w, message.getX(), message.getY(), message.getA(),
                         message.getB(), message.getX2(), message.getY2(), message.getA2(), message.getB2())){
             model.notifyMessage(new ErrorMessage(2), player);
             return;
         }
         model.moveDie(player, message.getX(), message.getY(), message.getA(), message.getB());
         model.moveDie(player, message.getX2(), message.getY2(), message.getA2(), message.getB2());
+        toolCardUsed(message.getNum(), player);
+    }
+
+    /*
+        tool cards type D place one die in the window of a player
+            - tool card 8 allows the player to place a second die in the same turn
+            - tool card 9 places a die in a spot not adjacent to other dice in the window
+     */
+
+    public void visit(ToolCardDMessage message, int player){
+        printMessage(message.getId(), player);
+        WindowPattern w = model.getPlayerFromId(player).getPlayerWindow();
+        if(!model.canUseToolCard(message.getNum(), player)){
+            model.notifyMessage(new ErrorMessage(3), player);
+            return;
+        }
+        if(message.getNum() ==  8){
+            if(!checker.toolCard8(w, model.getDieFromDraft(message.getDieIndex()), message.getX(), message.getY()) ||
+                    model.getPlayerFromId(player).isFirstTurnDone()) {
+                model.notifyMessage(new ErrorMessage(2), player);
+                return;
+            }
+            model.getPlayerFromId(player).setSecondTurnDone(true);
+        }
+        if(message.getNum() ==  9 &&
+                !checker.toolCard9(w, model.getDieFromDraft(message.getDieIndex()), message.getX(), message.getY())){
+            model.notifyMessage(new ErrorMessage(2), player);
+            return;
+        }
+        model.useDie(player, message.getX(), message.getY(), message.getDieIndex());
+        toolCardUsed(message.getNum(), player);
+    }
+
+    /*
+        tool cards type D do not need any parameter
+            - tool card 7 re-roll all the dice in the draft pool
+     */
+
+    public void visit(ToolCardEMessage message, int player){
+        printMessage(message.getId(), player);
+        if(!model.canUseToolCard(message.getNum(), player)){
+            model.notifyMessage(new ErrorMessage(3), player);
+            return;
+        }
+        if(message.getNum() ==  7){
+            if(model.getPlayerFromId(player).isFirstTurnDone() && !model.getPlayerFromId(player).isSecondTurnDone()) {
+                model.notifyMessage(new ErrorMessage(2), player);
+                return;
+            }
+            for(Die d : model.getDraft()){
+                d.roll();
+            }
+        }
         toolCardUsed(message.getNum(), player);
     }
 

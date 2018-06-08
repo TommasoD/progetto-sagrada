@@ -22,6 +22,8 @@ import static it.polimi.ingsw.messages.controller.SetDieMessage.deserializeSetDi
 import static it.polimi.ingsw.messages.controller.ToolCardAMessage.deserializeToolCardAMessage;
 import static it.polimi.ingsw.messages.controller.ToolCardBMessage.deserializeToolCardBMessage;
 import static it.polimi.ingsw.messages.controller.ToolCardCMessage.deserializeToolCardCMessage;
+import static it.polimi.ingsw.messages.controller.ToolCardDMessage.deserializeToolCardDMessage;
+import static it.polimi.ingsw.messages.controller.ToolCardEMessage.deserializeToolCardEMessage;
 
 public class GsonParser {
 
@@ -50,6 +52,12 @@ public class GsonParser {
         }
         if(id.equals("toolcardC")){
             return deserializeToolCardCMessage(gson);
+        }
+        if(id.equals("toolcardD")){
+            return deserializeToolCardDMessage(gson);
+        }
+        if(id.equals("toolcardE")){
+            return deserializeToolCardEMessage(gson);
         }
         return new UnexpectedMessage();
     }

@@ -239,10 +239,105 @@ class ControllerTest {
         c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(0, 0).setDie(d);
         c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(3, 0).setDie(d2);
         c.update(new ToolCardBMessage(3, 0, 0, 4, 0).serialize(), 0);
-        c.getGame().getPlayerFromId(0).getPlayerWindow().dump();
         assertEquals(d, c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(4, 0).getDie());
         assertTrue(c.getGame().getToolCard(2).isAlreadyUsed());
         assertTrue(c.getGame().getPlayerFromId(0).isToolCardUsed());
+        assertEquals(3, c.getGame().getPlayerFromId(0).getPlayerWindow().getDifficultyToken());
+    }
+
+    @Test
+    void visitToolCardC_4() {
+        Game g = new Game();
+        Controller c = new Controller(g);
+        c.newMatch(1);
+        c.startMatch();
+        c.setWindowPattern(0, "Kaleidoscopic Dream");
+        Die d = new Die("RED", "2");
+        Die d2 = new Die("GREEN", "3");
+        Die d3 = new Die("BLUE", "4");
+        c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(2, 0).setDie(d);
+        c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(3, 1).setDie(d2);
+        c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(2, 2).setDie(d3);
+        c.update(new ToolCardCMessage(4, 3, 1, 3, 0, 2, 2, 1, 0).serialize(), 0);
+        assertEquals(d2, c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(3, 0).getDie());
+        assertEquals(d3, c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(1, 0).getDie());
+        assertTrue(c.getGame().getToolCard(3).isAlreadyUsed());
+        assertTrue(c.getGame().getPlayerFromId(0).isToolCardUsed());
+        assertEquals(3, c.getGame().getPlayerFromId(0).getPlayerWindow().getDifficultyToken());
+    }
+
+    @Test
+    void visitToolCardC_12() {
+        Game g = new Game();
+        Controller c = new Controller(g);
+        c.newMatch(1);
+        c.startMatch();
+        c.setWindowPattern(0, "Kaleidoscopic Dream");
+        c.getGame().setDieRoundTrack(new Die("BLUE", "4"));
+        Die d = new Die("RED", "2");
+        Die d2 = new Die("BLUE", "3");
+        Die d3 = new Die("BLUE", "4");
+        c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(2, 0).setDie(d);
+        c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(3, 1).setDie(d2);
+        c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(2, 2).setDie(d3);
+        c.update(new ToolCardCMessage(12, 3, 1, 3, 0, 2, 2, 1, 0).serialize(), 0);
+        assertEquals(d2, c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(3, 0).getDie());
+        assertEquals(d3, c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(1, 0).getDie());
+        assertTrue(c.getGame().getToolCard(11).isAlreadyUsed());
+        assertTrue(c.getGame().getPlayerFromId(0).isToolCardUsed());
+        assertEquals(3, c.getGame().getPlayerFromId(0).getPlayerWindow().getDifficultyToken());
+    }
+
+    @Test
+    void visitToolCardD_8(){
+        Game g = new Game();
+        Controller c = new Controller(g);
+        c.newMatch(1);
+        c.startMatch();
+        c.setWindowPattern(0, "Kaleidoscopic Dream");
+        c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(0, 0).setDie(new Die("RED", "2"));
+        c.update(new ToolCardDMessage(8, 1, 1, 1).serialize(), 0);
+        assertNotNull(c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(1, 1).getDie());
+        assertTrue(c.getGame().getToolCard(7).isAlreadyUsed());
+        assertTrue(c.getGame().getPlayerFromId(0).isToolCardUsed());
+        assertEquals(3, c.getGame().getPlayerFromId(0).getPlayerWindow().getDifficultyToken());
+        assertTrue(g.getPlayerFromId(0).isSecondTurnDone());
+    }
+
+    @Test
+    void visitToolCardD_9(){
+        Game g = new Game();
+        Controller c = new Controller(g);
+        c.newMatch(1);
+        c.startMatch();
+        c.setWindowPattern(0, "Kaleidoscopic Dream");
+        c.update(new ToolCardDMessage(9, 1, 1, 1).serialize(), 0);
+        assertNotNull(c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(1, 1).getDie());
+        assertTrue(c.getGame().getToolCard(8).isAlreadyUsed());
+        assertTrue(c.getGame().getPlayerFromId(0).isToolCardUsed());
+        assertEquals(3, c.getGame().getPlayerFromId(0).getPlayerWindow().getDifficultyToken());
+    }
+
+    @Test
+    void visitToolCardE_7(){
+        Game g = new Game();
+        Controller c = new Controller(g);
+        c.newMatch(1);
+        c.startMatch();
+        c.setWindowPattern(0, "Kaleidoscopic Dream");
+        c.getGame().dump();
+        c.update(new ToolCardEMessage(7).serialize(), 0);
+        c.getGame().dump();
+        assertTrue(c.getGame().getToolCard(6).isAlreadyUsed());
+        assertTrue(c.getGame().getPlayerFromId(0).isToolCardUsed());
+        assertEquals(3, c.getGame().getPlayerFromId(0).getPlayerWindow().getDifficultyToken());
+        
+        c.getGame().getPlayerFromId(0).setToolCardUsed(false);
+        c.getGame().getPlayerFromId(0).setFirstTurnDone(true);
+        c.update(new ToolCardEMessage(7).serialize(), 0);
+        c.getGame().dump();
+        assertTrue(c.getGame().getToolCard(6).isAlreadyUsed());
+        assertFalse(c.getGame().getPlayerFromId(0).isToolCardUsed());
         assertEquals(3, c.getGame().getPlayerFromId(0).getPlayerWindow().getDifficultyToken());
     }
 

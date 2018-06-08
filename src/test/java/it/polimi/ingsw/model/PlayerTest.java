@@ -23,7 +23,8 @@ class PlayerTest {
         Player p = new Player("user");
         assertFalse(p.isDieUsed());
         assertFalse(p.isToolCardUsed());
-        assertFalse(p.isSkipTurn());
+        assertFalse(p.isFirstTurnDone());
+        assertFalse(p.isSecondTurnDone());
         assertFalse(p.isFirstDiePlaced());
     }
 

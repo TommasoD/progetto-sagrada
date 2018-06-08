@@ -12,7 +12,8 @@ public class Player {
     private boolean isOnline;
     private boolean dieUsed;
     private boolean toolCardUsed;
-    private boolean skipTurn;
+    private boolean firstTurnDone;
+    private boolean secondTurnDone;
     private boolean firstDiePlaced;
     private boolean ready;
 
@@ -26,7 +27,8 @@ public class Player {
         isOnline = true;
         dieUsed = false;
         toolCardUsed = false;
-        skipTurn = false;
+        firstTurnDone = false;
+        secondTurnDone = false;
         firstDiePlaced = false;
         ready = false;
         this.playerWindow = playerWindow;
@@ -37,7 +39,8 @@ public class Player {
         isOnline = true;
         dieUsed = false;
         toolCardUsed = false;
-        skipTurn = false;
+        firstTurnDone = false;
+        secondTurnDone = false;
         firstDiePlaced = false;
         ready = false;
         this.playerWindow = playerWindow;
@@ -48,7 +51,8 @@ public class Player {
         isOnline = true;
         dieUsed = false;
         toolCardUsed = false;
-        skipTurn = false;
+        firstTurnDone = false;
+        secondTurnDone = false;
         firstDiePlaced = false;
         ready = false;
     }
@@ -113,14 +117,6 @@ public class Player {
         this.toolCardUsed = toolCardUsed;
     }
 
-    public boolean isSkipTurn() {
-        return skipTurn;
-    }
-
-    public void setSkipTurn(boolean skipTurn) {
-        this.skipTurn = skipTurn;
-    }
-
     public boolean isFirstDiePlaced() {
         return firstDiePlaced;
     }
@@ -135,6 +131,22 @@ public class Player {
 
     public void setReady(boolean ready) {
         this.ready = ready;
+    }
+
+    public boolean isFirstTurnDone() {
+        return firstTurnDone;
+    }
+
+    public void setFirstTurnDone(boolean firstTurnDone) {
+        this.firstTurnDone = firstTurnDone;
+    }
+
+    public boolean isSecondTurnDone() {
+        return secondTurnDone;
+    }
+
+    public void setSecondTurnDone(boolean secondTurnDone) {
+        this.secondTurnDone = secondTurnDone;
     }
 
     /*
