@@ -12,7 +12,7 @@ public class ErrorMessage extends ClientMessage {
     //type 1 -> username already used
     //type 2 -> invalid move
     //type 3 -> unexpected message from parser
-    //type 4 -> not enough tokens to use the card
+    //type 4 -> not enough tokens to use the card or already used a card this turn
 
     public ErrorMessage(){
         id = "error";

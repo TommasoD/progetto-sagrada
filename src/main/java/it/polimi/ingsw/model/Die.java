@@ -15,11 +15,16 @@ public class Die {
         };
 
         /*
-            constructor
+            constructors
          */
 
         public Die(String color) {
             this.color = color;
+        }
+
+        public Die(String color, String value){
+            this.color = color;
+            this.value = value;
         }
 
         /*

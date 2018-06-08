@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Die;
 import it.polimi.ingsw.model.WindowPattern;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ToolCardCheck {
 
@@ -69,7 +70,7 @@ public class ToolCardCheck {
         return false;
     }
 
-    public boolean toolCard12(ArrayList<Die> track, WindowPattern window, int x, int y, int a, int b, int x2, int y2, int a2, int b2){
+    public boolean toolCard12(List<Die> track, WindowPattern window, int x, int y, int a, int b, int x2, int y2, int a2, int b2){
         if (window.getWindowMatrix(x, y).isNotEmpty() && window.getWindowMatrix(x2, y2).isNotEmpty() && (x != x2 || y != y2) && (a != a2 || b != b2)) {
             Die die1 = window.getWindowMatrix(x, y).removeDie();
             Die die2 = window.getWindowMatrix(x2, y2).removeDie();

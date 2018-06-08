@@ -58,7 +58,7 @@ public class Controller implements Observer<String>{
      */
 
     public void newLoginRequest(){
-        //parte il countdown per l'inizio partita: i giocatori che non scelgono username o finestra avranno quelli default
+        // TODO : parte il countdown per l'inizio partita: i giocatori che non scelgono username o finestra avranno quelli default
         for(Player p : model.getPlayers()){
             if(p.isOnline()){
                 model.notifyMessage(new LoginRequestMessage(), p.getId());
@@ -122,6 +122,7 @@ public class Controller implements Observer<String>{
             handler.nextTurn();
         }
         model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
+        // TODO : gestione del nuovo round
         /*in case of new round: -if all players are offline except one -> end game
                                 -dice left from draft to track
                                 -create new draft
@@ -145,19 +146,16 @@ public class Controller implements Observer<String>{
      */
 
     public void visit(ChooseWindowMessage message, int player){
-        System.out.println(message.getId() + " message received from player " + player);
-
+        printMessage(message.getId(), player);
         setWindowPattern(player, message.getWindowName());
-
         if(model.allReadyToPlay()){
-            //fermo il countdown
+            // TODO : fermo il countdown
             startMatch();
         }
     }
 
     public void visit(LoginMessage message, int player){
-        System.out.println(message.getId() + " message received from player " + player);
-
+        printMessage(message.getId(), player);
         if(model.isGameStarted()){
             if(model.findAndReconnect(message.getUsername(), player)){
                 model.notifyMessage(new OkMessage(), player);
@@ -174,18 +172,18 @@ public class Controller implements Observer<String>{
     }
 
     public void visit(LogoutMessage message, int player){
-        System.out.println(message.getId() + " message received from player " + player);
+        printMessage(message.getId(), player);
         model.getPlayerFromId(player).setOnline(false);
-        //notificare tutti gli altri giocatori della disconnessione
+        // TODO : notificare tutti gli altri giocatori della disconnessione
     }
 
     public void visit(PassMessage message, int player){
-        System.out.println(message.getId() + " message received from player " + player);
+        printMessage(message.getId(), player);
         nextPlayer(player);
     }
 
     public void visit(SetDieMessage message, int player){
-        System.out.println(message.getId() + " message received from player " + player);
+        printMessage(message.getId(), player);
         Player p = model.getPlayerFromId(player);
         if(p != model.getPlayers(handler.getCurrentPlayer()) || p.isDieUsed()){
             model.notifyMessage(new ErrorMessage(2), player);
@@ -214,10 +212,16 @@ public class Controller implements Observer<String>{
 
     /*
         tool cards type A change one die from the draft pool according to an identifier
+            - tool card 1 increase or decrease the value of the chosen die
+            - tool card 5 switch a die from the draft with a selected one in the round track
+            - tool card 6 lets the player re-roll a die from the draft
+            - tool card 10 flips a die
+            - tool card 11 puts a die from the draft back in the bag, then a new die is taken from the bag and
+                a new value is given to it
      */
 
     public void visit(ToolCardAMessage message, int player){
-        System.out.println(message.getId() + " message received from player " + player);
+        printMessage(message.getId(), player);
         if(!model.canUseToolCard(message.getNum(), player)){
             model.notifyMessage(new ErrorMessage(3), player);
             return;
@@ -236,19 +240,56 @@ public class Controller implements Observer<String>{
             model.setDieDraft(model.removeDieFromRoundTrack(message.getAction()));
             model.setDieRoundTrack(d);
         }
+        if(message.getNum() ==  6){
+            model.getDieFromDraft(message.getDieIndex()).roll();
+        }
+        if(message.getNum() ==  10){
+            model.getDieFromDraft(message.getDieIndex()).flipDie();
+        }
         toolCardUsed(message.getNum(), player);
     }
 
     public void visit(ToolCardBMessage message, int player){
-
-        //[...]
-
+        printMessage(message.getId(), player);
+        if(!model.canUseToolCard(message.getNum(), player)){
+            model.notifyMessage(new ErrorMessage(3), player);
+            return;
+        }
+        if(message.getNum() ==  2 &&
+                !checker.toolCard2(model.getPlayerFromId(player).getPlayerWindow(), message.getX(), message.getY(), message.getA(), message.getB())){
+            model.notifyMessage(new ErrorMessage(2), player);
+            return;
+        }
+        if(message.getNum() ==  3 &&
+                !checker.toolCard3(model.getPlayerFromId(player).getPlayerWindow(), message.getX(), message.getY(), message.getA(), message.getB())){
+            model.notifyMessage(new ErrorMessage(2), player);
+            return;
+        }
+        model.moveDie(player, message.getX(), message.getY(), message.getA(), message.getB());
+        toolCardUsed(message.getNum(), player);
     }
 
     public void visit(ToolCardCMessage message, int player){
-
-        //[...]
-
+        printMessage(message.getId(), player);
+        if(!model.canUseToolCard(message.getNum(), player)){
+            model.notifyMessage(new ErrorMessage(3), player);
+            return;
+        }
+        if(message.getNum() ==  4 &&
+                !checker.toolCard4(model.getPlayerFromId(player).getPlayerWindow(), message.getX(), message.getY(), message.getA(),
+                        message.getB(), message.getX2(), message.getY2(), message.getA2(), message.getB2())){
+            model.notifyMessage(new ErrorMessage(2), player);
+            return;
+        }
+        if(message.getNum() ==  12 &&
+                !checker.toolCard12(model.getDraft(), model.getPlayerFromId(player).getPlayerWindow(), message.getX(), message.getY(), message.getA(),
+                        message.getB(), message.getX2(), message.getY2(), message.getA2(), message.getB2())){
+            model.notifyMessage(new ErrorMessage(2), player);
+            return;
+        }
+        model.moveDie(player, message.getX(), message.getY(), message.getA(), message.getB());
+        model.moveDie(player, message.getX2(), message.getY2(), message.getA2(), message.getB2());
+        toolCardUsed(message.getNum(), player);
     }
 
     /*
@@ -256,7 +297,15 @@ public class Controller implements Observer<String>{
      */
 
     public void visit(UnexpectedMessage message, int player){
-        System.out.println("unexpected message received from player " + player);
+        printMessage("unexpected", player);
+    }
+
+    /*
+        print the latest message received
+     */
+
+    private void printMessage(String id, int player){
+        System.out.println(id + " message received from player " + player);
     }
 
     /*
