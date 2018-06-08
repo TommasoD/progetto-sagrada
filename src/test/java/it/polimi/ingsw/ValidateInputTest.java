@@ -2,6 +2,9 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.ValidateInput;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ValidateInputTest {
@@ -53,25 +56,27 @@ public class ValidateInputTest {
 
     @Test
     void  ValidCheckWindowName() {
-        String w1 = "Aurorae Magnificus";
-        String w2 = "Bellesguard";
-        String w3 = "Sun Catcher";
-        String w4 = "Batllo";
+        ArrayList<String> windowNames = new ArrayList<String>();
+        windowNames.add("Aurorae Magnificus");
+        windowNames.add("Bellesguard");
+        windowNames.add("Batllo");
+        windowNames.add("Sun Catcher");
         String name = "Sun Catcher";
         ValidateInput validateInput = new ValidateInput();
-        assertTrue(validateInput.checkWindowName(w1,w2,w3,w4,name));
+        assertTrue(validateInput.checkWindowName(windowNames, name));
     }
 
 
     @Test
     void  InvalidCheckWindowName() {
-        String w1 = "Aurorae Magnificus";
-        String w2 = "Bellesguard";
-        String w3 = "Sun Catcher";
-        String w4 = "Batllo";
+        ArrayList<String> windowNames = new ArrayList<String>();
+        windowNames.add("Aurorae Magnificus");
+        windowNames.add("Bellesguard");
+        windowNames.add("Batllo");
+        windowNames.add("Sun Catcher");
         String name = "Chromatic Splendor";
         ValidateInput validateInput = new ValidateInput();
-        assertFalse(validateInput.checkWindowName(w1,w2,w3,w4,name));
+        assertFalse(validateInput.checkWindowName(windowNames, name));
     }
 
     @Test

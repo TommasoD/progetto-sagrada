@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client;
 
+import java.util.ArrayList;
+
 public class ValidateInput {
 
 
@@ -33,11 +35,9 @@ public class ValidateInput {
     }
 
     //the name entered must match exactly one window name
-    public boolean checkWindowName(String w1, String w2, String w3, String w4, String name) {
-       if (w1.equals(name)) return  true;
-       if (w2.equals(name)) return  true;
-       if (w3.equals(name)) return  true;
-       if (w4.equals(name)) return  true;
+    public boolean checkWindowName(ArrayList<String> windowNames, String insertName) {
+       for (String windowName: windowNames) if(windowName.equals(insertName)) return  true;
+       System.out.println("The window name entered is not present");
        return false;
     }
 

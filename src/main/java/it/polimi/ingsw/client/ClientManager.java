@@ -92,34 +92,30 @@ public class ClientManager implements Observer<String> {
 
     private void handleRequest(String request){
         if(stage == 0){
-            view.print("Wait for the start of the match.");
+            view.printWaitForTheStart();
             return;
         }
         if(stage == 1){
             if(request.equals("login")){
-                view.print("Insert username: ");
-                String inputLine = stdin.nextLine();
-                LoginMessage gson = new LoginMessage(inputLine);
+                LoginMessage gson = new LoginMessage(view.printLogin());
                 network.send(gson.serialize());
                 return;
             }
-            view.print("You have to login first. Digit 'login'.");
+            view.printDigit(1); //this print: You have to login first. Digit 'login'.
             return;
         }
         if(stage == 2){
             if(request.equals("window")){
-                view.print("Now insert the name of the desired window: ");
-                String line = stdin.nextLine();
-
-                //controlla la validità della finestra scelta
-
-                view.print("Ok. Wait for the start of the match.");
+                String line = view.printInsertWindow();
+                while(!validateInput.checkWindowName(view.getWindowsName(), line)) line = view.printInsertWindow();
+                view.printWaitForTheStart();
                 ChooseWindowMessage m = new ChooseWindowMessage(line);
                 network.send(m.serialize());
                 stage = 3;
                 return;
             }
-            view.print("You have to choose a window. Digit 'window' to do so.");
+
+            view.printDigit(2); //this print: "You have to choose a window. Digit 'window' to do so.
             return;
         }
         if(!clientTurn){

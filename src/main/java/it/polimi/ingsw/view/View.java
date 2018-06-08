@@ -5,9 +5,12 @@ import it.polimi.ingsw.messages.client.UpdateModelMessage;
 import it.polimi.ingsw.model.Die;
 import it.polimi.ingsw.model.Player;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class View {
+
+    private ArrayList<String> windowsName = new ArrayList<String>();
 
     private Scanner stdin = new Scanner(System.in);
 
@@ -40,6 +43,19 @@ public class View {
         System.out.println(message.getW3());
         System.out.println(message.getW4());
         System.out.println("Digit 'window' to enter setup.");
+        windowsName.add(message.getW1().getName());
+        windowsName.add(message.getW2().getName());
+        windowsName.add(message.getW3().getName());
+        windowsName.add(message.getW4().getName());
+    }
+
+    public ArrayList<String> getWindowsName() {
+        return windowsName;
+    }
+
+    public String printInsertWindow() {
+        System.out.println("Now insert the name of the desired window: ");
+        return stdin.nextLine();
     }
 
     public void printEndOfTurn(){
@@ -67,7 +83,19 @@ public class View {
                 "'end' to end your turn.");
     }
 
+    public String printLogin() {
+        System.out.println("Insert username: ");
+        return stdin.nextLine();
+    }
 
+    public void printWaitForTheStart() {
+        System.out.println("Wait for the start of the match.");
+    }
 
+    public void printDigit(int id) {
+        if (id == 1) System.out.println("You have to login first. Digit 'login'.");
+            else if (id == 2) System.out.println("You have to choose a window. Digit 'window' to do so.");
+             else System.out.println("Id not found");
+    }
 
 }
