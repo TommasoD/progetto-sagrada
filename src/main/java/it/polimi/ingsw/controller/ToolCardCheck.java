@@ -3,6 +3,8 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Die;
 import it.polimi.ingsw.model.WindowPattern;
 
+import java.util.ArrayList;
+
 public class ToolCardCheck {
 
     public boolean toolCard1(Die d, int action){
@@ -50,10 +52,13 @@ public class ToolCardCheck {
         return false;
     }
 
-    public boolean toolCard12(WindowPattern window, int x, int y, int a, int b, int x2, int y2, int a2, int b2){
+    public boolean toolCard12(ArrayList<Die> track, WindowPattern window, int x, int y, int a, int b, int x2, int y2, int a2, int b2){
         if (window.getWindowMatrix(x, y).isNotEmpty() && window.getWindowMatrix(x2, y2).isNotEmpty() && (x != x2 || y != y2) && (a != a2 || b != b2)) {
-            if (window.isValid(a, b, window.getWindowMatrix(x, y).getDie()) && window.isValid(a2, b2, window.getWindowMatrix(x2, y2).getDie()) && window.getWindowMatrix(x, y).getDie().getColor().equals(window.getWindowMatrix(x2, y2).getDie().getColor()))
-                return true;
+            if (window.isValid(a, b, window.getWindowMatrix(x, y).getDie()) && window.isValid(a2, b2, window.getWindowMatrix(x2, y2).getDie()) && window.getWindowMatrix(x, y).getDie().getColor().equals(window.getWindowMatrix(x2, y2).getDie().getColor())) {
+                for(int i = 0; i < track.size(); i++) {
+                    if(window.getWindowMatrix(x, y).getDie().getColor().equals(track.get(i).getColor())) return true;
+                }
+            }
         }
         return false;
     }
