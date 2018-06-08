@@ -141,7 +141,7 @@ public class WindowPattern {
             if(adjacentSlots(i, y+1)) return true;
         }
         if(adjacentSlots(x-1, y)) return true;
-        return adjacentSlots(x-1, y);
+        return adjacentSlots(x+1, y);
     }
 
     public boolean colorsAndValues(int x, int y, Die die) {

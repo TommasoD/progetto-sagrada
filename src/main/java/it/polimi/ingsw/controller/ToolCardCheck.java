@@ -40,20 +40,21 @@ public class ToolCardCheck {
     } */
 
     public boolean toolCard8(WindowPattern window, Die d, int x, int y){
-
-
+        if(window.isValid(x, y, d)) return true;
         return false;
     }
 
     public boolean toolCard9(WindowPattern window, Die d, int x, int y){
-
-
+        if(window.allAdjacent(x, y)) return false;
+        if(window.getWindowMatrix(x, y).isValid(d)) return true;
         return false;
     }
 
     public boolean toolCard12(WindowPattern window, int x, int y, int a, int b, int x2, int y2, int a2, int b2){
-
-
+        if (window.getWindowMatrix(x, y).isNotEmpty() && window.getWindowMatrix(x2, y2).isNotEmpty() && (x != x2 || y != y2) && (a != a2 || b != b2)) {
+            if (window.isValid(a, b, window.getWindowMatrix(x, y).getDie()) && window.isValid(a2, b2, window.getWindowMatrix(x2, y2).getDie()) && window.getWindowMatrix(x, y).getDie().getColor().equals(window.getWindowMatrix(x2, y2).getDie().getColor()))
+                return true;
+        }
         return false;
     }
 }
