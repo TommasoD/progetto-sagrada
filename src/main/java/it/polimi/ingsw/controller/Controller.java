@@ -111,7 +111,7 @@ public class Controller implements Observer<String>{
             players who already did their second turn (see tool card 8)
      */
 
-    private void nextPlayer(int player){
+    public void nextPlayer(int player){
         model.notifyMessage(new EndTurnMessage(), player);
         model.getPlayerFromId(player).resetTurn();
         if(model.getPlayerFromId(player).isFirstTurnDone()) model.getPlayerFromId(player).setSecondTurnDone(true);
