@@ -27,7 +27,7 @@ public class ClientManager implements Observer<String> {
     private boolean clientTurn;
     private boolean gameEnded;
     private int stage;              //0 -> before match, 1 -> login, 2 -> choose window, 3 -> client ready
-
+    private  ValidateInput validateInput;
     /*
         constructor
      */
@@ -39,6 +39,7 @@ public class ClientManager implements Observer<String> {
         clientTurn = false;
         gameEnded = false;
         stage = 0;
+        validateInput = new ValidateInput();
     }
 
     private void startClient(){
@@ -141,23 +142,29 @@ public class ClientManager implements Observer<String> {
 
     private void playerAction(String move){
         if(move.equals("place")){
-            view.print("Choose a die and insert its position: ");
-            int die = Integer.parseInt(stdin.nextLine());
-            view.print("Choose the column (from left to right): ");
-            int x = Integer.parseInt(stdin.nextLine());
-            view.print("Choose the row (from top to bottom): ");
-            int y = Integer.parseInt(stdin.nextLine());
+
+            int die = view.printDieChoice();
+            /*
+            we must need a reference to roundTrack size
+            while (!validateInput.checkDieInArray(die,size)) die = view.printDieChoice();
+             */
+
+            int x = view.printCoordinates("x");
+            while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
+
+            int y = view.printCoordinates("y");
+            while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
+
             network.send(new SetDieMessage(x, y, die).serialize());
         }
         else if(move.equals("end")){
             network.send(new PassMessage().serialize());
         }
         else if(move.equals("help")){
-            view.print("'place' to place a die on your Window.\n" +
-                    "'end' to end your turn.");
+            view.printHelp();
         }
         else{
-            view.print("Unsupported move. Digit 'help' to see the supported actions.");
+            view.printUnsupportedMove();
         }
     }
 
@@ -202,7 +209,7 @@ public class ClientManager implements Observer<String> {
             view.print("Username already used. Try login again.");
         }
         if (message.getType() == 2) {
-            view.print("Invalid move. Select a supported action (digit 'help' to see more).");
+            view.printUnsupportedMove();
         }
     }
 
