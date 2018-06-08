@@ -146,6 +146,18 @@ class GameTest {
     }
 
     @Test
+    void canUseToolCard(){
+        Game g = new Game();
+        WindowPatternFactory wf = new WindowPatternFactory();
+        g.addPlayer(new Player("user", wf.createWindow("Kaleidoscopic Dream"), 0));
+        g.initialize();
+        for(ToolCard t : g.getToolCards()){
+            t.dump();
+        }
+        assertTrue(g.canUseToolCard(1, 0));
+    }
+
+    @Test
     void useToolCardTest() {
         Game g = new Game();
         WindowPatternFactory wf = new WindowPatternFactory();
