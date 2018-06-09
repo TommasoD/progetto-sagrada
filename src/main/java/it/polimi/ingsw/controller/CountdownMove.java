@@ -1,5 +1,8 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.messages.client.NotificationMessage;
+import it.polimi.ingsw.messages.controller.LogoutMessage;
+
 public class CountdownMove extends Thread {
 
     /** Save the time istant when you stop */
@@ -21,7 +24,7 @@ public class CountdownMove extends Thread {
 
     private Controller controller;
 
-    private int idPlayer;
+    private int playerIndex;
 
     public CountdownMove(Controller controller) {
         resetAndStop();
@@ -39,7 +42,7 @@ public class CountdownMove extends Thread {
 
     public void wakeUp(int index) {
         wait = false;
-        this.idPlayer = index;
+        this.playerIndex = index;
     }
 
     public void setGameEnded() {
@@ -102,8 +105,8 @@ public class CountdownMove extends Thread {
             while(this.read() < MAX_TIME && !done) {}
             this.stopClock();
             if(this.read() >= MAX_TIME) {
-                controller.getGame().getPlayers(idPlayer).setOnline(false);
-                controller.nextPlayer(idPlayer);
+                controller.visit(new LogoutMessage(), controller.getGame().getPlayers(playerIndex).getId());
+                controller.nextPlayer(controller.getGame().getPlayers(playerIndex).getId());
             }
             wait = true;
             done = false;
@@ -112,6 +115,7 @@ public class CountdownMove extends Thread {
     }
 
     /** return current time in seconds */
+    @Override
     public String toString() {
         return "" + read()/1000;
     }

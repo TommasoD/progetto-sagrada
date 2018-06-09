@@ -15,6 +15,7 @@ public class Controller implements Observer<String>{
     private ToolCardCheck checker;
     private WindowPatternFactory factory;
     private GsonParser parser;
+    private CountdownMove timer;
 
     /*
         constructors
@@ -25,6 +26,7 @@ public class Controller implements Observer<String>{
         factory = new WindowPatternFactory();
         parser = new GsonParser();
         checker = new ToolCardCheck();
+        timer = new CountdownMove(this);
     }
 
     public Controller(){
@@ -32,6 +34,7 @@ public class Controller implements Observer<String>{
         factory = new WindowPatternFactory();
         parser = new GsonParser();
         checker = new ToolCardCheck();
+        timer = new CountdownMove(this);
     }
 
     /*
@@ -66,7 +69,7 @@ public class Controller implements Observer<String>{
                 model.notifyMessage(new LoginRequestMessage(), p.getId());
             }
         }
-        // TODO : parte il countdown per l'inizio partita: i giocatori che non scelgono username o finestra avranno quelli default
+        timer.start();
     }
 
     /*
@@ -79,6 +82,7 @@ public class Controller implements Observer<String>{
         handler = new RoundHandler(model.playersSize());
         model.notifyUpdate();
         model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
+        timer.wakeUp(handler.getCurrentPlayer());
     }
 
     /*
@@ -91,13 +95,10 @@ public class Controller implements Observer<String>{
         model.useToolCard(toolcard, player);
         model.notifyMessage(new OkMessage(), player);
         model.notifyUpdate();
-        Player p = model.getPlayerFromId(player);
-        if(p.isDieUsed() && p.isToolCardUsed()){
-            nextPlayer(player);
-        }
     }
 
     /*
+        @player is the id of the current player
         calls RoundHandler method nextTurn() recursively, skipping turns for offline players or
             players who already did their second turn (see tool card 8)
      */
@@ -128,6 +129,7 @@ public class Controller implements Observer<String>{
         // if handler.isGameEnded -> GAME OVER!
         // else
         model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
+        timer.wakeUp(handler.getCurrentPlayer());
     }
 
     /*
@@ -156,12 +158,17 @@ public class Controller implements Observer<String>{
     --------------------------------------------------------------
      */
 
+    /*
+        message contains the name of the window chosen by the player
+        when all players are ready to play, the timer is stopped and StartMatch() method from controller is called
+        after that, the first turn of the first player starts
+     */
+
     public void visit(ChooseWindowMessage message, int player){
         printMessage(message.getId(), player);
         setWindowPattern(player, message.getWindowName());
         if(model.allReadyToPlay()){
-            // TODO : fermo il countdown
-            startMatch();
+            timer.setDone();
         }
     }
 
@@ -185,11 +192,12 @@ public class Controller implements Observer<String>{
     public void visit(LogoutMessage message, int player){
         printMessage(message.getId(), player);
         model.getPlayerFromId(player).setOnline(false);
-        // TODO : notificare tutti gli altri giocatori della disconnessione
+        model.notifyAllPlayers(new NotificationMessage(model.getPlayerFromId(player).getUsername(), "disconnect"));
     }
 
     public void visit(PassMessage message, int player){
         printMessage(message.getId(), player);
+        timer.setDone();
         nextPlayer(player);
     }
 
@@ -216,9 +224,6 @@ public class Controller implements Observer<String>{
         p.setDieUsed(true);
         model.notifyMessage(new OkMessage(), player);
         model.notifyUpdate();
-        if(p.isDieUsed() && p.isToolCardUsed()){
-            nextPlayer(player);
-        }
     }
 
     /*
