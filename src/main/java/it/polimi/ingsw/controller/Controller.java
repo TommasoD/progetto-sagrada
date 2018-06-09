@@ -128,6 +128,15 @@ public class Controller implements Observer<String>{
     }
 
     /*
+
+     */
+
+    public void setWindowPattern(int player, String windowName){
+        model.getPlayerFromId(player).setPlayerWindow(factory.createWindow(windowName));
+        model.getPlayerFromId(player).setReady(true);
+    }
+
+    /*
         receives an identifier of a player (int player) and a string representation of a Gson message (Object gson),
         calls parse() method from GsonParser and uses visitor pattern to handle the returned Message
      */
@@ -151,8 +160,7 @@ public class Controller implements Observer<String>{
 
     public void visit(ChooseWindowMessage message, int player){
         printMessage(message.getId(), player);
-        model.getPlayerFromId(player).setPlayerWindow(factory.createWindow(message.getWindowName()));
-        model.getPlayerFromId(player).setReady(true);
+        setWindowPattern(player, message.getWindowName());
         if(model.allReadyToPlay()){
             // TODO : fermo il countdown
             startMatch();
@@ -362,6 +370,13 @@ public class Controller implements Observer<String>{
             }
         }
         toolCardUsed(message.getNum(), player);
+    }
+
+    public void visit(ShowTableRequestMessage message, int player){
+        printMessage(message.getId(), player);
+
+        //invia un messaggio di showTable al giocatore richiedente
+
     }
 
     /*

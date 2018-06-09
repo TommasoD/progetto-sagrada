@@ -19,6 +19,7 @@ import static it.polimi.ingsw.messages.controller.LoginMessage.deserializeLoginM
 import static it.polimi.ingsw.messages.controller.LogoutMessage.deserializeLogoutMessage;
 import static it.polimi.ingsw.messages.controller.PassMessage.deserializePassMessage;
 import static it.polimi.ingsw.messages.controller.SetDieMessage.deserializeSetDieMessage;
+import static it.polimi.ingsw.messages.controller.ShowTableRequestMessage.deserializeShowTableRequestMessage;
 import static it.polimi.ingsw.messages.controller.ToolCardAMessage.deserializeToolCardAMessage;
 import static it.polimi.ingsw.messages.controller.ToolCardBMessage.deserializeToolCardBMessage;
 import static it.polimi.ingsw.messages.controller.ToolCardCMessage.deserializeToolCardCMessage;
@@ -58,6 +59,9 @@ public class GsonParser {
         }
         if(id.equals("toolcardE")){
             return deserializeToolCardEMessage(gson);
+        }
+        if(id.equals("show_table")){
+            return deserializeShowTableRequestMessage(gson);
         }
         return new UnexpectedMessage();
     }

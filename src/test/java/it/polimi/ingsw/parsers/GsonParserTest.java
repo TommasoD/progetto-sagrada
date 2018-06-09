@@ -10,7 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class GsonParserTest {
 
     /*
+    ------------------------------------
         parse controller
+    ------------------------------------
      */
 
     @Test
@@ -94,6 +96,14 @@ class GsonParserTest {
     }
 
     @Test
+    void parseShowTableRequest(){
+        GsonParser gp = new GsonParser();
+        ShowTableRequestMessage m = new ShowTableRequestMessage();
+        Message message = gp.parseController(m.serialize());
+        assertTrue(message instanceof ShowTableRequestMessage);
+    }
+
+    @Test
     void parseUnexpectedController(){
         GsonParser gp = new GsonParser();
         Message message = gp.parseController("test");
@@ -101,7 +111,9 @@ class GsonParserTest {
     }
 
     /*
+    ------------------------------------
         parse client
+    ------------------------------------
      */
 
     @Test
