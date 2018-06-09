@@ -37,8 +37,9 @@ public class CountdownMove extends Thread {
         done = true;
     }
 
-    public void wakeUp() {
+    public void wakeUp(int index) {
         wait = false;
+        this.idPlayer = index;
     }
 
     public void setGameEnded() {
@@ -89,6 +90,12 @@ public class CountdownMove extends Thread {
         wait = true;
         done = false;
 
+        this.reset();
+        while(this.read() < MAX_TIME && !done) {}
+
+        controller.startMatch();
+        done = false;
+
         while(!gameEnded) {
             while(wait && !gameEnded) {}
             this.reset();
@@ -102,10 +109,6 @@ public class CountdownMove extends Thread {
             done = false;
         }
 
-    }
-
-    public void setIdPlayer(int index) {
-        this.idPlayer = index;
     }
 
     /** return current time in seconds */
