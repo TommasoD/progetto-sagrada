@@ -9,7 +9,7 @@ public class ColoredDiagonal extends PublicObjective {
     private Slot[][] supportMatrix2;
 
     public ColoredDiagonal(){
-        points = 0;
+        points = 1;
         name = "Diagonals";
         supportMatrix1 = new Slot[8][5];
         supportMatrix2 = new Slot[8][5];
@@ -79,5 +79,9 @@ public class ColoredDiagonal extends PublicObjective {
             }
         }
         return (sum*points);
+    }
+
+    public String toString(){
+        return name + " [#]";
     }
 }

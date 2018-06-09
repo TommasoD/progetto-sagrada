@@ -10,7 +10,7 @@ class PublicObjectiveFactoryTest {
     void createObjective() {
         PublicObjectiveFactory of = new PublicObjectiveFactory();
         PublicObjective o = of.createObjective("DarkS");
-        assertEquals("Sfumature Scure", o.getName());
+        assertEquals("Deep Shades", o.getName());
     }
 
     @Test
