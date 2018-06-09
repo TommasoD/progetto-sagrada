@@ -2,8 +2,11 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.messages.client.*;
 import it.polimi.ingsw.messages.controller.*;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.objectives.publicobjectives.PublicObjective;
 import it.polimi.ingsw.parsers.GsonParser;
 import it.polimi.ingsw.utils.Observer;
+
+import java.util.ArrayList;
 
 public class Controller implements Observer<String>{
 
@@ -369,16 +372,13 @@ public class Controller implements Observer<String>{
 
     public void visit(ShowTableRequestMessage message, int player){
         printMessage(message.getId(), player);
-
-        //invia un messaggio di showTable al giocatore richiedente
-
+        model.notifyMessage(new ShowTableMessage(model.getPlayerFromId(player).getPlayerObjective(), model.getToolCards(), model.getObjectivesAsString()), player);
     }
 
     public void visit(ReconnectMessage message, int player){
         printMessage(message.getId(), player);
-
-        //setta il giocatore come online e notifica i giocatori
-
+        model.getPlayerFromId(player).setOnline(true);
+        model.notifyAllPlayers(new NotificationMessage(model.getPlayerFromId(player).getUsername(), "reconnect"));
     }
 
     /*

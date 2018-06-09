@@ -3,15 +3,10 @@ package it.polimi.ingsw.model.objectives.publicobjectives;
 import it.polimi.ingsw.model.WindowPattern;
 
 public class DiffColorColumn extends PublicObjective {
-    private int points = 5;
-    private String name = "Colori diversi - Colonna";
 
-    public int getPoints() {
-        return points;
-    }
-
-    public String getName() {
-        return name;
+    public DiffColorColumn(){
+        points = 5;
+        name = "Column Color Variety";
     }
 
     public int checkPoints(WindowPattern window) {
@@ -46,12 +41,4 @@ public class DiffColorColumn extends PublicObjective {
         }
         return sum;
     }
-
-    @Override
-    public String toString () {
-            String s = this.name;
-            return s + " [" + points + "]";
-    }
-
-
 }

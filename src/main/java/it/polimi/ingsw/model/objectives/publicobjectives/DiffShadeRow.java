@@ -3,15 +3,10 @@ package it.polimi.ingsw.model.objectives.publicobjectives;
 import it.polimi.ingsw.model.WindowPattern;
 
 public class DiffShadeRow extends PublicObjective {
-    private int points = 5;
-    private String name = "Sfumature diverse - Riga";
 
-    public int getPoints() {
-        return points;
-    }
-
-    public String getName() {
-        return name;
+    public DiffShadeRow(){
+        points = 5;
+        name = "Row Shade Variety";
     }
 
     public int checkPoints(WindowPattern window) {
@@ -45,11 +40,5 @@ public class DiffShadeRow extends PublicObjective {
             occupiedSlot = 0;
         }
         return sum;
-    }
-
-    @Override
-    public String toString() {
-        String s = this.name;
-        return s + " [" + points + "]";
     }
 }

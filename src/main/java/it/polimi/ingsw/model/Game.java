@@ -277,11 +277,23 @@ public class Game extends Observable<String> {
     }
 
     /*
-        returns the toolcard at the given
+        returns the toolcard at the given index
      */
 
     public ToolCard getToolCard(int i) {
         return toolCards.get(i);
+    }
+
+    /*
+        return a List<String> representation of the public objectives
+     */
+
+    public List<String> getObjectivesAsString(){
+        ArrayList<String> obj = new ArrayList<String>();
+        for(PublicObjective o : getPublicObjectiveActive()){
+            obj.add(o.toString());
+        }
+        return obj;
     }
 
     /*

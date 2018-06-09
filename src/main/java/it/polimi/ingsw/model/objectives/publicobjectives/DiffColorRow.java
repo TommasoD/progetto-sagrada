@@ -4,15 +4,9 @@ import it.polimi.ingsw.model.WindowPattern;
 
 public class DiffColorRow extends PublicObjective {
 
-    private int points = 6;
-    private String name = "Colori diversi - Riga";
-
-    public int getPoints() {
-        return points;
-    }
-
-    public String getName() {
-        return name;
+    public DiffColorRow(){
+        points = 6;
+        name = "Row Color Variety";
     }
 
     public int checkPoints(WindowPattern window) {
@@ -41,11 +35,4 @@ public class DiffColorRow extends PublicObjective {
         }
         return sum;
     }
-
-    @Override
-    public String toString() {
-        String s = this.name;
-        return s + " [" + points + "]";
-    }
-
 }

@@ -4,15 +4,9 @@ import it.polimi.ingsw.model.WindowPattern;
 
 public class DiffShade extends PublicObjective {
 
-    private int points = 5;
-    private String name = "Sfumature Diverse";
-
-    public int getPoints() {
-        return points;
-    }
-
-    public String getName() {
-        return name;
+    public DiffShade(){
+        points = 5;
+        name = "Shade Variety";
     }
 
     public int checkPoints(WindowPattern window) {
@@ -41,11 +35,5 @@ public class DiffShade extends PublicObjective {
             sum = Math.min(sum, values[i]);
         }
         return (points*sum);
-    }
-
-    @Override
-    public String toString() {
-        String s = this.name;
-        return s + " [" + points + "]";
     }
 }

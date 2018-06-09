@@ -6,9 +6,17 @@ import it.polimi.ingsw.client.ClientManager;
 public class NotificationMessage extends ClientMessage {
 
     private String id;
+    private String username;
+    private String event;       //reconnect or disconnect
 
     public NotificationMessage(){
         id = "notification";
+    }
+
+    public NotificationMessage(String username, String event){
+        id = "notification";
+        this.username = username;
+        this.event = event;
     }
 
     public String serialize() {
@@ -33,4 +41,19 @@ public class NotificationMessage extends ClientMessage {
         this.id = id;
     }
 
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

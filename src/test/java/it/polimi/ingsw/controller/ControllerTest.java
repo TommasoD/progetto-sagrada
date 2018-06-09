@@ -341,4 +341,15 @@ class ControllerTest {
         assertEquals(3, c.getGame().getPlayerFromId(0).getPlayerWindow().getDifficultyToken());
     }
 
+    @Test
+    void visitReconnect(){
+        Game g = new Game();
+        Controller c = new Controller(g);
+        c.newMatch(1);
+        c.startMatch();
+        c.getGame().getPlayerFromId(0).setOnline(false);
+        c.update(new ReconnectMessage().serialize(), 0);
+        assertTrue(c.getGame().getPlayerFromId(0).isOnline());
+    }
+
 }

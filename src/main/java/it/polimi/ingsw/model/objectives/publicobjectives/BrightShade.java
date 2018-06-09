@@ -3,15 +3,10 @@ package it.polimi.ingsw.model.objectives.publicobjectives;
 import it.polimi.ingsw.model.WindowPattern;
 
 public class BrightShade extends PublicObjective {
-    private int points = 2;
-    private String name = "Sfumature Chiare";
 
-    public int getPoints() {
-        return points;
-    }
-
-    public String getName() {
-        return name;
+    public BrightShade(){
+        points = 2;
+        name = "Light Shades";
     }
 
     public int checkPoints(WindowPattern window) {
@@ -28,11 +23,5 @@ public class BrightShade extends PublicObjective {
             }
         }
         return (Math.min(one, two)*points);
-    }
-
-    @Override
-    public String toString() {
-        String s = this.name;
-        return s + " [" + points + "]";
     }
 }

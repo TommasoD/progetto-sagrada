@@ -4,15 +4,9 @@ import it.polimi.ingsw.model.WindowPattern;
 
 public class MediumShade extends PublicObjective {
 
-    private int points = 2;
-    private String name = "Sfumature Medie";
-
-    public int getPoints() {
-        return points;
-    }
-
-    public String getName() {
-        return name;
+    public MediumShade(){
+        points = 2;
+        name = "Medium Shades";
     }
 
     public int checkPoints(WindowPattern window) {
@@ -31,11 +25,5 @@ public class MediumShade extends PublicObjective {
         }
 
         return (Math.min(three,four)*points);
-    }
-
-    @Override
-    public String toString() {
-        String s = this.name;
-        return s + " [" + points + "]";
     }
 }

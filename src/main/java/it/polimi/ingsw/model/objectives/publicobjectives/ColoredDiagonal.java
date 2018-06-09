@@ -5,17 +5,14 @@ import it.polimi.ingsw.model.WindowPattern;
 
 public class ColoredDiagonal extends PublicObjective {
 
-    private int points = 1;
-    private String name = "Diagonali Colorate";
-    private Slot[][] supportMatrix1 = new Slot[8][5];
-    private Slot[][] supportMatrix2 = new Slot[8][5];
+    private Slot[][] supportMatrix1;
+    private Slot[][] supportMatrix2;
 
-    public int getPoints() {
-        return points;
-    }
-
-    public String getName() {
-        return name;
+    public ColoredDiagonal(){
+        points = 0;
+        name = "Diagonals";
+        supportMatrix1 = new Slot[8][5];
+        supportMatrix2 = new Slot[8][5];
     }
 
     private void fullSupportMatrix(WindowPattern window) {
@@ -83,11 +80,4 @@ public class ColoredDiagonal extends PublicObjective {
         }
         return (sum*points);
     }
-
-    @Override
-    public String toString() {
-        String s = this.name;
-        return s + " [#]";
-    }
-
 }
