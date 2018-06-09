@@ -93,4 +93,21 @@ public class ValidateInputTest {
         assertFalse(validateInput.checkToolCardInArray(index));
     }
 
+    @Test
+    void ValidIncreaseOrDecrease() {
+        int i = 1;
+        ValidateInput validateInput = new ValidateInput();
+        assertTrue(validateInput.increaseOrDecreaseChoice(i));
+    }
+
+    @Test
+    void InvalidIncreaseOrDecrease() {
+        int i = 8;
+        ValidateInput validateInput = new ValidateInput();
+        assertFalse(validateInput.increaseOrDecreaseChoice(i));
+    }
+
+
+
+
 }

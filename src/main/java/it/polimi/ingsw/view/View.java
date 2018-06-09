@@ -62,8 +62,8 @@ public class View {
         System.out.println("Turn ended. Please wait until your next turn.");
     }
 
-    public int printDieChoice() {
-        System.out.println("Choose a die and insert its position: ");
+    public int printDieChoice(String s) {
+        System.out.println("Choose a die from " + s + " and insert its position: ");
         return Integer.parseInt(stdin.nextLine());
     }
 
@@ -79,7 +79,7 @@ public class View {
     }
 
         public void printHelp() {
-        System.out.println("'place' to place a die on your Window.\n" +
+        System.out.println("'place' to place a die on your Window.\n" + "'use tool card' to use a selected tool card\n" +
                 "'end' to end your turn.");
     }
 
@@ -97,5 +97,25 @@ public class View {
             else if (id == 2) System.out.println("You have to choose a window. Digit 'window' to do so.");
              else System.out.println("Id not found");
     }
+
+
+    //ToolCard print
+    public int printToolCardChoice() {
+        System.out.println("Enter the number of the card you want to use");
+        return Integer.parseInt(stdin.nextLine());
+    }
+
+    public int printIncreaseOrDecrease() {
+        System.out.println("Insert 0 if you want to decrease the value of the die by one\nInsert 1 to increase by one");
+        int c = Integer.parseInt(stdin.nextLine());
+        return c;
+    }
+
+
+
+
+
+
+
 
 }

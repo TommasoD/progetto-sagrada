@@ -1,10 +1,8 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.messages.client.*;
-import it.polimi.ingsw.messages.controller.ChooseWindowMessage;
-import it.polimi.ingsw.messages.controller.LoginMessage;
-import it.polimi.ingsw.messages.controller.PassMessage;
-import it.polimi.ingsw.messages.controller.SetDieMessage;
+import it.polimi.ingsw.messages.controller.*;
+import it.polimi.ingsw.model.ToolCard;
 import it.polimi.ingsw.parsers.GsonParser;
 import it.polimi.ingsw.parsers.NetworkParser;
 import it.polimi.ingsw.utils.Observer;
@@ -139,9 +137,9 @@ public class ClientManager implements Observer<String> {
     private void playerAction(String move){
         if(move.equals("place")){
 
-            int die = view.printDieChoice();
+            int die = view.printDieChoice("DraftPool");
             /*
-            we must need a reference to roundTrack size
+            we must need a reference to DraftPool size
             while (!validateInput.checkDieInArray(die,size)) die = view.printDieChoice();
              */
 
@@ -153,6 +151,125 @@ public class ClientManager implements Observer<String> {
 
             network.send(new SetDieMessage(x, y, die).serialize());
         }
+
+        else if(move.equals("use tool card")) {
+
+            //REMEMBER 1<=nToolCard<=12 so the toolCard 1 is the element 0 in the arrayList.
+            int nToolCard = view.printToolCardChoice();
+            while (!validateInput.checkToolCardInArray(nToolCard-1)) nToolCard = view.printToolCardChoice();
+
+            //num in message is nToolCard
+            int dieIndex; // index of die in draft pool
+            int action = 0;
+
+
+            // Tool Card 1, 5, 6, 10 and 11
+            if ((nToolCard  == 1) || (nToolCard  == 5) || (nToolCard   == 6) || (nToolCard  == 10) || (nToolCard == 11)) {
+
+                //index of the die from draft pool
+                dieIndex = view.printDieChoice("DraftPool");
+                /*
+            we must need a reference to DraftPool size
+            while (!validateInput.checkDieInArray(die,size)) die = view.printDieChoice();
+             */
+                if (nToolCard == 1) {
+                    //action to chose if increase or decrease
+                    action = view.printIncreaseOrDecrease();
+                    while (!validateInput.increaseOrDecreaseChoice(action)) action = view.printIncreaseOrDecrease();
+                    network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
+                }
+                else if(nToolCard == 10) {
+                    network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
+                }
+
+                else {
+                    action = view.printDieChoice("RoundTrack");
+                    /*
+                    we must need a reference to roundTrack size
+                     while (!validateInput.checkDieInArray(die,size)) die = view.printDieChoice();
+                    */
+                    network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
+                }
+            }
+
+            // Tool Card 2 and 3
+            else if ((nToolCard == 2) || (nToolCard == 3)) {
+
+                ////we need to control if the new coordinates are the same as the old ones??
+
+                //old coordinates
+                int x = view.printCoordinates("x");
+                while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
+                int y = view.printCoordinates("y");
+                while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
+
+                //new coordinates
+                int a = view.printCoordinates("x");
+                while(!validateInput.checkColumnIndex(a)) a = view.printCoordinates("x");
+                int b = view.printCoordinates("y");
+                while(!validateInput.checkRowIndex(b)) b = view.printCoordinates("y");
+
+                network.send(new ToolCardBMessage(nToolCard, x, y , a , b).serialize());
+            }
+
+            else if ((nToolCard == 4) || (nToolCard == 12)) {
+
+                /*
+                bisogna considerare il caso in cui la toolcard sia la 12
+                 */
+
+                //DIE 1
+                //old coordinates
+                int x = view.printCoordinates("x");
+                while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
+                int y = view.printCoordinates("y");
+                while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
+
+                //new coordinates
+                int a = view.printCoordinates("x");
+                while(!validateInput.checkColumnIndex(a)) a = view.printCoordinates("x");
+                int b = view.printCoordinates("y");
+                while(!validateInput.checkRowIndex(b)) b = view.printCoordinates("y");
+
+                //DIE 2
+                //old coordinates
+                int x2 = view.printCoordinates("x");
+                while(!validateInput.checkColumnIndex(x2)) x2 = view.printCoordinates("x");
+                int y2 = view.printCoordinates("y");
+                while(!validateInput.checkRowIndex(y2)) y2 = view.printCoordinates("y");
+
+                //new coordinates
+                int a2 = view.printCoordinates("x");
+                while(!validateInput.checkColumnIndex(a2)) a2 = view.printCoordinates("x");
+                int b2 = view.printCoordinates("y");
+                while(!validateInput.checkRowIndex(b2)) b2 = view.printCoordinates("y");
+
+                network.send(new ToolCardCMessage(nToolCard, x, y , a , b, x2, y2, a2, b2).serialize());
+            }
+
+            else if (nToolCard == 7) {
+                network.send(new ToolCardEMessage(nToolCard).serialize());
+            }
+
+            else  if ((nToolCard == 8) || (nToolCard == 9)) {
+                dieIndex = view.printDieChoice("DraftPool");
+                 /*
+            we must need a reference to DraftPool size
+            while (!validateInput.checkDieInArray(die,size)) die = view.printDieChoice();
+             */
+                 
+                int x = view.printCoordinates("x");
+                while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
+                int y = view.printCoordinates("y");
+                while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
+                network.send(new ToolCardDMessage(nToolCard, dieIndex, x, y).serialize());
+
+            }
+
+
+        }
+
+
         else if(move.equals("end")){
             network.send(new PassMessage().serialize());
         }
