@@ -58,12 +58,12 @@ public class Controller implements Observer<String>{
      */
 
     public void newLoginRequest(){
-        // TODO : parte il countdown per l'inizio partita: i giocatori che non scelgono username o finestra avranno quelli default
         for(Player p : model.getPlayers()){
             if(p.isOnline()){
                 model.notifyMessage(new LoginRequestMessage(), p.getId());
             }
         }
+        // TODO : parte il countdown per l'inizio partita: i giocatori che non scelgono username o finestra avranno quelli default
     }
 
     /*
@@ -76,18 +76,6 @@ public class Controller implements Observer<String>{
         handler = new RoundHandler(model.playersSize());
         model.notifyUpdate();
         model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
-    }
-
-    /*
-        receives a window identifier (name) and a player identifier (number), creates the window calling a factory
-        then assigns that window to the correct player and set the player as ready to play
-     */
-
-    public void setWindowPattern(int playerId, String windowName){
-        factory = new WindowPatternFactory();
-        Player p = model.getPlayerFromId(playerId);
-        p.setPlayerWindow(factory.createWindow(windowName));
-        p.setReady(true);
     }
 
     /*
@@ -131,7 +119,7 @@ public class Controller implements Observer<String>{
                                 -dice left from draft to track
                                 -create new draft
                                 -firstTurnDone and secondTurnDone set to false for every player
-                                -model.notify
+                                -model.notifyUpdate
         */
 
         // if handler.isGameEnded -> GAME OVER!
@@ -150,12 +138,21 @@ public class Controller implements Observer<String>{
     }
 
     /*
+    --------------------------------------------------------------
         visitor pattern methods
+    --------------------------------------------------------------
+     */
+
+
+    /*
+        receives a window identifier (name) and a player identifier (number), creates the window calling a factory
+        then assigns that window to the correct player and set the player as ready to play
      */
 
     public void visit(ChooseWindowMessage message, int player){
         printMessage(message.getId(), player);
-        setWindowPattern(player, message.getWindowName());
+        model.getPlayerFromId(player).setPlayerWindow(factory.createWindow(message.getWindowName()));
+        model.getPlayerFromId(player).setReady(true);
         if(model.allReadyToPlay()){
             // TODO : fermo il countdown
             startMatch();

@@ -331,7 +331,7 @@ class ControllerTest {
         assertTrue(c.getGame().getToolCard(6).isAlreadyUsed());
         assertTrue(c.getGame().getPlayerFromId(0).isToolCardUsed());
         assertEquals(3, c.getGame().getPlayerFromId(0).getPlayerWindow().getDifficultyToken());
-        
+
         c.getGame().getPlayerFromId(0).setToolCardUsed(false);
         c.getGame().getPlayerFromId(0).setFirstTurnDone(true);
         c.update(new ToolCardEMessage(7).serialize(), 0);
