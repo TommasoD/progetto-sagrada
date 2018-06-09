@@ -182,6 +182,18 @@ public class ClientManager implements Observer<String> {
                     network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
                 }
 
+                else if(nToolCard == 11) {
+                    network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
+                    //il client deve aspettare il colore del dado estratto dal sacchetto
+                    //manca nel controller la gesione della toolcard 11
+                    /*int newValue = view.printDieValue();
+                    while (!validateInput.checkDieValue(newValue)) newValue = view.printDieValue();
+                    */
+
+
+                }
+
+
                 else {
                     action = view.printDieChoice("RoundTrack");
                     /*
@@ -231,20 +243,24 @@ public class ClientManager implements Observer<String> {
                 int b = view.printCoordinates("y");
                 while(!validateInput.checkRowIndex(b)) b = view.printCoordinates("y");
 
-                //DIE 2
-                //old coordinates
-                int x2 = view.printCoordinates("x");
-                while(!validateInput.checkColumnIndex(x2)) x2 = view.printCoordinates("x");
-                int y2 = view.printCoordinates("y");
-                while(!validateInput.checkRowIndex(y2)) y2 = view.printCoordinates("y");
+                String choice = "";
+                if (nToolCard == 12) choice = view.printChoiceAnotherDie();
+                if ((nToolCard == 4) || (choice.equalsIgnoreCase("yes"))) {
+                    //DIE 2
+                    //old coordinates
+                    int x2 = view.printCoordinates("x");
+                    while (!validateInput.checkColumnIndex(x2)) x2 = view.printCoordinates("x");
+                    int y2 = view.printCoordinates("y");
+                    while (!validateInput.checkRowIndex(y2)) y2 = view.printCoordinates("y");
 
-                //new coordinates
-                int a2 = view.printCoordinates("x");
-                while(!validateInput.checkColumnIndex(a2)) a2 = view.printCoordinates("x");
-                int b2 = view.printCoordinates("y");
-                while(!validateInput.checkRowIndex(b2)) b2 = view.printCoordinates("y");
+                    //new coordinates
+                    int a2 = view.printCoordinates("x");
+                    while (!validateInput.checkColumnIndex(a2)) a2 = view.printCoordinates("x");
+                    int b2 = view.printCoordinates("y");
+                    while (!validateInput.checkRowIndex(b2)) b2 = view.printCoordinates("y");
 
-                network.send(new ToolCardCMessage(nToolCard, x, y , a , b, x2, y2, a2, b2).serialize());
+                    network.send(new ToolCardCMessage(nToolCard, x, y, a, b, x2, y2, a2, b2).serialize());
+                }
             }
 
             else if (nToolCard == 7) {

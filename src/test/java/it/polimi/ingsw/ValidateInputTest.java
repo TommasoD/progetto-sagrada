@@ -2,12 +2,12 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.ValidateInput;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ValidateInputTest {
+
+
 
     @Test
     void ValidCheckDieRoundTrack() {
@@ -107,7 +107,18 @@ public class ValidateInputTest {
         assertFalse(validateInput.increaseOrDecreaseChoice(i));
     }
 
+    @Test
+    void ValidDieValue() {
+        int i = 1;
+        ValidateInput validateInput = new ValidateInput();
+        assertTrue(validateInput.checkDieValue(i));
+    }
 
-
+    @Test
+    void  InvalidDieValue() {
+        int i = 7;
+        ValidateInput validateInput = new ValidateInput();
+        assertFalse(validateInput.checkDieValue(i));
+    }
 
 }

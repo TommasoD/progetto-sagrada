@@ -54,5 +54,10 @@ public class ValidateInput {
         return false;
     }
 
+    public boolean checkDieValue(int i) {
+        if ((i >= 1) && (i <= 6)) return true;
+        System.out.println("Invalid entry");
+        return false;
+    }
 
 }

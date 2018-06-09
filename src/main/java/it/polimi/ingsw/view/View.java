@@ -111,9 +111,21 @@ public class View {
         return c;
     }
 
+    public int printDieValue() {
+        System.out.println("Select a value for the new die ( 0 - 6 )");
+        int v = Integer.parseInt(stdin.nextLine());
+        return v;
+    }
 
-
-
+    public String printChoiceAnotherDie() {
+        System.out.println("Do you want to choose another die? 'yes' or 'no'");
+        String c = stdin.nextLine();
+        while ((!c.equalsIgnoreCase("yes"))&&(!c.equalsIgnoreCase("no"))) {
+            System.out.println("Invalid entry");
+            c = stdin.nextLine();
+        }
+        return  c;
+    }
 
 
 
