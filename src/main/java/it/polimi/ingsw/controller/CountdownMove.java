@@ -105,7 +105,8 @@ public class CountdownMove extends Thread {
             while(this.read() < MAX_TIME && !done) {}
             this.stopClock();
             if(this.read() >= MAX_TIME) {
-                controller.visit(new LogoutMessage(), controller.getGame().getPlayers(playerIndex).getId());
+                controller.getGame().getPlayers(playerIndex).setOnline(false);
+                controller.getGame().notifyAllPlayers(new NotificationMessage(controller.getGame().getPlayers(playerIndex).getUsername(), "suspended"));
                 controller.nextPlayer(controller.getGame().getPlayers(playerIndex).getId());
             }
             wait = true;

@@ -7,7 +7,7 @@ public class NotificationMessage extends ClientMessage {
 
     private String id;
     private String username;
-    private String event;       //reconnect or disconnect
+    private String event;       //reconnect or disconnect or suspended
 
     public NotificationMessage(){
         id = "notification";
