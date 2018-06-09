@@ -104,6 +104,14 @@ class GsonParserTest {
     }
 
     @Test
+    void parseReconnect(){
+        GsonParser gp = new GsonParser();
+        ReconnectMessage m = new ReconnectMessage();
+        Message message = gp.parseController(m.serialize());
+        assertTrue(message instanceof ReconnectMessage);
+    }
+
+    @Test
     void parseUnexpectedController(){
         GsonParser gp = new GsonParser();
         Message message = gp.parseController("test");
@@ -162,6 +170,22 @@ class GsonParserTest {
         UpdateModelMessage m = new UpdateModelMessage();
         Message message = gp.parseClient(m.serialize());
         assertTrue(message instanceof UpdateModelMessage);
+    }
+
+    @Test
+    void parseNotification(){
+        GsonParser gp = new GsonParser();
+        NotificationMessage m = new NotificationMessage();
+        Message message = gp.parseClient(m.serialize());
+        assertTrue(message instanceof NotificationMessage);
+    }
+
+    @Test
+    void parseShowTable(){
+        GsonParser gp = new GsonParser();
+        ShowTableMessage m = new ShowTableMessage();
+        Message message = gp.parseClient(m.serialize());
+        assertTrue(message instanceof ShowTableMessage);
     }
 
     @Test

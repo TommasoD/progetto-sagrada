@@ -11,13 +11,16 @@ import static it.polimi.ingsw.messages.client.EndTurnMessage.deserializeEndTurnM
 import static it.polimi.ingsw.messages.client.ErrorMessage.deserializeErrorMessage;
 import static it.polimi.ingsw.messages.client.LoginRequestMessage.deserializeLoginRequestMessage;
 import static it.polimi.ingsw.messages.client.NewTurnMessage.deserializeNewTurnMessage;
+import static it.polimi.ingsw.messages.client.NotificationMessage.deserializeNotificationMessage;
 import static it.polimi.ingsw.messages.client.OkMessage.deserializeOkMessage;
+import static it.polimi.ingsw.messages.client.ShowTableMessage.deserializeShowTableMessage;
 import static it.polimi.ingsw.messages.client.ShowWindowsMessage.deserializeShowWindowsMessage;
 import static it.polimi.ingsw.messages.client.UpdateModelMessage.deserializeUpdateModelMessage;
 import static it.polimi.ingsw.messages.controller.ChooseWindowMessage.deserializeChooseWindowMessage;
 import static it.polimi.ingsw.messages.controller.LoginMessage.deserializeLoginMessage;
 import static it.polimi.ingsw.messages.controller.LogoutMessage.deserializeLogoutMessage;
 import static it.polimi.ingsw.messages.controller.PassMessage.deserializePassMessage;
+import static it.polimi.ingsw.messages.controller.ReconnectMessage.deserializeReconnectMessage;
 import static it.polimi.ingsw.messages.controller.SetDieMessage.deserializeSetDieMessage;
 import static it.polimi.ingsw.messages.controller.ShowTableRequestMessage.deserializeShowTableRequestMessage;
 import static it.polimi.ingsw.messages.controller.ToolCardAMessage.deserializeToolCardAMessage;
@@ -63,6 +66,9 @@ public class GsonParser {
         if(id.equals("show_table")){
             return deserializeShowTableRequestMessage(gson);
         }
+        if(id.equals("reconnect")){
+            return deserializeReconnectMessage(gson);
+        }
         return new UnexpectedMessage();
     }
 
@@ -88,6 +94,12 @@ public class GsonParser {
         }
         if(id.equals("error")){
             return deserializeErrorMessage(gson);
+        }
+        if(id.equals("notification")){
+            return deserializeNotificationMessage(gson);
+        }
+        if(id.equals("show_table")){
+            return deserializeShowTableMessage(gson);
         }
         return new ErrorMessage(3);
     }

@@ -339,6 +339,14 @@ public class ClientManager implements Observer<String> {
         view.printUpdate(message);
     }
 
+    public void visit(ShowTableMessage message){
+        // TODO
+    }
+
+    public void visit(NotificationMessage message){
+        // TODO
+    }
+
     /*
         unsupported method
      */

@@ -128,7 +128,8 @@ public class Controller implements Observer<String>{
     }
 
     /*
-
+        receives a window identifier (name) and a player identifier (number), creates the window calling a factory
+        then assigns that window to the correct player and set the player as ready to play
      */
 
     public void setWindowPattern(int player, String windowName){
@@ -150,12 +151,6 @@ public class Controller implements Observer<String>{
     --------------------------------------------------------------
         visitor pattern methods
     --------------------------------------------------------------
-     */
-
-
-    /*
-        receives a window identifier (name) and a player identifier (number), creates the window calling a factory
-        then assigns that window to the correct player and set the player as ready to play
      */
 
     public void visit(ChooseWindowMessage message, int player){
@@ -376,6 +371,13 @@ public class Controller implements Observer<String>{
         printMessage(message.getId(), player);
 
         //invia un messaggio di showTable al giocatore richiedente
+
+    }
+
+    public void visit(ReconnectMessage message, int player){
+        printMessage(message.getId(), player);
+
+        //setta il giocatore come online e notifica i giocatori
 
     }
 
