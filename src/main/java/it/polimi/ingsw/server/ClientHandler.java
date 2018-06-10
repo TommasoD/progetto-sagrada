@@ -46,7 +46,7 @@ public class ClientHandler extends Thread {
             //send mex to controller to set offline the player
             gameManager.notifyController(new LogoutMessage().serialize(), index);
             //delete client handler from game manager
-            System.out.println("Player " + index + " disconnected");
+            System.out.println("player " + index + " disconnected");
         }
 
         try {
@@ -63,8 +63,7 @@ public class ClientHandler extends Thread {
             output.writeUTF(line);
             output.flush();
         } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
+            System.out.println("client " + index + " still disconnected");
         }
     }
 

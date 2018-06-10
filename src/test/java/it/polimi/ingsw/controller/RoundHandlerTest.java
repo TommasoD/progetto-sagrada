@@ -51,25 +51,30 @@ class RoundHandlerTest {
     }
 
     @Test
-    void nextTurn(){
+    void nextTurn() {
         RoundHandler rh = new RoundHandler(2);
         rh.dump();
-        rh.nextTurn();
-        assertEquals(1, rh.getCurrentPlayer());
-        rh.nextTurn();
-        assertEquals(1, rh.getCurrentPlayer());
-        rh.nextTurn();
-        assertEquals(0, rh.getCurrentPlayer());
-        rh.nextTurn();
-        assertEquals(1, rh.getCurrentPlayer());
-        assertEquals(1, rh.getFirstPlayer());
-        assertEquals(2, rh.getRound());
-        rh.nextTurn();
-        rh.nextTurn();
-        rh.nextTurn();
-        rh.nextTurn();
-        assertEquals(0, rh.getCurrentPlayer());
-        assertEquals(0, rh.getFirstPlayer());
+        try{
+            rh.nextTurn();
+            assertEquals(1, rh.getCurrentPlayer());
+            rh.nextTurn();
+            assertEquals(1, rh.getCurrentPlayer());
+            rh.nextTurn();
+            assertEquals(0, rh.getCurrentPlayer());
+            rh.nextTurn();
+            assertEquals(1, rh.getCurrentPlayer());
+            assertEquals(1, rh.getFirstPlayer());
+            assertEquals(2, rh.getRound());
+            rh.nextTurn();
+            rh.nextTurn();
+            rh.nextTurn();
+            rh.nextTurn();
+            assertEquals(0, rh.getCurrentPlayer());
+            assertEquals(0, rh.getFirstPlayer());
+        } catch (NewRoundException e){
+            System.out.println("new round");
+            rh.dump();
+        }
     }
 
 

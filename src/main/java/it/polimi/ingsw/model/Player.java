@@ -159,6 +159,15 @@ public class Player {
     }
 
     /*
+        sets firstTurnDone and secondTurnDone to false
+     */
+
+    public void resetRound(){
+        firstTurnDone = false;
+        secondTurnDone = false;
+    }
+
+    /*
        private objective points
      */
 

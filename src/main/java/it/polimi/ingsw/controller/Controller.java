@@ -109,25 +109,27 @@ public class Controller implements Observer<String>{
         if(model.getPlayerFromId(player).isFirstTurnDone()) model.getPlayerFromId(player).setSecondTurnDone(true);
         else model.getPlayerFromId(player).setFirstTurnDone(true);
 
-        /*
-            try catch needs to be added in order to handle the nextRound exception !!!
-         */
-        handler.nextTurn();
-        while(!model.getPlayers(handler.getCurrentPlayer()).isOnline() ||
-                model.getPlayers(handler.getCurrentPlayer()).isSecondTurnDone()){
+        try {
             handler.nextTurn();
+            while (!model.getPlayers(handler.getCurrentPlayer()).isOnline() ||
+                    model.getPlayers(handler.getCurrentPlayer()).isSecondTurnDone()) {
+                handler.nextTurn();
+            }
+        } catch(NewRoundException e) {
+            System.out.println("round " + e.getRound() + " is starting");
+
+            // TODO : if all players are offline except one -> end game
+
+            model.diceLeft();
+            model.setDraft();
+            for(Player p : model.getPlayers()){
+                p.resetRound();
+            }
+            model.notifyUpdate();
         }
 
-        // TODO : gestione del nuovo round
-        /*in case of new round: -if all players are offline except one -> end game
-                                -dice left from draft to track
-                                -create new draft
-                                -firstTurnDone and secondTurnDone set to false for every player
-                                -model.notifyUpdate
-        */
-
-        // if handler.isGameEnded -> GAME OVER!
-        // else
+        // TODO : if handler.isGameEnded -> GAME OVER!
+        //else
         model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
         timer.wakeUp(handler.getCurrentPlayer());
     }

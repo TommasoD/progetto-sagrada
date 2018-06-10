@@ -55,11 +55,12 @@ public class RoundHandler {
         sets the next player as the current player and calls nextRound() if round has ended
      */
 
-    public void nextTurn(){
+    public void nextTurn() throws NewRoundException{
         currentPlayerIndex ++;
         if(currentPlayerIndex >= 2*nPlayers) {
             nextRound();
             currentPlayerIndex = 0;
+            throw new NewRoundException(round);
         }
     }
 
