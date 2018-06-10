@@ -1,4 +1,6 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.model;
+
+import it.polimi.ingsw.controller.NewRoundException;
 
 public class RoundHandler {
 
@@ -55,7 +57,7 @@ public class RoundHandler {
         sets the next player as the current player and calls nextRound() if round has ended
      */
 
-    public void nextTurn() throws NewRoundException{
+    public void nextTurn() throws NewRoundException {
         currentPlayerIndex ++;
         if(currentPlayerIndex >= 2*nPlayers) {
             nextRound();

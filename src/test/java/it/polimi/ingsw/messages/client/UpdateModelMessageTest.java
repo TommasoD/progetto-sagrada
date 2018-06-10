@@ -16,17 +16,17 @@ class UpdateModelMessageTest {
         WindowPatternFactory wf = new WindowPatternFactory();
         g.addPlayer(new Player("Username", wf.createWindow("Kaleidoscopic Dream")));
         g.addPlayer(new Player("Username2", wf.createWindow("Bellesguard")));
-        g.setDraft();
-        UpdateModelMessage m = new UpdateModelMessage(g.getPlayers(), g.getDraft(), g.getRoundTrack());
+        g.initialize();
+        UpdateModelMessage m = new UpdateModelMessage(g.getHandler().getRound(), g.getPlayers(), g.getDraft(), g.getRoundTrack());
         String s = m.serialize();
-        System.out.println(s + "\n\n\n");
+        System.out.println(s + "\n");
         UpdateModelMessage m2 = deserializeUpdateModelMessage(s);
         StringBuilder sb = new StringBuilder();
         for (Die d : m2.getDraft()) {
             sb.append(d.toString());
             sb.append(" ");
         }
-        System.out.println("Draft: " + sb.toString() + "\u001B[0m");
+        System.out.println("Round: " + m2.getRound() + "\nDraft: " + sb.toString() + "\u001B[0m");
         sb = new StringBuilder();
         for (Die d : m2.getRoundTrack()) {
             sb.append(d.toString());

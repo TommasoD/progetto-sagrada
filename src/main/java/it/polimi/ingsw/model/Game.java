@@ -21,6 +21,7 @@ public class Game extends Observable<String> {
     private ArrayList<PublicObjective> publicObjectiveActive;
     private ArrayList<ToolCard> toolCards;
     private ToolCardParser reader;
+    private RoundHandler handler;
 
     private static final int N_OBJECTIVES = 3;
     private static final int N_TOOL_CARD = 12;
@@ -70,6 +71,10 @@ public class Game extends Observable<String> {
 
     public List<PublicObjective> getPublicObjectiveActive() {
         return publicObjectiveActive;
+    }
+
+    public RoundHandler getHandler() {
+        return handler;
     }
 
     /*
@@ -213,10 +218,10 @@ public class Game extends Observable<String> {
         Random random = new Random();
         int bound;
         int k;
-        for (int i = 0; i < players.size(); i++) {
+        for(Player p : players) {
             bound = privateObjectives.size();
             k = random.nextInt(bound);
-            players.get(i).setPlayerObjective(privateObjectives.get(k));
+            p.setPlayerObjective(privateObjectives.get(k));
             privateObjectives.remove(k);
         }
 
@@ -231,6 +236,9 @@ public class Game extends Observable<String> {
 
         //first draft
         setDraft();
+
+        //initialize RoundHandler
+        handler = new RoundHandler(players.size());
     }
 
     /*
@@ -309,7 +317,7 @@ public class Game extends Observable<String> {
     }
 
     public void notifyUpdate(){
-        notify(new UpdateModelMessage(players, draft, roundTrack).serialize());
+        notify(new UpdateModelMessage(handler.getRound(), players, draft, roundTrack).serialize());
     }
 
     /*

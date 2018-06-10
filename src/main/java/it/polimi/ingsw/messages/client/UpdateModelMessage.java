@@ -10,6 +10,7 @@ import java.util.List;
 public class UpdateModelMessage extends ClientMessage {
 
     private String id;
+    private int round;
     private List<Player> players;
     private List<Die> draft;
     private List<Die> roundTrack;
@@ -18,8 +19,9 @@ public class UpdateModelMessage extends ClientMessage {
         id = "update";
     }
 
-    public UpdateModelMessage(List<Player> players, List<Die> draft, List<Die> roundTrack){
+    public UpdateModelMessage(int round, List<Player> players, List<Die> draft, List<Die> roundTrack){
         id = "update";
+        this.round = round;
         this.players = players;
         this.draft = draft;
         this.roundTrack = roundTrack;
@@ -69,5 +71,13 @@ public class UpdateModelMessage extends ClientMessage {
 
     public void setRoundTrack(List<Die> roundTrack) {
         this.roundTrack = roundTrack;
+    }
+
+    public int getRound() {
+        return round;
+    }
+
+    public void setRound(int round) {
+        this.round = round;
     }
 }

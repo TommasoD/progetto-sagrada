@@ -2,11 +2,8 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.messages.client.*;
 import it.polimi.ingsw.messages.controller.*;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.objectives.publicobjectives.PublicObjective;
 import it.polimi.ingsw.parsers.GsonParser;
 import it.polimi.ingsw.utils.Observer;
-
-import java.util.ArrayList;
 
 public class Controller implements Observer<String>{
 
@@ -79,7 +76,7 @@ public class Controller implements Observer<String>{
     public void startMatch(){
         model.setGameStarted(true);
         model.initialize();
-        handler = new RoundHandler(model.playersSize());
+        handler = model.getHandler();
         model.notifyUpdate();
         model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
         timer.wakeUp(handler.getCurrentPlayer());
@@ -129,6 +126,8 @@ public class Controller implements Observer<String>{
         }
 
         // TODO : if handler.isGameEnded -> GAME OVER!
+        //game over -> gameOver.determineWinner
+        //invia messaggio di fine partita a tutti i giocatori
         //else
         model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
         timer.wakeUp(handler.getCurrentPlayer());
