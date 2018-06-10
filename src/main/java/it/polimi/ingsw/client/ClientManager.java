@@ -2,7 +2,6 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.messages.client.*;
 import it.polimi.ingsw.messages.controller.*;
-import it.polimi.ingsw.model.ToolCard;
 import it.polimi.ingsw.parsers.GsonParser;
 import it.polimi.ingsw.parsers.NetworkParser;
 import it.polimi.ingsw.utils.Observer;
@@ -11,7 +10,6 @@ import it.polimi.ingsw.view.View;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.Scanner;
 
 
@@ -90,11 +88,11 @@ public class ClientManager implements Observer<String> {
 
     private void handleRequest(String request){
         if(stage == 0){
-            view.printWaitForTheStart();
+            view.printWait(0);
             return;
         }
         if(stage == 1){
-            if(request.equals("login")){
+            if(request.equalsIgnoreCase("login")){
                 LoginMessage gson = new LoginMessage(view.printLogin());
                 network.send(gson.serialize());
                 return;
@@ -103,10 +101,10 @@ public class ClientManager implements Observer<String> {
             return;
         }
         if(stage == 2){
-            if(request.equals("window")){
+            if(request.equalsIgnoreCase("window")){
                 String line = view.printInsertWindow();
                 while(!validateInput.checkWindowName(view.getWindowsName(), line)) line = view.printInsertWindow();
-                view.printWaitForTheStart();
+                view.printWait(0);
                 ChooseWindowMessage m = new ChooseWindowMessage(line);
                 network.send(m.serialize());
                 stage = 3;
@@ -117,14 +115,14 @@ public class ClientManager implements Observer<String> {
             return;
         }
         if(!clientTurn){
-            if(request.equals("reconnect")){
+            if(request.equalsIgnoreCase("reconnect")){
 
                     //metodo per gestire la riconnessione
                     //manca la classe messaggio per la riconnessione
 
                 return;
             }
-            view.print("Wait for your turn.");
+            view.printWait(1);
             return;
         }
         playerAction(request);
@@ -135,7 +133,7 @@ public class ClientManager implements Observer<String> {
      */
 
     private void playerAction(String move){
-        if(move.equals("place")){
+        if(move.equalsIgnoreCase("place")){
 
             int die = view.printDieChoice("DraftPool");
             /*
@@ -152,7 +150,7 @@ public class ClientManager implements Observer<String> {
             network.send(new SetDieMessage(x, y, die).serialize());
         }
 
-        else if(move.equals("use tool card")) {
+        else if(move.equalsIgnoreCase("use tool card")) {
 
             //REMEMBER 1<=nToolCard<=12 so the toolCard 1 is the element 0 in the arrayList.
             int nToolCard = view.printToolCardChoice();
@@ -253,6 +251,10 @@ public class ClientManager implements Observer<String> {
                     int y2 = view.printCoordinates("y");
                     while (!validateInput.checkRowIndex(y2)) y2 = view.printCoordinates("y");
 
+
+                    /*
+                    devo ricevere dal controller il colore del dado scelto o il controllo lo fa la toolcard e invalida la mossa?
+                     */
                     //new coordinates
                     int a2 = view.printCoordinates("x");
                     while (!validateInput.checkColumnIndex(a2)) a2 = view.printCoordinates("x");
@@ -286,10 +288,10 @@ public class ClientManager implements Observer<String> {
         }
 
 
-        else if(move.equals("end")){
+        else if(move.equalsIgnoreCase("end")){
             network.send(new PassMessage().serialize());
         }
-        else if(move.equals("help")){
+        else if(move.equalsIgnoreCase("help")){
             view.printHelp();
         }
         else{

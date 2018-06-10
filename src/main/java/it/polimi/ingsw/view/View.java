@@ -88,8 +88,9 @@ public class View {
         return stdin.nextLine();
     }
 
-    public void printWaitForTheStart() {
-        System.out.println("Wait for the start of the match.");
+    public void printWait(int i) {
+        if (i==0) System.out.println("Wait for the start of the match.");
+        else System.out.println("Wait for your turn.");
     }
 
     public void printDigit(int id) {
