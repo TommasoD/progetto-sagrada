@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.messages.client.NotificationMessage;
 import it.polimi.ingsw.messages.controller.LogoutMessage;
+import it.polimi.ingsw.parsers.SetupParser;
 
 public class CountdownMove extends Thread {
 
@@ -16,7 +17,7 @@ public class CountdownMove extends Thread {
 
     private boolean done;
 
-    private static final int MAX_TIME = 60000;
+    private static int max_time;
 
     private boolean gameEnded;
 
@@ -25,13 +26,16 @@ public class CountdownMove extends Thread {
     private int playerIndex;
 
     public CountdownMove(Controller controller) {
+        SetupParser reader = new SetupParser();
+        reader.readSetup();
+        max_time = reader.getCountdownMove();
         resetAndStop();
         done = false;
         this.controller = controller;
     }
 
     public int getMaxTime() {
-        return MAX_TIME;
+        return max_time;
     }
 
     public void setDone() {
@@ -90,16 +94,16 @@ public class CountdownMove extends Thread {
         done = false;
 
         this.reset();
-        while(this.read() < MAX_TIME && !done) {}
+        while(this.read() < max_time && !done) {}
 
         controller.startMatch();
         done = false;
 
         while(!gameEnded) {
             this.reset();
-            while(this.read() < MAX_TIME && !done) {}
+            while(this.read() <max_time&& !done) {}
             this.stopClock();
-            if(this.read() >= MAX_TIME) {
+            if(this.read() >= max_time) {
                 controller.getGame().getPlayers(playerIndex).setOnline(false);
                 controller.getGame().notifyAllPlayers(new NotificationMessage(controller.getGame().getPlayers(playerIndex).getUsername(), "suspended"));
                 controller.nextPlayer(controller.getGame().getPlayers(playerIndex).getId());

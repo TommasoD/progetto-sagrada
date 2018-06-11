@@ -3,7 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.messages.client.*;
 import it.polimi.ingsw.messages.controller.*;
 import it.polimi.ingsw.parsers.GsonParser;
-import it.polimi.ingsw.parsers.NetworkParser;
+import it.polimi.ingsw.parsers.SetupParser;
 import it.polimi.ingsw.utils.Observer;
 import it.polimi.ingsw.view.View;
 
@@ -41,8 +41,8 @@ public class ClientManager implements Observer<String> {
     }
 
     private void startClient(){
-        NetworkParser reader = new NetworkParser();
-        reader.readNetworkSetup();
+        SetupParser reader = new SetupParser();
+        reader.readSetup();
         int port = reader.getPort();
 
 

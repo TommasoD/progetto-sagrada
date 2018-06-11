@@ -2,7 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.parsers.NetworkParser;
+import it.polimi.ingsw.parsers.SetupParser;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.net.InetAddress;
 public class Server {
 
     private int port;
-    NetworkParser reader = new NetworkParser();
+    SetupParser reader = new SetupParser();
     private ServerSocket serverSocket;
     private GameManager gameManager;
     private GameRoom gameRoom;
@@ -24,7 +24,7 @@ public class Server {
 
     public Server() {
 
-        reader.readNetworkSetup();
+        reader.readSetup();
         port = reader.getPort();
 
         try {

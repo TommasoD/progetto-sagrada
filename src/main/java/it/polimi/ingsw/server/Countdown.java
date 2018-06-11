@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.parsers.NetworkParser;
+import it.polimi.ingsw.parsers.SetupParser;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -18,15 +18,19 @@ public class Countdown extends Thread {
 
     private boolean done;
 
-    private static final int MAX_TIME = 30000;
+    private static int max_time;
+
 
     public Countdown() {
+        SetupParser reader = new SetupParser();
+        reader.readSetup();
+        max_time = reader.getCountdownConnection();
         resetAndStop();
         done = false;
     }
 
     public int getMaxTime() {
-        return MAX_TIME;
+        return max_time;
     }
 
     /**Reset and stop the timer */
@@ -70,7 +74,7 @@ public class Countdown extends Thread {
     public void run() {
 
         //this.reset();
-        while((this.read() < MAX_TIME) && (!done)) {
+        while((this.read() < max_time) && (!done)) {
             if (isActive) System.out.print("\r" + this);
             try {
                 Thread.sleep(1000);
@@ -80,7 +84,7 @@ public class Countdown extends Thread {
             }
         }
         this.stopClock();
-        if(this.read() >= MAX_TIME) {
+        if(this.read() >= max_time) {
             try {
                 this.serverBreak();
             } catch (IOException e) {
@@ -91,8 +95,8 @@ public class Countdown extends Thread {
     }
 
     private void serverBreak() throws IOException {
-        NetworkParser reader = new NetworkParser();
-        reader.readNetworkSetup();
+        SetupParser reader = new SetupParser();
+        reader.readSetup();
         Socket socket = new Socket(reader.getIp(), reader.getPort());
         socket.close();
     }
