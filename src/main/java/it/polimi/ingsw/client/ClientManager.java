@@ -5,7 +5,7 @@ import it.polimi.ingsw.messages.controller.*;
 import it.polimi.ingsw.parsers.GsonParser;
 import it.polimi.ingsw.parsers.SetupParser;
 import it.polimi.ingsw.utils.Observer;
-import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.CLI;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -17,7 +17,7 @@ public class ClientManager implements Observer<String> {
 
     private Scanner stdin;
     private GsonParser parser;
-    private View view;
+    private CLI CLI;
     private Socket socket;
     private ClientConnection network;
     private boolean clientTurn;
@@ -33,7 +33,7 @@ public class ClientManager implements Observer<String> {
     private ClientManager(){
         stdin = new Scanner(System.in);
         parser = new GsonParser();
-        view = new View();
+        CLI = new CLI();
         clientTurn = false;
         gameEnded = false;
         stage = 0;
@@ -79,7 +79,7 @@ public class ClientManager implements Observer<String> {
         new Thread(network).start();
 
         while(!gameEnded){
-            handleRequest(view.writeRequest());
+            handleRequest(CLI.writeRequest());
         }
     }
 
@@ -89,34 +89,34 @@ public class ClientManager implements Observer<String> {
 
     private void handleRequest(String request){
 
-        if (request.equalsIgnoreCase("help")) view.printHelp();
+        if (request.equalsIgnoreCase("help")) CLI.printHelp();
 
         if(stage == 0){
-            view.printWait(0);
+            CLI.printWait(0);
             return;
         }
         if(stage == 1){
             if(request.equalsIgnoreCase("login")){
-                LoginMessage gson = new LoginMessage(view.printLogin());
+                LoginMessage gson = new LoginMessage(CLI.printLogin());
                 network.send(gson.serialize());
                 return;
             }
-            view.printDigit(1); //this print: You have to login first. Digit 'login'.
+            CLI.printDigit(1); //this print: You have to login first. Digit 'login'.
             return;
         }
         if(stage == 2){
             if(request.equalsIgnoreCase("window")){
-                String line = view.printInsertWindow();
-                if (!validateInput.checkWindowName(view.getWindowsName(), line))  return;
+                String line = CLI.printInsertWindow();
+                if (!validateInput.checkWindowName(CLI.getWindowsName(), line))  return;
                     else {
-                    view.printWait(0);
+                    CLI.printWait(0);
                     ChooseWindowMessage m = new ChooseWindowMessage(line);
                     network.send(m.serialize());
                     return;
                 }
             }
 
-            view.printDigit(2); //this print: "You have to choose a window. Digit 'window' to do so.
+            CLI.printDigit(2); //this print: "You have to choose a window. Digit 'window' to do so.
             return;
         }
         if(!clientTurn){
@@ -124,7 +124,7 @@ public class ClientManager implements Observer<String> {
                 network.send(new ReconnectMessage().serialize());
                 return;
             }
-            view.printWait(1);
+            CLI.printWait(1);
             return;
         }
         playerAction(request);
@@ -137,14 +137,14 @@ public class ClientManager implements Observer<String> {
     private void playerAction(String move){
         if(move.equalsIgnoreCase("place")){
 
-            int die = view.printDieChoice("DraftPool",draftPoolSize);
-            while (!validateInput.checkDieInArray(die,draftPoolSize)) die = view.printDieChoice("DraftPool",draftPoolSize);
+            int die = CLI.printDieChoice("DraftPool",draftPoolSize);
+            while (!validateInput.checkDieInArray(die,draftPoolSize)) die = CLI.printDieChoice("DraftPool",draftPoolSize);
 
-            int x = view.printCoordinates("x");
-            while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
+            int x = CLI.printCoordinates("x");
+            while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates("x");
 
-            int y = view.printCoordinates("y");
-            while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
+            int y = CLI.printCoordinates("y");
+            while(!validateInput.checkRowIndex(y)) y = CLI.printCoordinates("y");
 
             if (clientTurn) network.send(new SetDieMessage(x, y, die).serialize());
         }
@@ -152,9 +152,9 @@ public class ClientManager implements Observer<String> {
         else if(move.equalsIgnoreCase("tool card")) {
 
             //REMEMBER 1<=nToolCard<=12 so the toolCard 1 is the element 0 in the arrayList.
-            int nToolCard = view.printToolCardChoice();
-            while (!validateInput.checkToolCardInArray(nToolCard-1)) nToolCard = view.printToolCardChoice();
-            
+            int nToolCard = CLI.printToolCardChoice();
+            while (!validateInput.checkToolCardInArray(nToolCard-1)) nToolCard = CLI.printToolCardChoice();
+
             if ((nToolCard  == 1) || (nToolCard  == 5) || (nToolCard   == 6) || (nToolCard  == 10) || (nToolCard == 11)) {
                if(clientTurn) network.send(useToolCardA(nToolCard).serialize());
             }
@@ -187,10 +187,10 @@ public class ClientManager implements Observer<String> {
             if (clientTurn) network.send(new PassMessage().serialize());
         }
         else if(move.equalsIgnoreCase("help")){
-            view.printHelp();
+            CLI.printHelp();
         }
         else{
-            view.printError(3);
+            CLI.printError(3);
         }
     }
 
@@ -198,40 +198,40 @@ public class ClientManager implements Observer<String> {
     private ToolCardAMessage useToolCardA(int nToolCard) {
         int dieIndex;
         int action = 0;
-        dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
-        while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
+        dieIndex = CLI.printDieChoice("DraftPool",draftPoolSize);
+        while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = CLI.printDieChoice("DraftPool",draftPoolSize);
         if (nToolCard == 1) {
-            action = view.printIncreaseOrDecrease();
-            while (!validateInput.increaseOrDecreaseChoice(action)) action = view.printIncreaseOrDecrease();
+            action = CLI.printIncreaseOrDecrease();
+            while (!validateInput.increaseOrDecreaseChoice(action)) action = CLI.printIncreaseOrDecrease();
             return new ToolCardAMessage(nToolCard, dieIndex, action);
         }
         if(nToolCard == 5){
-            action = view.printDieChoice("RoundTrack",roundTrackSize);
-            while (!validateInput.checkDieInArray(action,roundTrackSize)) action = view.printDieChoice("RoundTrack",roundTrackSize);
+            action = CLI.printDieChoice("RoundTrack",roundTrackSize);
+            while (!validateInput.checkDieInArray(action,roundTrackSize)) action = CLI.printDieChoice("RoundTrack",roundTrackSize);
             return new ToolCardAMessage(nToolCard, dieIndex, action);
         }
 
         if(nToolCard == 11) {
             network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
-            int newValue = view.printDieValue();
-            while (!validateInput.checkDieValue(newValue)) newValue = view.printDieValue();
-            return new ToolCardAMessage(nToolCard, newValue, 1);
+            int newValue = CLI.printDieValue();
+            while (!validateInput.checkDieValue(newValue)) newValue = CLI.printDieValue();
+            return new ToolCardAMessage(nToolCard, 0, newValue);
         }
         return new ToolCardAMessage(nToolCard, dieIndex, action);
     }
 
     private ToolCardBMessage useToolCardB(int nToolCard) {
         //old coordinates
-        int x = view.printCoordinates("x");
-        while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
-        int y = view.printCoordinates("y");
-        while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
+        int x = CLI.printCoordinates("x");
+        while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates("x");
+        int y = CLI.printCoordinates("y");
+        while(!validateInput.checkRowIndex(y)) y = CLI.printCoordinates("y");
 
         //new coordinates
-        int a = view.printCoordinates("x");
-        while(!validateInput.checkColumnIndex(a)) a = view.printCoordinates("x");
-        int b = view.printCoordinates("y");
-        while(!validateInput.checkRowIndex(b)) b = view.printCoordinates("y");
+        int a = CLI.printCoordinates("x");
+        while(!validateInput.checkColumnIndex(a)) a = CLI.printCoordinates("x");
+        int b = CLI.printCoordinates("y");
+        while(!validateInput.checkRowIndex(b)) b = CLI.printCoordinates("y");
 
         return new ToolCardBMessage(nToolCard, x, y , a , b);
 
@@ -240,32 +240,32 @@ public class ClientManager implements Observer<String> {
     private ToolCardCMessage useToolCardC(int nToolCard) {
         //DIE 1
         //old coordinates
-        int x = view.printCoordinates("x");
-        while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
-        int y = view.printCoordinates("y");
-        while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
+        int x = CLI.printCoordinates("x");
+        while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates("x");
+        int y = CLI.printCoordinates("y");
+        while(!validateInput.checkRowIndex(y)) y = CLI.printCoordinates("y");
 
         //new coordinates
-        int a = view.printCoordinates("x");
-        while(!validateInput.checkColumnIndex(a)) a = view.printCoordinates("x");
-        int b = view.printCoordinates("y");
-        while(!validateInput.checkRowIndex(b)) b = view.printCoordinates("y");
+        int a = CLI.printCoordinates("x");
+        while(!validateInput.checkColumnIndex(a)) a = CLI.printCoordinates("x");
+        int b = CLI.printCoordinates("y");
+        while(!validateInput.checkRowIndex(b)) b = CLI.printCoordinates("y");
 
         String choice = "";
-        if (nToolCard == 12) choice = view.printChoiceAnotherDie();
+        if (nToolCard == 12) choice = CLI.printChoiceAnotherDie();
         if ((nToolCard == 4) || (choice.equalsIgnoreCase("yes"))) {
             //DIE 2
             //old coordinates
-            int x2 = view.printCoordinates("x");
-            while (!validateInput.checkColumnIndex(x2)) x2 = view.printCoordinates("x");
-            int y2 = view.printCoordinates("y");
-            while (!validateInput.checkRowIndex(y2)) y2 = view.printCoordinates("y");
+            int x2 = CLI.printCoordinates("x");
+            while (!validateInput.checkColumnIndex(x2)) x2 = CLI.printCoordinates("x");
+            int y2 = CLI.printCoordinates("y");
+            while (!validateInput.checkRowIndex(y2)) y2 = CLI.printCoordinates("y");
 
             //new coordinates
-            int a2 = view.printCoordinates("x");
-            while (!validateInput.checkColumnIndex(a2)) a2 = view.printCoordinates("x");
-            int b2 = view.printCoordinates("y");
-            while (!validateInput.checkRowIndex(b2)) b2 = view.printCoordinates("y");
+            int a2 = CLI.printCoordinates("x");
+            while (!validateInput.checkColumnIndex(a2)) a2 = CLI.printCoordinates("x");
+            int b2 = CLI.printCoordinates("y");
+            while (!validateInput.checkRowIndex(b2)) b2 = CLI.printCoordinates("y");
 
             return new ToolCardCMessage(nToolCard, x, y, a, b, x2, y2, a2, b2);
         }
@@ -273,12 +273,12 @@ public class ClientManager implements Observer<String> {
     }
 
     private ToolCardDMessage useToolCardD(int nToolCard) {
-        int dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
-        while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
-        int x = view.printCoordinates("x");
-        while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
-        int y = view.printCoordinates("y");
-        while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
+        int dieIndex = CLI.printDieChoice("DraftPool",draftPoolSize);
+        while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = CLI.printDieChoice("DraftPool",draftPoolSize);
+        int x = CLI.printCoordinates("x");
+        while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates("x");
+        int y = CLI.printCoordinates("y");
+        while(!validateInput.checkRowIndex(y)) y = CLI.printCoordinates("y");
         if (clientTurn) network.send(new ToolCardDMessage(nToolCard, dieIndex, x, y).serialize());
         return new ToolCardDMessage(nToolCard, dieIndex, x, y);
 
@@ -298,7 +298,7 @@ public class ClientManager implements Observer<String> {
 
     public void visit(LoginRequestMessage message){
         stage = 1;
-        view.print("You now have to login and choose a username. Digit 'login' to enter setup.");
+        CLI.print("You now have to login and choose a username. Digit 'login' to enter setup.");
     }
 
     /*
@@ -307,49 +307,49 @@ public class ClientManager implements Observer<String> {
 
     public void visit(ShowWindowsMessage message){
         stage = 2;
-        view.printWindows(message);
+        CLI.printWindows(message);
     }
 
     public void visit(NewTurnMessage message){
         clientTurn = true;
-        view.print("It's your turn. Make a move (digit 'help' to see more).");
+        CLI.print("It's your turn. Make a move (digit 'help' to see more).");
     }
 
     public void visit(ErrorMessage message) {
-        view.printError(message.getType());
+        CLI.printError(message.getType());
     }
 
     public void visit(OkMessage message){
-        view.print("Action successful!");
+        CLI.print("Action successful!");
     }
 
     public void visit(EndTurnMessage message){
         clientTurn = false;
-        view.printEndOfTurn();
+        CLI.printEndOfTurn();
     }
 
     public void visit(UpdateModelMessage message){
         stage = 3;
         roundTrackSize = message.getRoundTrack().size();
         draftPoolSize = message.getDraft().size();
-        view.printUpdate(message);
+        CLI.printUpdate(message);
     }
 
     public void visit(ShowTableMessage message){
-        view.printShowTable(message.getPrivateObjective(),message.getPublicObjective(),message.getToolCards());
+        CLI.printShowTable(message.getPrivateObjective(),message.getPublicObjective(),message.getToolCards());
     }
 
     public void visit(GameOverMessage message){
-       view.printWinner(message.getWinner());
+       CLI.printWinner(message.getWinner());
         this.gameEnded = true;
     }
 
     public void visit(DieColorMessage message){
-        view.printColor(message.getColor());
+        CLI.printColor(message.getColor());
     }
 
     public void visit(NotificationMessage message){
-       view.printEvent(message.getUsername(),message.getEvent());
+       CLI.printEvent(message.getUsername(),message.getEvent());
     }
 
     /*

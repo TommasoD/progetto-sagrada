@@ -21,7 +21,7 @@ import java.util.Scanner;
 
 //scritta reconnect quando viene sospeso
 
-public class View {
+public class CLI {
 
     private ArrayList<String> windowsName = new ArrayList<String>();
 
