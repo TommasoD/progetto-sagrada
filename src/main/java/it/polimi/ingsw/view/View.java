@@ -4,9 +4,20 @@ import it.polimi.ingsw.messages.client.ShowWindowsMessage;
 import it.polimi.ingsw.messages.client.UpdateModelMessage;
 import it.polimi.ingsw.model.Die;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.ToolCard;
+import it.polimi.ingsw.model.objectives.PrivateObjective;
+import it.polimi.ingsw.model.objectives.publicobjectives.PublicObjective;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
+
+//client rimangono il controllo sia prima sia quando devo mandare il messaggio per verificare che è il suo turno
+
+///spostare i controlli nella view
+
+//rendere tutte el stringhe come costanti
 
 public class View {
 
@@ -18,7 +29,14 @@ public class View {
         System.out.println(s);
     }
 
+    public void printEvent(String user, String event) {
+        if (event.equals("reconnect")) System.out.println(user + " is reconnect");
+        else if (event.equals("disconnect")) System.out.println(user + " is disconnected");
+        else if (event.equals("suspend")) System.out.println(user + " is suspended");
+    }
+
     public void printUpdate(UpdateModelMessage message){
+        System.out.println("Round #" + message.getRound());
         StringBuilder sb = new StringBuilder();
         for (Die d : message.getDraft()) {
             sb.append(d.toString());
@@ -62,8 +80,8 @@ public class View {
         System.out.println("Turn ended. Please wait until your next turn.");
     }
 
-    public int printDieChoice(String s) {
-        System.out.println("Choose a die from " + s + " and insert its position: ");
+    public int printDieChoice(String s, int size) {
+        System.out.println("Choose a die from " + s + " and insert its position ( from 0 to " + size + ")");
         return Integer.parseInt(stdin.nextLine());
     }
 
@@ -80,7 +98,7 @@ public class View {
 
         public void printHelp() {
         System.out.println("'place' to place a die on your Window.\n" + "'use tool card' to use a selected tool card\n" +
-                "'end' to end your turn.");
+                "'show table' to check your private objective, public objectives and tool cards\n" + "'end' to end your turn.");
     }
 
     public String printLogin() {
@@ -126,6 +144,18 @@ public class View {
             c = stdin.nextLine();
         }
         return  c;
+    }
+
+    public void printShowTable(PrivateObjective privateObjective, List<String> publicObjective, List<ToolCard> toolCards) {
+        System.out.println("YOUR PRIVATE OBJECTIVE IS: " + privateObjective.toString());
+        System.out.println("\nPUBLIC OBJECTIVES");
+        for (String p : publicObjective) {
+            System.out.println(p);
+        }
+        System.out.println("\nTOOL CARDS:");
+        for (ToolCard t : toolCards) {
+            t.dump();
+        }
     }
 
 

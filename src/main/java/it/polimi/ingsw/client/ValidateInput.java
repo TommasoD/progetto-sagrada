@@ -37,7 +37,7 @@ public class ValidateInput {
     //the name entered must match exactly one window name
     public boolean checkWindowName(ArrayList<String> windowNames, String insertName) {
         for (String windowName : windowNames) if (windowName.equals(insertName)) return true;
-        System.out.println("The window name entered is not present");
+        System.out.println("The window name entered is not present.\nYou have to choose a window. Digit 'window' to do so.");
         return false;
     }
 

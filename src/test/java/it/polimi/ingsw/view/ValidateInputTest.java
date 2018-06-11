@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.ValidateInput;
 import org.junit.jupiter.api.Test;

@@ -22,6 +22,8 @@ public class ClientManager implements Observer<String> {
     private ClientConnection network;
     private boolean clientTurn;
     private boolean gameEnded;
+    private int roundTrackSize;
+    private int draftPoolSize;
     private int stage;              //0 -> before match, 1 -> login, 2 -> choose window, 3 -> client ready
     private  ValidateInput validateInput;
     /*
@@ -77,6 +79,7 @@ public class ClientManager implements Observer<String> {
         new Thread(network).start();
 
         while(!gameEnded){
+            //da modificare
             String request = stdin.nextLine();
             handleRequest(request);
         }
@@ -103,12 +106,13 @@ public class ClientManager implements Observer<String> {
         if(stage == 2){
             if(request.equalsIgnoreCase("window")){
                 String line = view.printInsertWindow();
-                while(!validateInput.checkWindowName(view.getWindowsName(), line)) line = view.printInsertWindow();
-                view.printWait(0);
-                ChooseWindowMessage m = new ChooseWindowMessage(line);
-                network.send(m.serialize());
-                stage = 3;
-                return;
+                if (!validateInput.checkWindowName(view.getWindowsName(), line))  return;
+                    else {
+                    view.printWait(0);
+                    ChooseWindowMessage m = new ChooseWindowMessage(line);
+                    network.send(m.serialize());
+                    return;
+                }
             }
 
             view.printDigit(2); //this print: "You have to choose a window. Digit 'window' to do so.
@@ -116,10 +120,7 @@ public class ClientManager implements Observer<String> {
         }
         if(!clientTurn){
             if(request.equalsIgnoreCase("reconnect")){
-
-                    //metodo per gestire la riconnessione
-                    //manca la classe messaggio per la riconnessione
-
+                network.send(new ReconnectMessage().serialize());
                 return;
             }
             view.printWait(1);
@@ -135,11 +136,8 @@ public class ClientManager implements Observer<String> {
     private void playerAction(String move){
         if(move.equalsIgnoreCase("place")){
 
-            int die = view.printDieChoice("DraftPool");
-            /*
-            we must need a reference to DraftPool size
-            while (!validateInput.checkDieInArray(die,size)) die = view.printDieChoice();
-             */
+            int die = view.printDieChoice("DraftPool",draftPoolSize);
+            while (!validateInput.checkDieInArray(die,draftPoolSize)) die = view.printDieChoice("DraftPool",draftPoolSize);
 
             int x = view.printCoordinates("x");
             while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
@@ -165,11 +163,9 @@ public class ClientManager implements Observer<String> {
             if ((nToolCard  == 1) || (nToolCard  == 5) || (nToolCard   == 6) || (nToolCard  == 10) || (nToolCard == 11)) {
 
                 //index of the die from draft pool
-                dieIndex = view.printDieChoice("DraftPool");
-                /*
-            we must need a reference to DraftPool size
-            while (!validateInput.checkDieInArray(die,size)) die = view.printDieChoice();
-             */
+                dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
+                while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
+
                 if (nToolCard == 1) {
                     //action to chose if increase or decrease
                     action = view.printIncreaseOrDecrease();
@@ -193,11 +189,9 @@ public class ClientManager implements Observer<String> {
 
 
                 else {
-                    action = view.printDieChoice("RoundTrack");
-                    /*
-                    we must need a reference to roundTrack size
-                     while (!validateInput.checkDieInArray(die,size)) die = view.printDieChoice();
-                    */
+                    action = view.printDieChoice("RoundTrack",roundTrackSize);
+                    while (!validateInput.checkDieInArray(action,roundTrackSize)) action = view.printDieChoice("RoundTrack",roundTrackSize);
+
                     network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
                 }
             }
@@ -270,12 +264,10 @@ public class ClientManager implements Observer<String> {
             }
 
             else  if ((nToolCard == 8) || (nToolCard == 9)) {
-                dieIndex = view.printDieChoice("DraftPool");
-                 /*
-            we must need a reference to DraftPool size
-            while (!validateInput.checkDieInArray(die,size)) die = view.printDieChoice();
-             */
-                 
+                dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
+
+                while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
+
                 int x = view.printCoordinates("x");
                 while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
                 int y = view.printCoordinates("y");
@@ -287,6 +279,9 @@ public class ClientManager implements Observer<String> {
 
         }
 
+        else if (move.equalsIgnoreCase("show table")) {
+            network.send(new ShowTableMessage().serialize());
+        }
 
         else if(move.equalsIgnoreCase("end")){
             network.send(new PassMessage().serialize());
@@ -354,15 +349,18 @@ public class ClientManager implements Observer<String> {
     }
 
     public void visit(UpdateModelMessage message){
+        stage = 3;
+        roundTrackSize = message.getRoundTrack().size();
+        draftPoolSize = message.getDraft().size();
         view.printUpdate(message);
     }
 
     public void visit(ShowTableMessage message){
-        // TODO
+        view.printShowTable(message.getPrivateObjective(),message.getPublicObjective(),message.getToolCards());
     }
 
     public void visit(NotificationMessage message){
-        // TODO
+       view.printEvent(message.getUsername(),message.getEvent());
     }
 
     /*
