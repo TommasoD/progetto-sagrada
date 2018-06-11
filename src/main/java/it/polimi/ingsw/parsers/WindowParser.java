@@ -1,6 +1,7 @@
 package it.polimi.ingsw.parsers;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -56,7 +57,11 @@ public class WindowParser {
         try {
             SAXParser saxParser = saxParserFactory.newSAXParser();
             WindowReader handler = new WindowReader();
-            saxParser.parse(new File(path + "/src/main/resources/" + windowName + ".xml"), handler);
+            try {
+                saxParser.parse(new File(path + "/src/main/resources/" + windowName + ".xml"), handler);
+            } catch(FileNotFoundException e) {
+                saxParser.parse(new File(path + "/classes/"  + windowName + ".xml"), handler);
+            }
         } catch ( Exception e) {
             e.printStackTrace();
             System.exit(1);

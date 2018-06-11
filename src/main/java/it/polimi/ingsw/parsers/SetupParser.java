@@ -1,5 +1,6 @@
 package it.polimi.ingsw.parsers;
 import java.io.File;
+import java.io.FileNotFoundException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
@@ -40,7 +41,11 @@ public class SetupParser {
             try {
                 SAXParser saxParser = saxParserFactory.newSAXParser();
                 SetupParser.SetupReader handler = new SetupParser.SetupReader();
-                saxParser.parse(new File(path + "/src/main/resources/setup.xml"), handler);
+                try {
+                    saxParser.parse(new File(path + "/src/main/resources/setup.xml"), handler);
+                } catch(FileNotFoundException e) {
+                    saxParser.parse(new File(path + "/classes/setup.xml"), handler);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 System.exit(1);

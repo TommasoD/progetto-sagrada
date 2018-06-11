@@ -1,6 +1,7 @@
 package it.polimi.ingsw.parsers;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.xml.parsers.SAXParser;
@@ -42,7 +43,11 @@ public class ToolCardParser {
         try {
             SAXParser saxParser = saxParserFactory.newSAXParser();
             ToolCardParser.ToolCardReader handler = new ToolCardParser.ToolCardReader();
+            try {
                 saxParser.parse(new File(path + "/src/main/resources/toolcards.xml"), handler);
+            } catch(FileNotFoundException e) {
+                saxParser.parse(new File(path + "/classes/toolcards.xml"), handler);
+            }
 
             } catch (Exception e) {
                 e.printStackTrace();
