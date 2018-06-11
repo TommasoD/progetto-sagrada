@@ -359,6 +359,10 @@ public class ClientManager implements Observer<String> {
         view.printShowTable(message.getPrivateObjective(),message.getPublicObjective(),message.getToolCards());
     }
 
+    public void visit(GameOverMessage message){
+        // TODO
+    }
+
     public void visit(NotificationMessage message){
        view.printEvent(message.getUsername(),message.getEvent());
     }
