@@ -154,131 +154,30 @@ public class ClientManager implements Observer<String> {
             //REMEMBER 1<=nToolCard<=12 so the toolCard 1 is the element 0 in the arrayList.
             int nToolCard = view.printToolCardChoice();
             while (!validateInput.checkToolCardInArray(nToolCard-1)) nToolCard = view.printToolCardChoice();
-
-            //num in message is nToolCard
-            int dieIndex; // index of die in draft pool
-            int action = 0;
-
-
-            // Tool Card 1, 5, 6, 10 and 11
+            
             if ((nToolCard  == 1) || (nToolCard  == 5) || (nToolCard   == 6) || (nToolCard  == 10) || (nToolCard == 11)) {
-
-                //index of the die from draft pool
-                dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
-                while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
-
-                if (nToolCard == 1) {
-                    //action to chose if increase or decrease
-                    action = view.printIncreaseOrDecrease();
-                    while (!validateInput.increaseOrDecreaseChoice(action)) action = view.printIncreaseOrDecrease();
-                    if (clientTurn) network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
-                }
-                else if(nToolCard == 10) {
-                    if (clientTurn) network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
-                }
-
-                else if(nToolCard == 11) {
-                    if (clientTurn) network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
-                    //il client deve aspettare il colore del dado estratto dal sacchetto
-                    //manca nel controller la gesione della toolcard 11
-                    /*int newValue = view.printDieValue();
-                    while (!validateInput.checkDieValue(newValue)) newValue = view.printDieValue();
-                    */
-
-
-                }
-
-
-                else {
-                    action = view.printDieChoice("RoundTrack",roundTrackSize);
-                    while (!validateInput.checkDieInArray(action,roundTrackSize)) action = view.printDieChoice("RoundTrack",roundTrackSize);
-
-                    if (clientTurn) network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
-                }
+               if(clientTurn) network.send(useToolCardA(nToolCard).serialize());
             }
 
-            // Tool Card 2 and 3
             else if ((nToolCard == 2) || (nToolCard == 3)) {
-
-                ////we need to control if the new coordinates are the same as the old ones??
-
-                //old coordinates
-                int x = view.printCoordinates("x");
-                while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
-                int y = view.printCoordinates("y");
-                while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
-
-                //new coordinates
-                int a = view.printCoordinates("x");
-                while(!validateInput.checkColumnIndex(a)) a = view.printCoordinates("x");
-                int b = view.printCoordinates("y");
-                while(!validateInput.checkRowIndex(b)) b = view.printCoordinates("y");
-
-                if (clientTurn) network.send(new ToolCardBMessage(nToolCard, x, y , a , b).serialize());
+                if(clientTurn) network.send(useToolCardB(nToolCard).serialize());
             }
 
             else if ((nToolCard == 4) || (nToolCard == 12)) {
-
-                /*
-                bisogna considerare il caso in cui la toolcard sia la 12
-                 */
-
-                //DIE 1
-                //old coordinates
-                int x = view.printCoordinates("x");
-                while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
-                int y = view.printCoordinates("y");
-                while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
-
-                //new coordinates
-                int a = view.printCoordinates("x");
-                while(!validateInput.checkColumnIndex(a)) a = view.printCoordinates("x");
-                int b = view.printCoordinates("y");
-                while(!validateInput.checkRowIndex(b)) b = view.printCoordinates("y");
-
-                String choice = "";
-                if (nToolCard == 12) choice = view.printChoiceAnotherDie();
-                if ((nToolCard == 4) || (choice.equalsIgnoreCase("yes"))) {
-                    //DIE 2
-                    //old coordinates
-                    int x2 = view.printCoordinates("x");
-                    while (!validateInput.checkColumnIndex(x2)) x2 = view.printCoordinates("x");
-                    int y2 = view.printCoordinates("y");
-                    while (!validateInput.checkRowIndex(y2)) y2 = view.printCoordinates("y");
-
-
-                    /*
-                    devo ricevere dal controller il colore del dado scelto o il controllo lo fa la toolcard e invalida la mossa?
-                     */
-                    //new coordinates
-                    int a2 = view.printCoordinates("x");
-                    while (!validateInput.checkColumnIndex(a2)) a2 = view.printCoordinates("x");
-                    int b2 = view.printCoordinates("y");
-                    while (!validateInput.checkRowIndex(b2)) b2 = view.printCoordinates("y");
-
-                    if (clientTurn) network.send(new ToolCardCMessage(nToolCard, x, y, a, b, x2, y2, a2, b2).serialize());
+                if (clientTurn) network.send(useToolCardC(nToolCard).serialize());
                 }
+
+            else  if ((nToolCard == 8) || (nToolCard == 9)) {
+                if (clientTurn) network.send(useToolCardD(nToolCard).serialize());
             }
 
-            else if (nToolCard == 7) {
+            //toolCard 7
+            else {
                 if (clientTurn) network.send(new ToolCardEMessage(nToolCard).serialize());
             }
 
-            else  if ((nToolCard == 8) || (nToolCard == 9)) {
-                dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
-
-                while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
-
-                int x = view.printCoordinates("x");
-                while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
-                int y = view.printCoordinates("y");
-                while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
-                if (clientTurn) network.send(new ToolCardDMessage(nToolCard, dieIndex, x, y).serialize());
-
-            }
-
-
         }
+
 
         else if (move.equalsIgnoreCase("show table")) {
             network.send(new ShowTableMessage().serialize());
@@ -295,10 +194,99 @@ public class ClientManager implements Observer<String> {
         }
     }
 
+
+    private ToolCardAMessage useToolCardA(int nToolCard) {
+        int dieIndex;
+        int action = 0;
+        dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
+        while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
+        if (nToolCard == 1) {
+            action = view.printIncreaseOrDecrease();
+            while (!validateInput.increaseOrDecreaseChoice(action)) action = view.printIncreaseOrDecrease();
+            return new ToolCardAMessage(nToolCard, dieIndex, action);
+        }
+        if(nToolCard == 5){
+            action = view.printDieChoice("RoundTrack",roundTrackSize);
+            while (!validateInput.checkDieInArray(action,roundTrackSize)) action = view.printDieChoice("RoundTrack",roundTrackSize);
+            return new ToolCardAMessage(nToolCard, dieIndex, action);
+        }
+
+        if(nToolCard == 11) {
+            network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
+            int newValue = view.printDieValue();
+            while (!validateInput.checkDieValue(newValue)) newValue = view.printDieValue();
+            return new ToolCardAMessage(nToolCard, newValue, 1);
+        }
+        return new ToolCardAMessage(nToolCard, dieIndex, action);
+    }
+
+    private ToolCardBMessage useToolCardB(int nToolCard) {
+        //old coordinates
+        int x = view.printCoordinates("x");
+        while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
+        int y = view.printCoordinates("y");
+        while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
+
+        //new coordinates
+        int a = view.printCoordinates("x");
+        while(!validateInput.checkColumnIndex(a)) a = view.printCoordinates("x");
+        int b = view.printCoordinates("y");
+        while(!validateInput.checkRowIndex(b)) b = view.printCoordinates("y");
+
+        return new ToolCardBMessage(nToolCard, x, y , a , b);
+
+    }
+
+    private ToolCardCMessage useToolCardC(int nToolCard) {
+        //DIE 1
+        //old coordinates
+        int x = view.printCoordinates("x");
+        while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
+        int y = view.printCoordinates("y");
+        while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
+
+        //new coordinates
+        int a = view.printCoordinates("x");
+        while(!validateInput.checkColumnIndex(a)) a = view.printCoordinates("x");
+        int b = view.printCoordinates("y");
+        while(!validateInput.checkRowIndex(b)) b = view.printCoordinates("y");
+
+        String choice = "";
+        if (nToolCard == 12) choice = view.printChoiceAnotherDie();
+        if ((nToolCard == 4) || (choice.equalsIgnoreCase("yes"))) {
+            //DIE 2
+            //old coordinates
+            int x2 = view.printCoordinates("x");
+            while (!validateInput.checkColumnIndex(x2)) x2 = view.printCoordinates("x");
+            int y2 = view.printCoordinates("y");
+            while (!validateInput.checkRowIndex(y2)) y2 = view.printCoordinates("y");
+
+            //new coordinates
+            int a2 = view.printCoordinates("x");
+            while (!validateInput.checkColumnIndex(a2)) a2 = view.printCoordinates("x");
+            int b2 = view.printCoordinates("y");
+            while (!validateInput.checkRowIndex(b2)) b2 = view.printCoordinates("y");
+
+            return new ToolCardCMessage(nToolCard, x, y, a, b, x2, y2, a2, b2);
+        }
+        return new ToolCardCMessage(nToolCard, x, y, a, b, -1, -1, -1, -1);
+    }
+
+    private ToolCardDMessage useToolCardD(int nToolCard) {
+        int dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
+        while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = view.printDieChoice("DraftPool",draftPoolSize);
+        int x = view.printCoordinates("x");
+        while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
+        int y = view.printCoordinates("y");
+        while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
+        if (clientTurn) network.send(new ToolCardDMessage(nToolCard, dieIndex, x, y).serialize());
+        return new ToolCardDMessage(nToolCard, dieIndex, x, y);
+
+    }
+
     /*
         calls accept, which calls the visitor pattern methods below
      */
-
     public void update(String message) {
         ClientMessage gson = parser.parseClient(message);
         gson.accept(this);
@@ -357,7 +345,7 @@ public class ClientManager implements Observer<String> {
     }
 
     public void visit(DieColorMessage message){
-        //  TODO
+        view.printColor(message.getColor());
     }
 
     public void visit(NotificationMessage message){
@@ -372,13 +360,12 @@ public class ClientManager implements Observer<String> {
         throw new UnsupportedOperationException();
     }
 
+
     /*
         creates an instance of Client and calls startClient on it
      */
-
     public static void main(String[] args) {
         ClientManager client = new ClientManager();
         client.startClient();
     }
-
 }

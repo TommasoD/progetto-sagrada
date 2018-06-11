@@ -153,7 +153,7 @@ public class View {
     }
 
     public int printDieValue() {
-        System.out.println("Select a value for the new die ( 0 - 6 )");
+        System.out.println("Select a value for the new die ( 1 - 6 )");
         int v = Integer.parseInt(stdin.nextLine());
         return v;
     }
@@ -184,5 +184,8 @@ public class View {
         System.out.println("The player " + winner + "wins!\nThanks for playing!");
     }
 
+    public void printColor(String color) {
+        System.out.println(color);
+    }
 
 }

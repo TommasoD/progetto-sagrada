@@ -6,6 +6,7 @@ import it.polimi.ingsw.client.ClientManager;
 public class DieColorMessage extends ClientMessage {
 
     private String id;
+    private String color;
 
     public DieColorMessage(){
         id = "die_color";
@@ -33,4 +34,11 @@ public class DieColorMessage extends ClientMessage {
         this.id = id;
     }
 
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 }
