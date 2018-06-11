@@ -356,6 +356,10 @@ public class ClientManager implements Observer<String> {
         this.gameEnded = true;
     }
 
+    public void visit(DieColorMessage message){
+        //  TODO
+    }
+
     public void visit(NotificationMessage message){
        view.printEvent(message.getUsername(),message.getEvent());
     }

@@ -197,6 +197,14 @@ class GsonParserTest {
     }
 
     @Test
+    void parseDieColor(){
+        GsonParser gp = new GsonParser();
+        DieColorMessage m = new DieColorMessage();
+        Message message = gp.parseClient(m.serialize());
+        assertTrue(message instanceof DieColorMessage);
+    }
+
+    @Test
     void parseUnexpectedClient(){
         GsonParser gp = new GsonParser();
         Message message = gp.parseClient("test");

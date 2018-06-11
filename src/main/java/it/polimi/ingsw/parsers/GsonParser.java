@@ -7,6 +7,7 @@ import it.polimi.ingsw.messages.controller.*;
 import java.io.IOException;
 import java.io.StringReader;
 
+import static it.polimi.ingsw.messages.client.DieColorMessage.deserializeDieColorMessage;
 import static it.polimi.ingsw.messages.client.EndTurnMessage.deserializeEndTurnMessage;
 import static it.polimi.ingsw.messages.client.ErrorMessage.deserializeErrorMessage;
 import static it.polimi.ingsw.messages.client.GameOverMessage.deserializeGameOverMessage;
@@ -104,6 +105,9 @@ public class GsonParser {
         }
         if(id.equals("game_over")){
             return deserializeGameOverMessage(gson);
+        }
+        if(id.equals("die_color")){
+            return deserializeDieColorMessage(gson);
         }
         return new ErrorMessage(3);
     }
