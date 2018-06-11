@@ -107,17 +107,6 @@ class GameTest {
     }
 
     @Test
-    void findAndReconnectTest(){
-        Game g = new Game();
-        WindowPatternFactory wf = new WindowPatternFactory();
-        g.addPlayer(new Player("player0", wf.createWindow("Kaleidoscopic Dream"), 0));
-        g.getPlayerFromId(0).setOnline(false);
-        assertTrue(g.findAndReconnect("player0", 5));
-        assertFalse(g.findAndReconnect("username", 4));
-        assertTrue(g.getPlayerFromId(5).isOnline());
-    }
-
-    @Test
     void useDieTest(){
         Game g = new Game();
         WindowPatternFactory wf = new WindowPatternFactory();

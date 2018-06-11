@@ -6,6 +6,7 @@ import it.polimi.ingsw.client.ClientManager;
 public class GameOverMessage extends ClientMessage {
 
     private String id;
+    private String winner;
 
     public GameOverMessage(){
         id = "game_over";
@@ -33,4 +34,11 @@ public class GameOverMessage extends ClientMessage {
         this.id = id;
     }
 
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
+    }
 }

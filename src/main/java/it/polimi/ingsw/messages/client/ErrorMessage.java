@@ -8,11 +8,11 @@ public class ErrorMessage extends ClientMessage {
     private String id;
     private int type;
 
-    //type 0 -> not a player
     //type 1 -> username already used
     //type 2 -> invalid move
     //type 3 -> unexpected message from parser
     //type 4 -> not enough tokens to use the card or already used a card this turn
+    //type 5 -> reconnection but player is online
 
     public ErrorMessage(){
         id = "error";

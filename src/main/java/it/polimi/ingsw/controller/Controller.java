@@ -74,7 +74,6 @@ public class Controller implements Observer<String>{
      */
 
     public void startMatch(){
-        model.setGameStarted(true);
         model.initialize();
         handler = model.getHandler();
         model.notifyUpdate();
@@ -175,19 +174,11 @@ public class Controller implements Observer<String>{
 
     public void visit(LoginMessage message, int player){
         printMessage(message.getId(), player);
-        if(model.isGameStarted()){
-            if(model.findAndReconnect(message.getUsername(), player)){
-                model.notifyMessage(new OkMessage(), player);
-            }
-            else model.notifyMessage(new ErrorMessage(0), player);
+        if(!model.find(message.getUsername())){
+            model.getPlayerFromId(player).setUsername(message.getUsername());
+            model.notifyMessage(new ShowWindowsMessage(factory.getWindow(), factory.getWindow(), factory.getWindow(), factory.getWindow()), player);
         }
-        else{
-            if(!model.find(message.getUsername())){
-                model.getPlayerFromId(player).setUsername(message.getUsername());
-                model.notifyMessage(new ShowWindowsMessage(factory.getWindow(), factory.getWindow(), factory.getWindow(), factory.getWindow()), player);
-            }
-            else model.notifyMessage(new ErrorMessage(1), player);
-        }
+        else model.notifyMessage(new ErrorMessage(1), player);
     }
 
     public void visit(LogoutMessage message, int player){
@@ -383,8 +374,11 @@ public class Controller implements Observer<String>{
 
     public void visit(ReconnectMessage message, int player){
         printMessage(message.getId(), player);
-        model.getPlayerFromId(player).setOnline(true);
-        model.notifyAllPlayers(new NotificationMessage(model.getPlayerFromId(player).getUsername(), "reconnect"));
+        if(model.getPlayerFromId(player).isOnline()) model.notifyMessage(new ErrorMessage(5), player);
+        else{
+            model.getPlayerFromId(player).setOnline(true);
+            model.notifyAllPlayers(new NotificationMessage(model.getPlayerFromId(player).getUsername(), "reconnect"));
+        }
     }
 
     /*

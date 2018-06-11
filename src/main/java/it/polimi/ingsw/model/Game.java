@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class Game extends Observable<String> {
 
-    private boolean gameStarted;
     private DiceBag diceBag;
     private ArrayList<Die> draft;
     private ArrayList<Player> players;
@@ -31,7 +30,6 @@ public class Game extends Observable<String> {
      */
 
     public Game(){
-        gameStarted = false;
         this.diceBag = new DiceBag();
         this.draft = new ArrayList<Die>();
         this.players = new ArrayList<Player>();
@@ -44,14 +42,6 @@ public class Game extends Observable<String> {
     /*
         getters and setters
      */
-
-    public boolean isGameStarted() {
-        return gameStarted;
-    }
-
-    public void setGameStarted(boolean gameStarted) {
-        this.gameStarted = gameStarted;
-    }
 
     public List<Die> getDraft() {
         return draft;
@@ -122,24 +112,6 @@ public class Game extends Observable<String> {
     public boolean find(String s){
         for (Player p : players){
             if(p.getUsername().equals(s)) return true;
-        }
-        return false;
-    }
-
-    /*
-        returns true if there's an offline player with a given username,
-        i.e. the player must be reconnected
-     */
-
-    public boolean findAndReconnect(String s, int id){
-        for(Player p : players){
-            if (p.getUsername().equals(s)){
-                if(!p.isOnline()){
-                    p.setOnline(true);
-                    p.setId(id);
-                    return true;
-                }
-            }
         }
         return false;
     }

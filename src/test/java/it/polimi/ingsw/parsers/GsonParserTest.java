@@ -189,6 +189,14 @@ class GsonParserTest {
     }
 
     @Test
+    void parseGameOver(){
+        GsonParser gp = new GsonParser();
+        GameOverMessage m = new GameOverMessage();
+        Message message = gp.parseClient(m.serialize());
+        assertTrue(message instanceof GameOverMessage);
+    }
+
+    @Test
     void parseUnexpectedClient(){
         GsonParser gp = new GsonParser();
         Message message = gp.parseClient("test");

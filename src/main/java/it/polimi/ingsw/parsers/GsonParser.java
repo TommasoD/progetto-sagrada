@@ -9,6 +9,7 @@ import java.io.StringReader;
 
 import static it.polimi.ingsw.messages.client.EndTurnMessage.deserializeEndTurnMessage;
 import static it.polimi.ingsw.messages.client.ErrorMessage.deserializeErrorMessage;
+import static it.polimi.ingsw.messages.client.GameOverMessage.deserializeGameOverMessage;
 import static it.polimi.ingsw.messages.client.LoginRequestMessage.deserializeLoginRequestMessage;
 import static it.polimi.ingsw.messages.client.NewTurnMessage.deserializeNewTurnMessage;
 import static it.polimi.ingsw.messages.client.NotificationMessage.deserializeNotificationMessage;
@@ -100,6 +101,9 @@ public class GsonParser {
         }
         if(id.equals("show_table")){
             return deserializeShowTableMessage(gson);
+        }
+        if(id.equals("game_over")){
+            return deserializeGameOverMessage(gson);
         }
         return new ErrorMessage(3);
     }
