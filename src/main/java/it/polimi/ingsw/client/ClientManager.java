@@ -90,6 +90,9 @@ public class ClientManager implements Observer<String> {
      */
 
     private void handleRequest(String request){
+
+        if (request.equalsIgnoreCase("help")) view.printHelp();
+
         if(stage == 0){
             view.printWait(0);
             return;
@@ -148,7 +151,7 @@ public class ClientManager implements Observer<String> {
             network.send(new SetDieMessage(x, y, die).serialize());
         }
 
-        else if(move.equalsIgnoreCase("use tool card")) {
+        else if(move.equalsIgnoreCase("tool card")) {
 
             //REMEMBER 1<=nToolCard<=12 so the toolCard 1 is the element 0 in the arrayList.
             int nToolCard = view.printToolCardChoice();
@@ -290,7 +293,7 @@ public class ClientManager implements Observer<String> {
             view.printHelp();
         }
         else{
-            view.printUnsupportedMove();
+            view.printError(3); //unsopported move
         }
     }
 
@@ -327,16 +330,7 @@ public class ClientManager implements Observer<String> {
     }
 
     public void visit(ErrorMessage message) {
-        if (message.getType() == 0) {
-            view.print("A match is being played, try again later.");
-            System.exit(1);
-        }
-        if (message.getType() == 1) {
-            view.print("Username already used. Try login again.");
-        }
-        if (message.getType() == 2) {
-            view.printUnsupportedMove();
-        }
+        view.printError(message.getType());
     }
 
     public void visit(OkMessage message){

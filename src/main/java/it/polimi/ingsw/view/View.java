@@ -19,6 +19,8 @@ import java.util.Scanner;
 
 //rendere tutte el stringhe come costanti
 
+//scritta reconnect quando viene sospeso
+
 public class View {
 
     private ArrayList<String> windowsName = new ArrayList<String>();
@@ -33,6 +35,16 @@ public class View {
         if (event.equals("reconnect")) System.out.println(user + " is reconnect");
         else if (event.equals("disconnect")) System.out.println(user + " is disconnected");
         else if (event.equals("suspend")) System.out.println(user + " is suspended");
+    }
+
+    public void printError(int id) {
+        switch (id) {
+            case 1: System.out.println("Username already used. Try login again.");
+            case 2: System.out.println("Invalid move");
+            case 3: System.out.println("Unsupported move. Digit 'help' to see the supported actions.");
+            case 4: System.out.println("You can not use the selected tool card");
+            case 5: System.out.println("'reconnect' command is not supported. you are already online");
+        }
     }
 
     public void printUpdate(UpdateModelMessage message){
@@ -97,8 +109,14 @@ public class View {
     }
 
         public void printHelp() {
-        System.out.println("'place' to place a die on your Window.\n" + "'use tool card' to use a selected tool card\n" +
-                "'show table' to check your private objective, public objectives and tool cards\n" + "'end' to end your turn.");
+        System.out.println(
+                "'login' to choose a username\n" +
+                "'window to choose a window\n" +
+                "'place' to place a die on your Window.\n" +
+                "'tool card' to use a selected tool card\n" +
+                "'show table' to check your private objective, public objectives and tool cards\n" +
+                "'end' to end your turn.\n" +
+                "'reconnect' to rejoin the game when suspended");
     }
 
     public String printLogin() {

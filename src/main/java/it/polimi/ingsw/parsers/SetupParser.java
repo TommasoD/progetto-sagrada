@@ -10,11 +10,11 @@ public class SetupParser {
 
     private int port;
     private String ip;
-    private int countdownConnession;
+    private int countdownConnection;
     private int countdownMove;
 
 
-    private class NetworkReader extends DefaultHandler {
+    private class SetupReader extends DefaultHandler {
 
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -25,7 +25,7 @@ public class SetupParser {
             }
 
             if(qName.equalsIgnoreCase("countdown")) {
-                countdownConnession = Integer.parseInt(attributes.getValue("connection"));
+                countdownConnection = Integer.parseInt(attributes.getValue("connection"));
                 countdownMove = Integer.parseInt(attributes.getValue("move"));
             }
 
@@ -39,7 +39,7 @@ public class SetupParser {
             String path = System.getProperty("user.dir");
             try {
                 SAXParser saxParser = saxParserFactory.newSAXParser();
-                SetupParser.NetworkReader handler = new SetupParser.NetworkReader();
+                SetupParser.SetupReader handler = new SetupParser.SetupReader();
                 saxParser.parse(new File(path + "/src/main/resources/setup.xml"), handler);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -55,7 +55,7 @@ public class SetupParser {
             return port;
         }
 
-        public int getCountdownConnection() {return countdownConnession;}
+        public int getCountdownConnection() {return countdownConnection;}
 
         public int getCountdownMove() {return countdownMove;}
 }
