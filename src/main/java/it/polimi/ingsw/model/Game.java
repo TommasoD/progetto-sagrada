@@ -43,6 +43,10 @@ public class Game extends Observable<String> {
         getters and setters
      */
 
+    public DiceBag getDiceBag() {
+        return diceBag;
+    }
+
     public List<Die> getDraft() {
         return draft;
     }
@@ -150,6 +154,10 @@ public class Game extends Observable<String> {
         draft.add(die);
     }
 
+    public void setDieDraft(int index, Die die){
+        draft.add(index, die);
+    }
+
     public int draftSize(){
         return draft.size();
     }
@@ -222,6 +230,7 @@ public class Game extends Observable<String> {
         Die d = removeDieFromDraft(die);
         w.getWindowMatrix(x, y).setDie(d);
         getPlayerFromId(playerId).setFirstDiePlaced(true);
+        getPlayerFromId(playerId).setDieUsed(true);
         notify(this.toString());
     }
 

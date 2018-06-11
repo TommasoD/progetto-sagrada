@@ -213,7 +213,6 @@ public class Controller implements Observer<String>{
             }
         }
         model.useDie(player, message.getX(), message.getY(), message.getIndex());
-        p.setDieUsed(true);
         model.notifyMessage(new OkMessage(), player);
         model.notifyUpdate();
     }
@@ -253,6 +252,16 @@ public class Controller implements Observer<String>{
         }
         if(message.getNum() ==  10){
             model.getDieFromDraft(message.getDieIndex()).flipDie();
+        }
+        if(message.getNum() ==  11){
+            if(message.getAction() == 0){
+                model.getDiceBag().addDie(model.getDieFromDraft(message.getDieIndex()));
+                model.setDieDraft(0, model.getDiceBag().getDie());
+            }
+            else{
+                model.getDieFromDraft(0).setValue(message.getAction());
+            }
+
         }
         toolCardUsed(message.getNum(), player);
     }
@@ -329,13 +338,15 @@ public class Controller implements Observer<String>{
         }
         if(message.getNum() ==  8){
             if(!checker.toolCard8(w, model.getDieFromDraft(message.getDieIndex()), message.getX(), message.getY()) ||
-                    model.getPlayerFromId(player).isFirstTurnDone()) {
+                    model.getPlayerFromId(player).isFirstTurnDone() ||
+                    model.getPlayerFromId(player).isDieUsed()) {
                 model.notifyMessage(new ErrorMessage(2), player);
                 return;
             }
             model.getPlayerFromId(player).setSecondTurnDone(true);
         }
         if(message.getNum() ==  9 &&
+
                 !checker.toolCard9(w, model.getDieFromDraft(message.getDieIndex()), message.getX(), message.getY())){
             model.notifyMessage(new ErrorMessage(2), player);
             return;
