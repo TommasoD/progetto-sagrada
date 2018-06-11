@@ -3,7 +3,6 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Die;
 import it.polimi.ingsw.model.WindowPattern;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ToolCardCheck {
@@ -52,12 +51,6 @@ public class ToolCardCheck {
             }
         return false;
     }
-
-   /* public boolean toolCard6(WindowPattern window, Die d, int x, int y){
-
-
-        return false;
-    } */
 
     public boolean toolCard8(WindowPattern window, Die d, int x, int y){
         if(window.isValid(x, y, d)) return true;

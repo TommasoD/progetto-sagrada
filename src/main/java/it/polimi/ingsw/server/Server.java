@@ -11,8 +11,6 @@ import java.net.Socket;
 
 import java.net.UnknownHostException;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Random;
 
 public class Server {
 
@@ -68,8 +66,7 @@ public class Server {
                 System.out.println("Client " + socketId + " connected");
 
             } catch (IOException e) {
-                e.printStackTrace();
-                System.exit(1);
+                System.out.println("Client" + (socketId) + ": connection failed");
             }
         }
 
@@ -89,21 +86,14 @@ public class Server {
             try {
                 Socket socket = serverSocket.accept();
                 System.out.println("Client " + (i + 1) + " connected");
-                if(!model.isGameStarted()) {
-                    DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-                    out.writeUTF("A new game is starting. Try connecting later.");
-                    out.flush();
-                    out.close();
-                    socket.close();
-                }
-                else{
-                    gameManager.playerList.add(new ClientHandler(socket, gameManager, i));
-                    gameManager.playerList.get(i).start();
-                }
+                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+                out.writeUTF("A new game is being played. Try connecting later.");
+                out.flush();
+                out.close();
+                socket.close();
                 i++;
             } catch (IOException e) {
-                e.printStackTrace();
-                System.exit(1);
+                System.out.println("Client" + (i + 1) + ": connection failed");
             }
        }
 

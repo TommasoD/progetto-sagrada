@@ -20,8 +20,6 @@ public class CountdownMove extends Thread {
 
     private boolean gameEnded;
 
-    private boolean wait;
-
     private Controller controller;
 
     private int playerIndex;
@@ -41,7 +39,6 @@ public class CountdownMove extends Thread {
     }
 
     public void wakeUp(int index) {
-        wait = false;
         this.playerIndex = index;
     }
 
@@ -90,7 +87,6 @@ public class CountdownMove extends Thread {
     public void run() {
 
         gameEnded = false;
-        wait = true;
         done = false;
 
         this.reset();
@@ -100,7 +96,6 @@ public class CountdownMove extends Thread {
         done = false;
 
         while(!gameEnded) {
-            while(wait && !gameEnded) {}
             this.reset();
             while(this.read() < MAX_TIME && !done) {}
             this.stopClock();
@@ -109,7 +104,6 @@ public class CountdownMove extends Thread {
                 controller.getGame().notifyAllPlayers(new NotificationMessage(controller.getGame().getPlayers(playerIndex).getUsername(), "suspended"));
                 controller.nextPlayer(controller.getGame().getPlayers(playerIndex).getId());
             }
-            wait = true;
             done = false;
         }
 
