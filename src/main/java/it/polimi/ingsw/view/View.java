@@ -31,6 +31,10 @@ public class View {
         System.out.println(s);
     }
 
+    public String writeRequest() {
+        return stdin.nextLine();
+    }
+
     public void printEvent(String user, String event) {
         if (event.equals("reconnect")) System.out.println(user + " is reconnect");
         else if (event.equals("disconnect")) System.out.println(user + " is disconnected");
@@ -176,7 +180,9 @@ public class View {
         }
     }
 
-
+    public void printWinner(String winner) {
+        System.out.println("The player " + winner + "wins!\nThanks for playing!");
+    }
 
 
 }

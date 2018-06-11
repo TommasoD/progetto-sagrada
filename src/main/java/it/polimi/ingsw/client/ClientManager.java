@@ -79,9 +79,7 @@ public class ClientManager implements Observer<String> {
         new Thread(network).start();
 
         while(!gameEnded){
-            //da modificare
-            String request = stdin.nextLine();
-            handleRequest(request);
+            handleRequest(view.writeRequest());
         }
     }
 
@@ -148,7 +146,7 @@ public class ClientManager implements Observer<String> {
             int y = view.printCoordinates("y");
             while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
 
-            network.send(new SetDieMessage(x, y, die).serialize());
+            if (clientTurn) network.send(new SetDieMessage(x, y, die).serialize());
         }
 
         else if(move.equalsIgnoreCase("tool card")) {
@@ -173,14 +171,14 @@ public class ClientManager implements Observer<String> {
                     //action to chose if increase or decrease
                     action = view.printIncreaseOrDecrease();
                     while (!validateInput.increaseOrDecreaseChoice(action)) action = view.printIncreaseOrDecrease();
-                    network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
+                    if (clientTurn) network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
                 }
                 else if(nToolCard == 10) {
-                    network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
+                    if (clientTurn) network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
                 }
 
                 else if(nToolCard == 11) {
-                    network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
+                    if (clientTurn) network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
                     //il client deve aspettare il colore del dado estratto dal sacchetto
                     //manca nel controller la gesione della toolcard 11
                     /*int newValue = view.printDieValue();
@@ -195,7 +193,7 @@ public class ClientManager implements Observer<String> {
                     action = view.printDieChoice("RoundTrack",roundTrackSize);
                     while (!validateInput.checkDieInArray(action,roundTrackSize)) action = view.printDieChoice("RoundTrack",roundTrackSize);
 
-                    network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
+                    if (clientTurn) network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
                 }
             }
 
@@ -216,7 +214,7 @@ public class ClientManager implements Observer<String> {
                 int b = view.printCoordinates("y");
                 while(!validateInput.checkRowIndex(b)) b = view.printCoordinates("y");
 
-                network.send(new ToolCardBMessage(nToolCard, x, y , a , b).serialize());
+                if (clientTurn) network.send(new ToolCardBMessage(nToolCard, x, y , a , b).serialize());
             }
 
             else if ((nToolCard == 4) || (nToolCard == 12)) {
@@ -258,12 +256,12 @@ public class ClientManager implements Observer<String> {
                     int b2 = view.printCoordinates("y");
                     while (!validateInput.checkRowIndex(b2)) b2 = view.printCoordinates("y");
 
-                    network.send(new ToolCardCMessage(nToolCard, x, y, a, b, x2, y2, a2, b2).serialize());
+                    if (clientTurn) network.send(new ToolCardCMessage(nToolCard, x, y, a, b, x2, y2, a2, b2).serialize());
                 }
             }
 
             else if (nToolCard == 7) {
-                network.send(new ToolCardEMessage(nToolCard).serialize());
+                if (clientTurn) network.send(new ToolCardEMessage(nToolCard).serialize());
             }
 
             else  if ((nToolCard == 8) || (nToolCard == 9)) {
@@ -275,7 +273,7 @@ public class ClientManager implements Observer<String> {
                 while(!validateInput.checkColumnIndex(x)) x = view.printCoordinates("x");
                 int y = view.printCoordinates("y");
                 while(!validateInput.checkRowIndex(y)) y = view.printCoordinates("y");
-                network.send(new ToolCardDMessage(nToolCard, dieIndex, x, y).serialize());
+                if (clientTurn) network.send(new ToolCardDMessage(nToolCard, dieIndex, x, y).serialize());
 
             }
 
@@ -287,13 +285,13 @@ public class ClientManager implements Observer<String> {
         }
 
         else if(move.equalsIgnoreCase("end")){
-            network.send(new PassMessage().serialize());
+            if (clientTurn) network.send(new PassMessage().serialize());
         }
         else if(move.equalsIgnoreCase("help")){
             view.printHelp();
         }
         else{
-            view.printError(3); //unsopported move
+            view.printError(3);
         }
     }
 
@@ -354,7 +352,8 @@ public class ClientManager implements Observer<String> {
     }
 
     public void visit(GameOverMessage message){
-        // TODO
+       view.printWinner(message.getWinner());
+        this.gameEnded = true;
     }
 
     public void visit(NotificationMessage message){
