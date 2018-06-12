@@ -10,6 +10,8 @@ public class RoundHandler {
     private int nPlayers;
     private int[] turnOrder;
 
+    private static final int MAX_ROUND = 10;
+
     /*
         constructor
      */
@@ -45,6 +47,10 @@ public class RoundHandler {
         return firstPlayer;
     }
 
+    public int[] getTurnOrder() {
+        return turnOrder;
+    }
+
     /*
         returns - as an int - the identifier of the current player
      */
@@ -72,12 +78,14 @@ public class RoundHandler {
 
     public void nextRound(){
         round++;
-        System.arraycopy(turnOrder,1, turnOrder, 0, nPlayers-1);
-        System.arraycopy(turnOrder, nPlayers, turnOrder, nPlayers+1, nPlayers-1);
-        turnOrder[nPlayers-1] = firstPlayer;
-        turnOrder[nPlayers] = firstPlayer;
-        firstPlayer ++;
-        if(firstPlayer >= nPlayers) firstPlayer = 0;
+        if(!isGameEnded()){
+            System.arraycopy(turnOrder,1, turnOrder, 0, nPlayers-1);
+            System.arraycopy(turnOrder, nPlayers, turnOrder, nPlayers+1, nPlayers-1);
+            turnOrder[nPlayers-1] = firstPlayer;
+            turnOrder[nPlayers] = firstPlayer;
+            firstPlayer ++;
+            if(firstPlayer >= nPlayers) firstPlayer = 0;
+        }
     }
 
     /*
@@ -85,7 +93,7 @@ public class RoundHandler {
      */
 
     public boolean isGameEnded(){
-        return round > 10;
+        return round > MAX_ROUND;
     }
 
     public void dump(){

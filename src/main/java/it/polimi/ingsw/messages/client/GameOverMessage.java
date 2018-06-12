@@ -12,6 +12,11 @@ public class GameOverMessage extends ClientMessage {
         id = "game_over";
     }
 
+    public GameOverMessage(String winner){
+        id = "game_over";
+        this.winner = winner;
+    }
+
     public String serialize() {
         Gson gson = new Gson();
         return gson.toJson(this);

@@ -1,5 +1,6 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.NewRoundException;
 import it.polimi.ingsw.model.RoundHandler;
 import org.junit.jupiter.api.Test;
 
@@ -76,6 +77,25 @@ class RoundHandlerTest {
             System.out.println("new round");
             rh.dump();
         }
+    }
+
+    @Test
+    void endGame() {
+        RoundHandler rh = new RoundHandler(2);
+        for(int i = 0; i < 9; i++){
+            rh.nextRound();
+            System.out.println("ROUND: " + rh.getRound());
+            rh.dump();
+        }
+        try{
+            for(int i = 0; i < 4; i++){
+                rh.nextTurn();
+            }
+        } catch (NewRoundException e){
+            System.out.println("new round");
+            rh.dump();
+        }
+        assertEquals(11, rh.getRound());
     }
 
 

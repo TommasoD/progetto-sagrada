@@ -113,9 +113,6 @@ public class Controller implements Observer<String>{
             }
         } catch(NewRoundException e) {
             System.out.println("round " + e.getRound() + " is starting");
-
-            // TODO : if all players are offline except one -> end game
-
             model.diceLeft();
             model.setDraft();
             for(Player p : model.getPlayers()){
@@ -124,12 +121,16 @@ public class Controller implements Observer<String>{
             model.notifyUpdate();
         }
 
-        // TODO : if handler.isGameEnded -> GAME OVER!
-        //game over -> gameOver.determineWinner
-        //invia messaggio di fine partita a tutti i giocatori
-        //else
-        model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
-        timer.wakeUp(handler.getCurrentPlayer());
+        if(handler.isGameEnded()){
+            GameOver gameOver = new GameOver();
+            String winner = gameOver.determineWinner(model.getPlayers(), model.getPublicObjectiveActive(), handler.getTurnOrder());
+            model.notifyAllPlayers(new GameOverMessage(winner));
+            // TODO : segnalare fine del gioco al server in qualche modo?
+        }
+        else{
+            model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
+            timer.wakeUp(handler.getCurrentPlayer());
+        }
     }
 
     /*
@@ -184,6 +185,7 @@ public class Controller implements Observer<String>{
     public void visit(LogoutMessage message, int player){
         printMessage(message.getId(), player);
         model.getPlayerFromId(player).setOnline(false);
+        // TODO : if all players are offline except one -> end game
         model.notifyAllPlayers(new NotificationMessage(model.getPlayerFromId(player).getUsername(), "disconnect"));
     }
 
