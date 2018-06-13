@@ -89,10 +89,13 @@ public class ClientManager implements Observer<String> {
 
     private void handleRequest(String request){
 
-        if (request.equalsIgnoreCase("help")) CLI.printHelp();
+        if (request.equalsIgnoreCase("help")) {
+            CLI.printHelp();
+            return;
+        }
 
         if(stage == 0){
-            CLI.printWait(0);
+            CLI.printWaitForTheMatch();
             return;
         }
         if(stage == 1){
@@ -101,7 +104,7 @@ public class ClientManager implements Observer<String> {
                 network.send(gson.serialize());
                 return;
             }
-            CLI.printDigit(1); //this print: You have to login first. Digit 'login'.
+            CLI.printDigitLogin();
             return;
         }
         if(stage == 2){
@@ -109,24 +112,26 @@ public class ClientManager implements Observer<String> {
                 String line = CLI.printInsertWindow();
                 if (!validateInput.checkWindowName(CLI.getWindowsName(), line))  return;
                     else {
-                    CLI.printWait(0);
+                    CLI.printWaitForTheMatch();
                     ChooseWindowMessage m = new ChooseWindowMessage(line);
                     network.send(m.serialize());
                     return;
                 }
             }
 
-            CLI.printDigit(2); //this print: "You have to choose a window. Digit 'window' to do so.
-            return;
-        }
-        if(!clientTurn){
-            if(request.equalsIgnoreCase("reconnect")){
-                network.send(new ReconnectMessage().serialize());
+            if(!clientTurn){
+                if(request.equalsIgnoreCase("reconnect")){
+                    network.send(new ReconnectMessage().serialize());
+                    return;
+                }
+                CLI.printWaitForYourTurn();
                 return;
             }
-            CLI.printWait(1);
+
+            CLI.printDigitWindow();
             return;
         }
+
         playerAction(request);
     }
 
@@ -137,8 +142,8 @@ public class ClientManager implements Observer<String> {
     private void playerAction(String move){
         if(move.equalsIgnoreCase("place")){
 
-            int die = CLI.printDieChoice("DraftPool",draftPoolSize);
-            while (!validateInput.checkDieInArray(die,draftPoolSize)) die = CLI.printDieChoice("DraftPool",draftPoolSize);
+            int die = CLI.printDieFromDraftPool(draftPoolSize);
+            while (!validateInput.checkDieInArray(die,draftPoolSize)) die = CLI.printDieFromDraftPool(draftPoolSize);
 
             int x = CLI.printCoordinates("x");
             while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates("x");
@@ -152,8 +157,8 @@ public class ClientManager implements Observer<String> {
         else if(move.equalsIgnoreCase("tool card")) {
 
             //REMEMBER 1<=nToolCard<=12 so the toolCard 1 is the element 0 in the arrayList.
-            int nToolCard = CLI.printToolCardChoice();
-            while (!validateInput.checkToolCardInArray(nToolCard-1)) nToolCard = CLI.printToolCardChoice();
+            int nToolCard = CLI.printChooseAToolCard();
+            while (!validateInput.checkToolCardInArray(nToolCard-1)) nToolCard = CLI.printChooseAToolCard();
 
             if ((nToolCard  == 1) || (nToolCard  == 5) || (nToolCard   == 6) || (nToolCard  == 10) || (nToolCard == 11)) {
                if(clientTurn) network.send(useToolCardA(nToolCard).serialize());
@@ -186,9 +191,9 @@ public class ClientManager implements Observer<String> {
         else if(move.equalsIgnoreCase("end")){
             if (clientTurn) network.send(new PassMessage().serialize());
         }
-        else if(move.equalsIgnoreCase("help")){
+       /* else if(move.equalsIgnoreCase("help")){
             CLI.printHelp();
-        }
+        }*/
         else{
             CLI.printError(3);
         }
@@ -198,23 +203,23 @@ public class ClientManager implements Observer<String> {
     private ToolCardAMessage useToolCardA(int nToolCard) {
         int dieIndex;
         int action = 0;
-        dieIndex = CLI.printDieChoice("DraftPool",draftPoolSize);
-        while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = CLI.printDieChoice("DraftPool",draftPoolSize);
+        dieIndex = CLI.printDieFromDraftPool(draftPoolSize);
+        while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = CLI.printDieFromDraftPool(draftPoolSize);
         if (nToolCard == 1) {
             action = CLI.printIncreaseOrDecrease();
             while (!validateInput.increaseOrDecreaseChoice(action)) action = CLI.printIncreaseOrDecrease();
             return new ToolCardAMessage(nToolCard, dieIndex, action);
         }
         if(nToolCard == 5){
-            action = CLI.printDieChoice("RoundTrack",roundTrackSize);
-            while (!validateInput.checkDieInArray(action,roundTrackSize)) action = CLI.printDieChoice("RoundTrack",roundTrackSize);
+            action = CLI.printDieFromRoundTrack(roundTrackSize);
+            while (!validateInput.checkDieInArray(action,roundTrackSize)) action = CLI.printDieFromRoundTrack(roundTrackSize);
             return new ToolCardAMessage(nToolCard, dieIndex, action);
         }
 
         if(nToolCard == 11) {
             network.send(new ToolCardAMessage(nToolCard, dieIndex, action).serialize());
-            int newValue = CLI.printDieValue();
-            while (!validateInput.checkDieValue(newValue)) newValue = CLI.printDieValue();
+            int newValue = CLI.printChooseDieValue();
+            while (!validateInput.checkDieValue(newValue)) newValue = CLI.printChooseDieValue();
             return new ToolCardAMessage(nToolCard, 0, newValue);
         }
         return new ToolCardAMessage(nToolCard, dieIndex, action);
@@ -252,7 +257,7 @@ public class ClientManager implements Observer<String> {
         while(!validateInput.checkRowIndex(b)) b = CLI.printCoordinates("y");
 
         String choice = "";
-        if (nToolCard == 12) choice = CLI.printChoiceAnotherDie();
+        if (nToolCard == 12) choice = CLI.printChooseAnotherDie();
         if ((nToolCard == 4) || (choice.equalsIgnoreCase("yes"))) {
             //DIE 2
             //old coordinates
@@ -273,8 +278,8 @@ public class ClientManager implements Observer<String> {
     }
 
     private ToolCardDMessage useToolCardD(int nToolCard) {
-        int dieIndex = CLI.printDieChoice("DraftPool",draftPoolSize);
-        while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = CLI.printDieChoice("DraftPool",draftPoolSize);
+        int dieIndex = CLI.printDieFromDraftPool(draftPoolSize);
+        while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = CLI.printDieFromDraftPool(draftPoolSize);
         int x = CLI.printCoordinates("x");
         while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates("x");
         int y = CLI.printCoordinates("y");
@@ -345,7 +350,7 @@ public class ClientManager implements Observer<String> {
     }
 
     public void visit(DieColorMessage message){
-        CLI.printColor(message.getColor());
+        CLI.printDieColor(message.getColor());
     }
 
     public void visit(NotificationMessage message){

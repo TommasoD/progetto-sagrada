@@ -23,169 +23,240 @@ import java.util.Scanner;
 
 public class CLI {
 
-    private ArrayList<String> windowsName = new ArrayList<String>();
+    private static final String INSERT_USERNAME = "Insert username: ";
+    private static final String USERNAME_ALREADY_USED = "Username already used. Try login again.";
+    private static final String INVALID_MOVE = "Invalid move";
+    private static final String UNSUPPORTED_MOVE = "Unsupported move. Digit 'help' to see the supported actions.";
+    private static final String CAN_NOT_USE_TOOL_CARD = "You can not use the selected tool card";
+    private static final String CAN_NOT_RECONNECT = "'reconnect' command is not supported. you are already online";
 
+    private static final String IS_RECONNECT =  " is reconnected";
+    private static final String RECONNECT = "reconnect";
+    private static final String IS_DISCONNECTED = " is disconnected";
+    private static final String DISCONNECT = "disconnect";
+    private static final String IS_SUSPENDED = " is suspended";
+    private static final String SUSPEND = "suspend";
+
+    private static final String WAIT_FOR_YOUR_TURN = "Wait for your turn.";
+    private static final String WAIT_FOR_THE_MATCH = "Wait for the start of the match.";
+    private static final String TURN_ENDED = "Turn ended. Please wait until your next turn.";
+
+    private static final String HELP = "'login' to choose a username\n" +
+            "'window to choose a window\n" +
+            "'place' to place a die on your Window.\n" +
+            "'tool card' to use a selected tool card\n" +
+            "'show table' to check your private objective, public objectives and tool cards\n" +
+            "'end' to end your turn.\n" +
+            "'reconnect' to rejoin the game when suspended";
+
+    private static final String INSERT_WINDOW_NAME = "Now insert the name of the desired window: ";
+    private static final String DIGIT_WINDOW = "You have to choose a window. Digit 'window' to do so.";
+    private static final String DIGIT_LOGIN = "You have to login first. Digit 'login'.";
+    private static final String CHOOSE_WINDOW = "You have to choose one of the following windows:\n";
+    private static final String CHOOSE_DIE_FROM_DRAFT_POOL = "Choose a die from the DraftPool and insert its position.\nInsert a number from 0 to ";
+    private static final String CHOOSE_DIE_FROM_ROUND_TRACK = "Choose a die from the RoundTrack and insert its position\nInsert a number from 0 to ";
+    private static final String INSERT_COORDINATE = "Insert the coordinate for: ";
+
+    private static final String CHOOSE_A_TOOL_CARD = "Enter the number of the card you want to use (1 - 12)";
+    private static final String INCREASE_OR_DECREASE = "Insert 0 if you want to decrease the value of the die by one\nInsert 1 to increase by one";
+    private static final String CHOOSE_DIE_VALUE = "Select a value for the new die ( 1 - 6 )";
+    private static final String CHOOSE_ANOTHER_DIE = "Do you want to choose another die? 'yes' or 'no'";
+
+    private static final String ROUND = "Round ";
+    private static final String DRAFT = "Draft: ";
+    private static final String TRACK = "Track: ";
+    private static final String YOUR_PRIVATE_OBJECTIVE = "YOUR PRIVATE OBJECTIVE IS: ";
+    private static final String PUBLIC_OBJECTIVES = "PUBLIC OBJECTIVES";
+    private static final String TOOL_CARDS = "TOOL CARDS:";
+
+    private static final String INVALID_ENTRY = "Invalid entry";
+    private static final String THANKS_FOR_PLAYING = "Thanks for playing!";
+    private static final String THE_WINNER_IS = "The winner is ";
+
+
+    private ArrayList<String> windowsName = new ArrayList<String>();
     private Scanner stdin = new Scanner(System.in);
 
-    public void print(String s){
-        System.out.println(s);
-    }
 
+    //General write
     public String writeRequest() {
         return stdin.nextLine();
     }
 
-    public void printEvent(String user, String event) {
-        if (event.equals("reconnect")) System.out.println(user + " is reconnect");
-        else if (event.equals("disconnect")) System.out.println(user + " is disconnected");
-        else if (event.equals("suspend")) System.out.println(user + " is suspended");
-    }
 
+    //General print
     public void printError(int id) {
         switch (id) {
-            case 1: System.out.println("Username already used. Try login again.");
-            case 2: System.out.println("Invalid move");
-            case 3: System.out.println("Unsupported move. Digit 'help' to see the supported actions.");
-            case 4: System.out.println("You can not use the selected tool card");
-            case 5: System.out.println("'reconnect' command is not supported. you are already online");
+            case 1: System.out.println(USERNAME_ALREADY_USED);
+            case 2: System.out.println(INVALID_MOVE);
+            case 3: System.out.println(UNSUPPORTED_MOVE);
+            case 4: System.out.println(CAN_NOT_USE_TOOL_CARD);
+            case 5: System.out.println(CAN_NOT_RECONNECT);
         }
     }
 
-    public void printUpdate(UpdateModelMessage message){
-        System.out.println("Round #" + message.getRound());
-        StringBuilder sb = new StringBuilder();
-        for (Die d : message.getDraft()) {
-            sb.append(d.toString());
-            sb.append(" ");
-        }
-        System.out.println("Draft: " + sb.toString() + "\u001B[0m");
-        sb = new StringBuilder();
-        for (Die d : message.getRoundTrack()) {
-            sb.append(d.toString());
-            sb.append(" ");
-        }
-        System.out.println("Track: " + sb.toString() + "\u001B[0m");
-        for(Player p : message.getPlayers()){
-            p.dump();
-        }
+    public void printEvent(String user, String event) {
+        if (event.equals(RECONNECT)) System.out.println(user + IS_RECONNECT);
+        else if (event.equals(DISCONNECT)) System.out.println(user + IS_DISCONNECTED);
+        else if (event.equals(SUSPEND)) System.out.println(user + IS_SUSPENDED);
     }
 
+    public void printHelp() { System.out.println(HELP);}
+
+    public void printEndOfTurn(){
+        System.out.println(TURN_ENDED);
+    }
+
+    public void printWaitForTheMatch() {
+        System.out.println(WAIT_FOR_THE_MATCH);
+    }
+
+    public void printWaitForYourTurn() {
+        System.out.println(WAIT_FOR_YOUR_TURN);
+    }
+
+
+    public void printWinner(String winner) {
+        System.out.println(THE_WINNER_IS + winner );
+        System.out.println(THANKS_FOR_PLAYING);
+    }
+
+    /*
+    --------------------------------------------------------------------------------------
+     */
+
+    //da eliminare
+    public void print(String s){
+        System.out.println(s);
+    }
+    //setup print
+    public String printLogin() {
+        System.out.println(INSERT_USERNAME);
+        return stdin.nextLine();
+    }
+
+    //Window print
     public void printWindows(ShowWindowsMessage message){
-        System.out.println("You have to choose one of the following windows:\n");
+        System.out.println(CHOOSE_WINDOW);
         System.out.println(message.getW1());
         System.out.println(message.getW2());
         System.out.println(message.getW3());
         System.out.println(message.getW4());
-        System.out.println("Digit 'window' to enter setup.");
+        printDigitWindow();
         windowsName.add(message.getW1().getName());
         windowsName.add(message.getW2().getName());
         windowsName.add(message.getW3().getName());
         windowsName.add(message.getW4().getName());
     }
 
+    public String printInsertWindow() {
+        System.out.println(INSERT_WINDOW_NAME);
+        return stdin.nextLine();
+    }
+
+    //SI PUO RENDERE PRIVATE SE SPOSTO IN CONTROLLI
     public ArrayList<String> getWindowsName() {
         return windowsName;
     }
 
-    public String printInsertWindow() {
-        System.out.println("Now insert the name of the desired window: ");
-        return stdin.nextLine();
+
+    public void printUpdate(UpdateModelMessage message){
+        System.out.println(ROUND +  "#" + message.getRound());
+        StringBuilder sb = new StringBuilder();
+        for (Die d : message.getDraft()) {
+            sb.append(d.toString());
+            sb.append(" ");
+        }
+        System.out.println(DRAFT + sb.toString() + "\u001B[0m");
+        sb = new StringBuilder();
+        for (Die d : message.getRoundTrack()) {
+            sb.append(d.toString());
+            sb.append(" ");
+        }
+        System.out.println(TRACK  + sb.toString() + "\u001B[0m");
+        for(Player p : message.getPlayers()){
+            p.dump();
+        }
     }
 
-    public void printEndOfTurn(){
-        System.out.println("Turn ended. Please wait until your next turn.");
+     /*
+    ----------------------------------------------------------------------------
+     */
+
+
+    //Player print
+    public int printDieFromRoundTrack(int size) {
+        System.out.print(CHOOSE_DIE_FROM_ROUND_TRACK + size );
+        return Integer.parseInt(stdin.nextLine());
     }
 
-    public int printDieChoice(String s, int size) {
-        System.out.println("Choose a die from " + s + " and insert its position ( from 0 to " + size + ")");
+    public int printDieFromDraftPool(int size) {
+        System.out.println(CHOOSE_DIE_FROM_DRAFT_POOL  + size );
         return Integer.parseInt(stdin.nextLine());
     }
 
     public int printCoordinates(String c) {
-        System.out.println("Insert the " + c + " coordinate: ");
+        System.out.println(INSERT_COORDINATE + c);
         return Integer.parseInt(stdin.nextLine());
     }
 
-
-    //General print
-    public void printUnsupportedMove() {
-        System.out.println("Unsupported move. Digit 'help' to see the supported actions.");
+    public void printDigitWindow() {
+        System.out.println(DIGIT_WINDOW);
     }
 
-        public void printHelp() {
-        System.out.println(
-                "'login' to choose a username\n" +
-                "'window to choose a window\n" +
-                "'place' to place a die on your Window.\n" +
-                "'tool card' to use a selected tool card\n" +
-                "'show table' to check your private objective, public objectives and tool cards\n" +
-                "'end' to end your turn.\n" +
-                "'reconnect' to rejoin the game when suspended");
-    }
-
-    public String printLogin() {
-        System.out.println("Insert username: ");
-        return stdin.nextLine();
-    }
-
-    public void printWait(int i) {
-        if (i==0) System.out.println("Wait for the start of the match.");
-        else System.out.println("Wait for your turn.");
-    }
-
-    public void printDigit(int id) {
-        if (id == 1) System.out.println("You have to login first. Digit 'login'.");
-            else if (id == 2) System.out.println("You have to choose a window. Digit 'window' to do so.");
-             else System.out.println("Id not found");
-    }
-
-
-    //ToolCard print
-    public int printToolCardChoice() {
-        System.out.println("Enter the number of the card you want to use");
-        return Integer.parseInt(stdin.nextLine());
-    }
-
-    public int printIncreaseOrDecrease() {
-        System.out.println("Insert 0 if you want to decrease the value of the die by one\nInsert 1 to increase by one");
-        int c = Integer.parseInt(stdin.nextLine());
-        return c;
-    }
-
-    public int printDieValue() {
-        System.out.println("Select a value for the new die ( 1 - 6 )");
-        int v = Integer.parseInt(stdin.nextLine());
-        return v;
-    }
-
-    public String printChoiceAnotherDie() {
-        System.out.println("Do you want to choose another die? 'yes' or 'no'");
-        String c = stdin.nextLine();
-        while ((!c.equalsIgnoreCase("yes"))&&(!c.equalsIgnoreCase("no"))) {
-            System.out.println("Invalid entry");
-            c = stdin.nextLine();
-        }
-        return  c;
+    public void printDigitLogin() {
+        System.out.println(DIGIT_LOGIN);
     }
 
     public void printShowTable(PrivateObjective privateObjective, List<String> publicObjective, List<ToolCard> toolCards) {
-        System.out.println("YOUR PRIVATE OBJECTIVE IS: " + privateObjective.toString());
-        System.out.println("\nPUBLIC OBJECTIVES");
+        System.out.println(YOUR_PRIVATE_OBJECTIVE  + privateObjective.toString());
+        System.out.println("\n" + PUBLIC_OBJECTIVES);
         for (String p : publicObjective) {
             System.out.println(p);
         }
-        System.out.println("\nTOOL CARDS:");
+        System.out.println("\n" + TOOL_CARDS);
         for (ToolCard t : toolCards) {
             t.dump();
         }
     }
 
-    public void printWinner(String winner) {
-        System.out.println("The player " + winner + "wins!\nThanks for playing!");
+    /*
+    ----------------------------------------------------------------------------
+     */
+
+
+    //ToolCard print
+    public int printChooseAToolCard() {
+        System.out.println(CHOOSE_A_TOOL_CARD);
+        return Integer.parseInt(stdin.nextLine());
     }
 
-    public void printColor(String color) {
+
+    public int printIncreaseOrDecrease() {
+        System.out.println(INCREASE_OR_DECREASE);
+        return Integer.parseInt(stdin.nextLine());
+    }
+
+    public int printChooseDieValue() {
+        System.out.println(CHOOSE_DIE_VALUE );
+        return Integer.parseInt(stdin.nextLine());
+    }
+
+    public String printChooseAnotherDie() {
+        System.out.println(CHOOSE_ANOTHER_DIE);
+        String choice = stdin.nextLine();
+        while ((!choice.equalsIgnoreCase("yes"))&&(!choice.equalsIgnoreCase("no"))) {
+            System.out.println(INVALID_ENTRY);
+            choice = stdin.nextLine();
+        }
+        return  choice;
+    }
+
+
+
+    public void printDieColor(String color) {
         System.out.println(color);
     }
+
 
 }
