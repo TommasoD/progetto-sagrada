@@ -64,21 +64,38 @@ public class ToolCardCheck {
     }
 
     public boolean toolCard12(List<Die> track, WindowPattern window, int x, int y, int a, int b, int x2, int y2, int a2, int b2){
-        if (window.getWindowMatrix(x, y).isNotEmpty() && window.getWindowMatrix(x2, y2).isNotEmpty() && (x != x2 || y != y2) && (a != a2 || b != b2)) {
-            Die die1 = window.getWindowMatrix(x, y).removeDie();
-            Die die2 = window.getWindowMatrix(x2, y2).removeDie();
-            if (window.isValid(a, b, die1) && window.isValid(a2, b2, die2) && die1.getColor().equals(die2.getColor())) {
-                for(int i = 0; i < track.size(); i++) {
-                    if(die1.getColor().equals(track.get(i).getColor())) {
-                        window.getWindowMatrix(x, y).setDie(die1);
-                        window.getWindowMatrix(x2, y2).setDie(die2);
-                        return true;
+        if(!window.getWindowMatrix(x, y).isNotEmpty() || (x == x2 && y == y2) || (a == a2 && b == b2)) return false;
+        Die die1 = window.getWindowMatrix(x, y).removeDie();
+        if (!window.isValid(a, b, die1)){
+            window.getWindowMatrix(x, y).setDie(die1);
+            return false;
+        }
+
+        try{
+            if(window.getWindowMatrix(x2, y2).isNotEmpty()){
+                Die die2 = window.getWindowMatrix(x2, y2).removeDie();
+                if (window.isValid(a2, b2, die2) && die1.getColor().equals(die2.getColor())){
+                    for(Die d : track) {
+                        if(die1.getColor().equals(d.getColor())) {
+                            window.getWindowMatrix(x, y).setDie(die1);
+                            window.getWindowMatrix(x2, y2).setDie(die2);
+                            return true;
+                        }
                     }
                 }
+                window.getWindowMatrix(x, y).setDie(die1);
+                window.getWindowMatrix(x2, y2).setDie(die2);
+                return false;
             }
-            window.getWindowMatrix(x, y).setDie(die1);
-            window.getWindowMatrix(x2, y2).setDie(die2);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            for(Die d : track) {
+                if(die1.getColor().equals(d.getColor())) {
+                    window.getWindowMatrix(x, y).setDie(die1);
+                    return true;
+                }
+            }
         }
+        window.getWindowMatrix(x, y).setDie(die1);
         return false;
     }
 }

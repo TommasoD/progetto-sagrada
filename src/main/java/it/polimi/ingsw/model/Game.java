@@ -239,9 +239,13 @@ public class Game extends Observable<String> {
         x, y old coordinates, a, b new coordinates
      */
     public void moveDie(int playerId, int x, int y, int a, int b) {
-        WindowPattern w = getPlayerFromId(playerId).getPlayerWindow();
-        Die d = w.getWindowMatrix(x, y).removeDie();
-        w.getWindowMatrix(a, b).setDie(d);
+        try{
+            WindowPattern w = getPlayerFromId(playerId).getPlayerWindow();
+            Die d = w.getWindowMatrix(x, y).removeDie();
+            w.getWindowMatrix(a, b).setDie(d);
+        } catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("exceptional usage of tool card 12");
+        }
     }
 
     /*

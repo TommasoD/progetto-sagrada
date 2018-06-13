@@ -231,6 +231,12 @@ public class Controller implements Observer<String>{
 
     public void visit(ToolCardAMessage message, int player){
         printMessage(message.getId(), player);
+        if(message.getNum() ==  11 && message.getAction() != 0){
+            model.getDieFromDraft(0).setValue(message.getAction());
+            model.notifyMessage(new OkMessage(), player);
+            model.notifyUpdate();
+            return;
+        }
         if(!model.canUseToolCard(message.getNum(), player)){
             model.notifyMessage(new ErrorMessage(3), player);
             return;
@@ -256,14 +262,11 @@ public class Controller implements Observer<String>{
             model.getDieFromDraft(message.getDieIndex()).flipDie();
         }
         if(message.getNum() ==  11){
-            if(message.getAction() == 0){
-                model.getDiceBag().addDie(model.getDieFromDraft(message.getDieIndex()));
-                model.setDieDraft(0, model.getDiceBag().getDie());
-            }
-            else{
-                model.getDieFromDraft(0).setValue(message.getAction());
-            }
-
+            model.getDiceBag().addDie(model.removeDieFromDraft(message.getDieIndex()));
+            model.setDieDraft(0, model.getDiceBag().getDie());
+            model.useToolCard(message.getNum(), player);
+            model.notifyMessage(new DieColorMessage(model.getDieFromDraft(0).getColor()), player);
+            return;
         }
         toolCardUsed(message.getNum(), player);
     }

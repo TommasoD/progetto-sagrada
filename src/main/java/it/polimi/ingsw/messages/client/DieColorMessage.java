@@ -12,6 +12,11 @@ public class DieColorMessage extends ClientMessage {
         id = "die_color";
     }
 
+    public DieColorMessage(String color){
+        id = "die_color";
+        this.color = color;
+    }
+
     public String serialize() {
         Gson gson = new Gson();
         return gson.toJson(this);
