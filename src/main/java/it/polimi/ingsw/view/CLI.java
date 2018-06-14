@@ -40,6 +40,7 @@ public class CLI {
     private static final String WAIT_FOR_YOUR_TURN = "Wait for your turn.";
     private static final String WAIT_FOR_THE_MATCH = "Wait for the start of the match.";
     private static final String TURN_ENDED = "Turn ended. Please wait until your next turn.";
+    private static final String YOUR_TURN = "It's your turn. Make a move (digit 'help' to see more).";
 
     private static final String HELP = "'login' to choose a username\n" +
             "'window to choose a window\n" +
@@ -51,7 +52,7 @@ public class CLI {
 
     private static final String INSERT_WINDOW_NAME = "Now insert the name of the desired window: ";
     private static final String DIGIT_WINDOW = "You have to choose a window. Digit 'window' to do so.";
-    private static final String DIGIT_LOGIN = "You have to login first. Digit 'login'.";
+    private static final String DIGIT_LOGIN = "You have to login and choose a username. Digit 'login' to enter setup.";
     private static final String CHOOSE_WINDOW = "You have to choose one of the following windows:\n";
     private static final String CHOOSE_DIE_FROM_DRAFT_POOL = "Choose a die from the DraftPool and insert its position.\nInsert a number from 0 to ";
     private static final String CHOOSE_DIE_FROM_ROUND_TRACK = "Choose a die from the RoundTrack and insert its position\nInsert a number from 0 to ";
@@ -70,6 +71,7 @@ public class CLI {
     private static final String TOOL_CARDS = "TOOL CARDS:";
 
     private static final String INVALID_ENTRY = "Invalid entry";
+    private static final String ACTION_SUCCESSFUL = "Action successful!";
     private static final String THANKS_FOR_PLAYING = "Thanks for playing!";
     private static final String THE_WINNER_IS = "The winner is ";
 
@@ -88,10 +90,15 @@ public class CLI {
     public void printError(int id) {
         switch (id) {
             case 1: System.out.println(USERNAME_ALREADY_USED);
+                    break;
             case 2: System.out.println(INVALID_MOVE);
+                    break;
             case 3: System.out.println(UNSUPPORTED_MOVE);
+                    break;
             case 4: System.out.println(CAN_NOT_USE_TOOL_CARD);
+                    break;
             case 5: System.out.println(CAN_NOT_RECONNECT);
+                    break;
         }
     }
 
@@ -103,6 +110,10 @@ public class CLI {
 
     public void printHelp() { System.out.println(HELP);}
 
+    public void printYourTurn() {
+        System.out.println(YOUR_TURN);
+    }
+
     public void printEndOfTurn(){
         System.out.println(TURN_ENDED);
     }
@@ -113,6 +124,10 @@ public class CLI {
 
     public void printWaitForYourTurn() {
         System.out.println(WAIT_FOR_YOUR_TURN);
+    }
+
+    public void printActionSuccessful() {
+        System.out.println(ACTION_SUCCESSFUL);
     }
 
 

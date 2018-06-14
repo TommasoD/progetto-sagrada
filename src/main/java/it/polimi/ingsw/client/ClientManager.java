@@ -26,6 +26,16 @@ public class ClientManager implements Observer<String> {
     private int draftPoolSize;
     private int stage;              //0 -> before match, 1 -> login, 2 -> choose window, 3 -> client ready
     private  ValidateInput validateInput;
+
+    private static final String HELP = "help";
+    private static final String LOGIN = "login";
+    private static final String WINDOW = "window";
+    private static final String RECONNECT = "reconnect";
+    private static final String PLACE = "place";
+    private static final String TOOL_CARD = "tool card";
+    private static final String SHOW_TABLE = "show table";
+    private static final String END = "end";
+
     /*
         constructor
      */
@@ -89,7 +99,7 @@ public class ClientManager implements Observer<String> {
 
     private void handleRequest(String request){
 
-        if (request.equalsIgnoreCase("help")) {
+        if (request.equalsIgnoreCase(HELP)) {
             CLI.printHelp();
             return;
         }
@@ -99,7 +109,7 @@ public class ClientManager implements Observer<String> {
             return;
         }
         if(stage == 1){
-            if(request.equalsIgnoreCase("login")){
+            if(request.equalsIgnoreCase(LOGIN)){
                 LoginMessage gson = new LoginMessage(CLI.printLogin());
                 network.send(gson.serialize());
                 return;
@@ -108,30 +118,30 @@ public class ClientManager implements Observer<String> {
             return;
         }
         if(stage == 2){
-            if(request.equalsIgnoreCase("window")){
+            if(request.equalsIgnoreCase(WINDOW)){
                 String line = CLI.printInsertWindow();
                 if (!validateInput.checkWindowName(CLI.getWindowsName(), line))  return;
                     else {
                     CLI.printWaitForTheMatch();
+                    stage = 3;
                     ChooseWindowMessage m = new ChooseWindowMessage(line);
                     network.send(m.serialize());
                     return;
                 }
             }
 
-            if(!clientTurn){
-                if(request.equalsIgnoreCase("reconnect")){
-                    network.send(new ReconnectMessage().serialize());
-                    return;
-                }
-                CLI.printWaitForYourTurn();
-                return;
-            }
-
             CLI.printDigitWindow();
             return;
         }
 
+        if(!clientTurn){
+            if(request.equalsIgnoreCase(RECONNECT)){
+                network.send(new ReconnectMessage().serialize());
+                return;
+            }
+            CLI.printWaitForYourTurn();
+            return;
+        }
         playerAction(request);
     }
 
@@ -140,7 +150,7 @@ public class ClientManager implements Observer<String> {
      */
 
     private void playerAction(String move){
-        if(move.equalsIgnoreCase("place")){
+        if(move.equalsIgnoreCase(PLACE)){
 
             int die = CLI.printDieFromDraftPool(draftPoolSize);
             while (!validateInput.checkDieInArray(die,draftPoolSize)) die = CLI.printDieFromDraftPool(draftPoolSize);
@@ -154,7 +164,7 @@ public class ClientManager implements Observer<String> {
             if (clientTurn) network.send(new SetDieMessage(x, y, die).serialize());
         }
 
-        else if(move.equalsIgnoreCase("tool card")) {
+        else if(move.equalsIgnoreCase(TOOL_CARD)) {
 
             //REMEMBER 1<=nToolCard<=12 so the toolCard 1 is the element 0 in the arrayList.
             int nToolCard = CLI.printChooseAToolCard();
@@ -184,11 +194,11 @@ public class ClientManager implements Observer<String> {
         }
 
 
-        else if (move.equalsIgnoreCase("show table")) {
+        else if (move.equalsIgnoreCase(SHOW_TABLE)) {
             network.send(new ShowTableMessage().serialize());
         }
 
-        else if(move.equalsIgnoreCase("end")){
+        else if(move.equalsIgnoreCase(END)){
             if (clientTurn) network.send(new PassMessage().serialize());
         }
        /* else if(move.equalsIgnoreCase("help")){
@@ -303,7 +313,7 @@ public class ClientManager implements Observer<String> {
 
     public void visit(LoginRequestMessage message){
         stage = 1;
-        CLI.print("You now have to login and choose a username. Digit 'login' to enter setup.");
+        CLI.printDigitLogin();
     }
 
     /*
@@ -317,7 +327,7 @@ public class ClientManager implements Observer<String> {
 
     public void visit(NewTurnMessage message){
         clientTurn = true;
-        CLI.print("It's your turn. Make a move (digit 'help' to see more).");
+        CLI.printYourTurn();
     }
 
     public void visit(ErrorMessage message) {
@@ -325,7 +335,7 @@ public class ClientManager implements Observer<String> {
     }
 
     public void visit(OkMessage message){
-        CLI.print("Action successful!");
+        CLI.printActionSuccessful();
     }
 
     public void visit(EndTurnMessage message){
