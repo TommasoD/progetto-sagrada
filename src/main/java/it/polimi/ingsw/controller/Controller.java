@@ -77,6 +77,11 @@ public class Controller implements Observer<String>{
         model.initialize();
         handler = model.getHandler();
         model.notifyUpdate();
+        while (!model.getPlayers(handler.getCurrentPlayer()).isOnline()){
+            try{
+                handler.nextTurn();
+            } catch (NewRoundException e){}
+        }
         model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
         timer.wakeUp(handler.getCurrentPlayer());
     }
