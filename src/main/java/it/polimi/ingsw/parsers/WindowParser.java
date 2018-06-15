@@ -3,6 +3,7 @@ package it.polimi.ingsw.parsers;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -53,15 +54,11 @@ public class WindowParser {
     public WindowPattern readWindowPattern (String windowName) {
 
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-        String path = System.getProperty("user.dir");
         try {
             SAXParser saxParser = saxParserFactory.newSAXParser();
             WindowReader handler = new WindowReader();
-            try {
-                saxParser.parse(new File(path + "/src/main/resources/" + windowName + ".xml"), handler);
-            } catch(FileNotFoundException e) {
-                saxParser.parse(new File(path + "/classes/"  + windowName + ".xml"), handler);
-            }
+            InputStream path = getClass().getResourceAsStream("/" + windowName + ".xml");
+            saxParser.parse(path, handler);
         } catch ( Exception e) {
             e.printStackTrace();
             System.exit(1);
