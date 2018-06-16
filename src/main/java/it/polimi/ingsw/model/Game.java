@@ -109,8 +109,10 @@ public class Game extends Observable<String> {
         return players.size();
     }
 
-    /*
-        returns true if there's a player with a given username
+    /**
+     * Checks if the selected username is already in use.
+     * @param s a username.
+     * @return true if there's a player with the given username; false otherwise.
      */
 
     public boolean find(String s){
@@ -118,6 +120,19 @@ public class Game extends Observable<String> {
             if(p.getUsername().equals(s)) return true;
         }
         return false;
+    }
+
+    /**
+     * Returns the number of online players.
+     * @return the number of online players.
+     */
+
+    public int getNumberOfOnlinePlayers(){
+        int n = 0;
+        for(Player p : players){
+            if(p.isOnline()) n++;
+        }
+        return n;
     }
 
     /*

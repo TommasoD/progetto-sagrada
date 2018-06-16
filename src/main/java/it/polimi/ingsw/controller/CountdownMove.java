@@ -17,7 +17,7 @@ public class CountdownMove extends Thread {
 
     private boolean done;
 
-    private static int max_time;
+    private int maxTime;
 
     private boolean gameEnded;
 
@@ -28,14 +28,14 @@ public class CountdownMove extends Thread {
     public CountdownMove(Controller controller) {
         SetupParser reader = new SetupParser();
         reader.readSetup();
-        max_time = reader.getCountdownMove();
+        maxTime = reader.getCountdownMove();
         resetAndStop();
         done = false;
         this.controller = controller;
     }
 
     public int getMaxTime() {
-        return max_time;
+        return maxTime;
     }
 
     public void setDone() {
@@ -94,18 +94,17 @@ public class CountdownMove extends Thread {
         done = false;
 
         this.reset();
-        while(this.read() < max_time && !done) {}
+        while(this.read() < maxTime && !done) {}
 
         controller.startMatch();
         done = false;
 
         while(!gameEnded) {
             this.reset();
-            while(this.read() <max_time&& !done) {}
+            while(this.read() <maxTime&& !done) {}
             this.stopClock();
-            if(this.read() >= max_time) {
-                controller.getGame().getPlayers(playerIndex).setOnline(false);
-                controller.getGame().notifyAllPlayers(new NotificationMessage(controller.getGame().getPlayers(playerIndex).getUsername(), "suspended"));
+            if(this.read() >= maxTime) {
+                controller.setPlayerOffline(controller.getGame().getPlayers(playerIndex).getId(), "suspended");
                 controller.nextPlayer(controller.getGame().getPlayers(playerIndex).getId());
             }
             done = false;

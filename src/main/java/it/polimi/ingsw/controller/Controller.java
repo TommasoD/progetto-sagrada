@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.parsers.GsonParser;
 import it.polimi.ingsw.utils.Observer;
 
+import java.util.logging.Logger;
+
 public class Controller implements Observer<String>{
 
     private Game model;
@@ -13,9 +15,11 @@ public class Controller implements Observer<String>{
     private WindowPatternFactory factory;
     private GsonParser parser;
     private CountdownMove timer;
+    private Logger logger;
 
-    /*
-        constructors
+    /**
+     * Constructs a Controller from an already existing game.
+     * @param model an existing game.
      */
 
     public Controller(Game model){
@@ -24,7 +28,12 @@ public class Controller implements Observer<String>{
         parser = new GsonParser();
         checker = new ToolCardCheck();
         timer = new CountdownMove(this);
+        logger = Logger.getLogger(Controller.class.getName());
     }
+
+    /**
+     * Constructs a Controller.
+     */
 
     public Controller(){
         model = new Game();
@@ -32,6 +41,7 @@ public class Controller implements Observer<String>{
         parser = new GsonParser();
         checker = new ToolCardCheck();
         timer = new CountdownMove(this);
+        logger = Logger.getLogger(Controller.class.getName());
     }
 
     /*
@@ -40,10 +50,6 @@ public class Controller implements Observer<String>{
 
     public Game getGame(){
         return model;
-    }
-
-    public GsonParser getParser() {
-        return parser;
     }
 
     /*
@@ -98,6 +104,27 @@ public class Controller implements Observer<String>{
         model.notifyUpdate();
     }
 
+    /**
+     * Sets a player as offline and checks if there's only one active player left.
+     * In that case the game ends, otherwise the game goes on.
+     * @param playerID the ID of a player.
+     * @param event either disconnect or suspended.
+     */
+
+    public void setPlayerOffline(int playerID, String event){
+        model.getPlayerFromId(playerID).setOnline(false);
+        model.notifyAllPlayers(new NotificationMessage(model.getPlayerFromId(playerID).getUsername(), event));
+        if(model.getNumberOfOnlinePlayers() == 1){
+            for(Player p : model.getPlayers()){
+                if(p.isOnline()){
+                    model.notifyAllPlayers(new GameOverMessage(p.getUsername()));
+                    break;
+                }
+            }
+            // TODO segnalare al server la fine della partita
+        }
+    }
+
     /*
         @player is the id of the current player
         calls RoundHandler method nextTurn() recursively, skipping turns for offline players or
@@ -117,7 +144,7 @@ public class Controller implements Observer<String>{
                 handler.nextTurn();
             }
         } catch(NewRoundException e) {
-            System.out.println("round " + e.getRound() + " is starting");
+            logger.info("round " + e.getRound() + " is starting");
             model.diceLeft();
             model.setDraft();
             for(Player p : model.getPlayers()){
@@ -189,9 +216,7 @@ public class Controller implements Observer<String>{
 
     public void visit(LogoutMessage message, int player){
         printMessage(message.getId(), player);
-        model.getPlayerFromId(player).setOnline(false);
-        // TODO : if all players are offline except one -> end game
-        model.notifyAllPlayers(new NotificationMessage(model.getPlayerFromId(player).getUsername(), "disconnect"));
+        setPlayerOffline(player, "disconnect");
     }
 
     public void visit(PassMessage message, int player){
@@ -415,7 +440,8 @@ public class Controller implements Observer<String>{
      */
 
     private void printMessage(String id, int player){
-        System.out.println(id + " message received from player " + player);
+        String s = id + " message received from player " + player;
+        logger.info(s);
     }
 
     /*

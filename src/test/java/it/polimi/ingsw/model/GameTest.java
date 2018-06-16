@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
-
     @Test
     void roundTrackTest(){
         Game g = new Game();
@@ -104,6 +103,18 @@ class GameTest {
         g.addPlayer(new Player("player0", wf.createWindow("Kaleidoscopic Dream"), 0));
         assertTrue(g.find("player0"));
         assertFalse(g.find("username"));
+    }
+
+    @Test
+    void getNumberOfOnlinePlayersTest(){
+        Game g = new Game();
+        WindowPatternFactory wf = new WindowPatternFactory();
+        g.addPlayer(new Player("player0", wf.createWindow("Kaleidoscopic Dream"), 0));
+        g.addPlayer(new Player("player0", wf.createWindow("Kaleidoscopic Dream"), 1));
+        g.addPlayer(new Player("player0", wf.createWindow("Kaleidoscopic Dream"), 2));
+        assertEquals(3, g.getNumberOfOnlinePlayers());
+        g.getPlayerFromId(0).setOnline(false);
+        assertEquals(2, g.getNumberOfOnlinePlayers());
     }
 
     @Test
