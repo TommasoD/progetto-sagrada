@@ -44,16 +44,18 @@ public class Controller implements Observer<String>{
         logger = Logger.getLogger(Controller.class.getName());
     }
 
-    /*
-        getters and setters
+    /**
+     * Getter for model.
+     * @return current model.
      */
 
     public Game getGame(){
         return model;
     }
 
-    /*
-        adds default players to the game, waiting for username and window from each client
+    /**
+     * Adds default players to the game, waiting for username and window from each client.
+     * @param nPlayers the number of players in the game.
      */
 
     public void newMatch(int nPlayers){
@@ -62,8 +64,8 @@ public class Controller implements Observer<String>{
         }
     }
 
-    /*
-        sends a login request to all the players in the game
+    /**
+     * Sends a login request to all the players in the game, right after the start of match.
      */
 
     public void newLoginRequest(){
@@ -75,8 +77,11 @@ public class Controller implements Observer<String>{
         timer.start();
     }
 
-    /*
-        creates a new RoundHandler class and initializes the model class
+    /**
+     * Saves the reference to the turn handler created in the model, then initializes the model class.
+     * After the game is initialized, the match starts: the first player is selected and - in case he's
+     * already offline - the next player is recursively selected. A notification is sent to the player and
+     * the countdown for his turn starts.
      */
 
     public void startMatch(){
@@ -92,10 +97,12 @@ public class Controller implements Observer<String>{
         timer.wakeUp(handler.getCurrentPlayer());
     }
 
-    /*
-        when a tool card is used, some changes in the model must be made (tokens decreased, card set as used)
-        then the player is notified of the result (action successful) and everyone gets an update of the board
-        in case the player has already done both his moves (set a die and use a card), his turn ends
+    /**
+     * When a tool card is used, some changes in the model must be made (tokens decreased, card set as used);
+     * after that, the player is notified of the result (action successful) and everyone gets an update of the board.
+     * In case the player has already done both his moves (set a die and use a card), his turn ends.
+     * @param toolcard the number of the tool card used.
+     * @param player the ID of the player who performed the move.
      */
 
     private void toolCardUsed(int toolcard, int player){
@@ -125,10 +132,12 @@ public class Controller implements Observer<String>{
         }
     }
 
-    /*
-        @player is the id of the current player
-        calls RoundHandler method nextTurn() recursively, skipping turns for offline players or
-            players who already did their second turn (see tool card 8)
+    /**
+     * When the next player is selected, notifies the previous player of the end of his turn,
+     * then checks if the now current player is offline, thus selecting a new next player recursively.
+     * Before sending a notification to the current player, checks if ten rounds have already being player,
+     * i.e. the game is ended and all player are notified of the winner.
+     * @param player the ID of the current player.
      */
 
     public void nextPlayer(int player){
@@ -165,19 +174,26 @@ public class Controller implements Observer<String>{
         }
     }
 
-    /*
-        receives a window identifier (name) and a player identifier (number), creates the window calling a factory
-        then assigns that window to the correct player and set the player as ready to play
+    /**
+     * Receives name of the window selected by a player, creates the window using a factory, then
+     * assigns the window to the player and sets the player as ready-to-play.
+     * If all players are ready, the game shall start.
+     * @param player the player's ID.
+     * @param windowName the name of the window.
      */
 
     public void setWindowPattern(int player, String windowName){
         model.getPlayerFromId(player).setPlayerWindow(factory.createWindow(windowName));
         model.getPlayerFromId(player).setReady(true);
+        if(model.allReadyToPlay()){
+            timer.setDone();
+        }
     }
 
-    /*
-        receives an identifier of a player (int player) and a string representation of a Gson message (Object gson),
-        calls parse() method from GsonParser and uses visitor pattern to handle the returned Message
+    /**
+     * Uses a parser to analyze a message, which is managed by the controller itself through visitor pattern.
+     * @param gson Json representation of a message by the current player.
+     * @param player the current player.
      */
 
     public synchronized void update(String gson, int player) {
@@ -187,23 +203,28 @@ public class Controller implements Observer<String>{
 
     /*
     --------------------------------------------------------------
-        visitor pattern methods
+        VISITOR PATTERN METHODS
     --------------------------------------------------------------
      */
 
-    /*
-        message contains the name of the window chosen by the player
-        when all players are ready to play, the timer is stopped and StartMatch() method from controller is called
-        after that, the first turn of the first player starts
+
+    /**
+     * When a player chooses a window, it is assigned to him.
+     * @param message the player's request.
+     * @param player the current player.
      */
 
     public void visit(ChooseWindowMessage message, int player){
         printMessage(message.getId(), player);
         setWindowPattern(player, message.getWindowName());
-        if(model.allReadyToPlay()){
-            timer.setDone();
-        }
     }
+
+    /**
+     * When a player chooses a username, it is assigned to him. If the username has already been selected
+     * by someone else, an error message is sent to the player.
+     * @param message the player's request.
+     * @param player the current player.
+     */
 
     public void visit(LoginMessage message, int player){
         printMessage(message.getId(), player);
@@ -214,16 +235,36 @@ public class Controller implements Observer<String>{
         else model.notifyMessage(new ErrorMessage(1), player);
     }
 
+    /**
+     * When a player disconnects, he's set offline in the model.
+     * @param message the player's request.
+     * @param player the current player.
+     */
+
     public void visit(LogoutMessage message, int player){
         printMessage(message.getId(), player);
         setPlayerOffline(player, "disconnect");
     }
+
+    /**
+     * When a player chooses to end his turn, picks the next player.
+     * @param message the player's request.
+     * @param player the current player.
+     */
 
     public void visit(PassMessage message, int player){
         printMessage(message.getId(), player);
         timer.setDone();
         nextPlayer(player);
     }
+
+    /**
+     * When a player chooses to place a die on his window and all the rules are followed, notifies the player
+     * of correct result of his move. He won't be able to perform the same move in the current turn,
+     * however the turn goes on as he can still use a tool card.
+     * @param message the player's request.
+     * @param player the current player.
+     */
 
     public void visit(SetDieMessage message, int player){
         printMessage(message.getId(), player);
@@ -249,14 +290,18 @@ public class Controller implements Observer<String>{
         model.notifyUpdate();
     }
 
-    /*
-        tool cards type A change one die from the draft pool according to an identifier
-            - tool card 1 increase or decrease the value of the chosen die
-            - tool card 5 switch a die from the draft with a selected one in the round track
-            - tool card 6 allows the player re-roll a die from the draft
-            - tool card 10 flips a die
-            - tool card 11 puts a die from the draft back in the bag, then a new die is taken from the bag and
-                a new value is given to it
+    /**
+     * Performs all the needed action regarding the usage of a tool card of this type.
+     * <p>
+     * Tool cards type A change one die from the draft pool according to an identifier:
+     * tool card 1 increase or decrease the value of a chosen die;
+     * tool card 5 switch a die from the draft with a selected one in the round track;
+     * tool card 6 allows the player re-roll a die from the draft;
+     * tool card 10 flips a die from the draft;
+     * tool card 11 puts a die from the draft back in the bag, then a new die is taken from the bag
+     * and a new value is given to it.
+     * @param message the player's request.
+     * @param player the current player.
      */
 
     public void visit(ToolCardAMessage message, int player){
@@ -301,10 +346,14 @@ public class Controller implements Observer<String>{
         toolCardUsed(message.getNum(), player);
     }
 
-    /*
-        tool cards type B move one die in the window of a player
-            - tool card 2 ignores color restrictions
-            - tool card 3 ignores value restrictions
+    /**
+     * Performs all the needed action regarding the usage of a tool card of this type.
+     * <p>
+     * Tool cards type B move one die in the window of a player:
+     * tool card 2 ignores color restrictions;
+     * tool card 3 ignores value restrictions.
+     * @param message the player's request.
+     * @param player the current player.
      */
 
     public void visit(ToolCardBMessage message, int player){
@@ -328,10 +377,14 @@ public class Controller implements Observer<String>{
         toolCardUsed(message.getNum(), player);
     }
 
-    /*
-        tool cards type C move two dice in the window of a player
-            - tool card 4 does not have an restriction
-            - tool card 12 moves two dice of the same color of a die from the round track
+    /**
+     * Performs all the needed action regarding the usage of a tool card of this type.
+     * <p>
+     * Tool cards type C move two dice in the window of a player:
+     * tool card 4 does not have any restriction;
+     * tool card 12 moves two dice of the same color of a die from the round track.
+     * @param message the player's request.
+     * @param player the current player.
      */
 
     public void visit(ToolCardCMessage message, int player){
@@ -358,10 +411,14 @@ public class Controller implements Observer<String>{
         toolCardUsed(message.getNum(), player);
     }
 
-    /*
-        tool cards type D place one die in the window of a player
-            - tool card 8 allows the player to place a second die in the same turn
-            - tool card 9 places a die in a spot not adjacent to other dice in the window
+    /**
+     * Performs all the needed action regarding the usage of a tool card of this type.
+     * <p>
+     * Tool cards type D place one die in the window of a player:
+     * tool card 8 allows the player to place a second die in the same turn;
+     * tool card 9 places a die in a spot not adjacent to any other die in the window.
+     * @param message the player's request.
+     * @param player the current player.
      */
 
     public void visit(ToolCardDMessage message, int player){
@@ -390,9 +447,13 @@ public class Controller implements Observer<String>{
         toolCardUsed(message.getNum(), player);
     }
 
-    /*
-        tool cards type D do not need any parameter
-            - tool card 7 re-roll all the dice in the draft pool
+    /**
+     * Performs all the needed action regarding the usage of a tool card of this type.
+     * <p>
+     * Tool cards type E do not need any validation:
+     * tool card 7 re-roll all the dice in the draft pool.
+     * @param message the player's request.
+     * @param player the current player.
      */
 
     public void visit(ToolCardEMessage message, int player){
@@ -413,10 +474,23 @@ public class Controller implements Observer<String>{
         toolCardUsed(message.getNum(), player);
     }
 
+    /**
+     * Sends all the information regarding the public objectives of the current game, the personal
+     * private objective and all the tool cards (status and description).
+     * @param message the player's request.
+     * @param player the ID of the player.
+     */
+
     public void visit(ShowTableRequestMessage message, int player){
         printMessage(message.getId(), player);
         model.notifyMessage(new ShowTableMessage(model.getPlayerFromId(player).getPlayerObjective(), model.getToolCards(), model.getObjectivesAsString()), player);
     }
+
+    /**
+     * Sets a player as online when he tries to reconnect from inactivity.
+     * @param message the player's request.
+     * @param player the ID of the player.
+     */
 
     public void visit(ReconnectMessage message, int player){
         printMessage(message.getId(), player);
@@ -427,16 +501,20 @@ public class Controller implements Observer<String>{
         }
     }
 
-    /*
-        when GsonParser fails to identify a Json String
+    /**
+     * Prints an error in case the parser fails to identify a message.
+     * @param message the player's request.
+     * @param player the ID of the player.
      */
 
     public void visit(UnexpectedMessage message, int player){
         printMessage("unexpected", player);
     }
 
-    /*
-        print the latest message received
+    /**
+     * Prints on screen the type and the sender of any message received.
+     * @param id the ID of the message.
+     * @param player the ID of the player.
      */
 
     private void printMessage(String id, int player){
@@ -444,8 +522,9 @@ public class Controller implements Observer<String>{
         logger.info(s);
     }
 
-    /*
-        unsupported method
+    /**
+     * Unsupported method inherited from Observer.
+     * @param message not used.
      */
 
     public void update(String message) {
