@@ -36,6 +36,17 @@ public class ClientManager implements Observer<String> {
     private static final String SHOW_TABLE = "show table";
     private static final String END = "end";
 
+    private static final String INSERT_VALID_IP = "Insert a valid IP address: ";
+    private static final String CONNECTING = "Connecting...\n";
+    private static final String IP_NOT_VALID = "IP address is not valid\nA default IP address is used";
+    private static final String CONNECTION_CLOSED = "Error in socket\nConnection closed";
+    private static final int SOCKET_TIMEOUT = 5000;
+
+    private static final String X = "x";
+    private static final String Y = "y";
+    private static final String YES = "yes";
+
+
     /*
         constructor
      */
@@ -56,15 +67,15 @@ public class ClientManager implements Observer<String> {
         int port = reader.getPort();
 
 
-        System.out.print("Insert a valid IP address: ");
+        System.out.print(INSERT_VALID_IP);
         String ip = stdin.nextLine();
 
         socket = new Socket();
         try{
-            System.out.print("Connecting...\n");
-            socket.connect(new InetSocketAddress(ip, port), 5000);
+            System.out.print(CONNECTING);
+            socket.connect(new InetSocketAddress(ip, port), SOCKET_TIMEOUT);
         } catch (Exception e) {
-            System.out.println("IP address is not valid\nA default IP address is used");
+            System.out.println(IP_NOT_VALID);
             try {
                 socket.close();
             } catch (Exception e1) {
@@ -77,7 +88,7 @@ public class ClientManager implements Observer<String> {
                 try {
                     socket.close();
                 } catch (Exception e1) {
-                    System.out.println("Error in socket\nConnection closed");
+                    System.out.println(CONNECTION_CLOSED);
                 }
                 System.exit(1);
             }
@@ -155,11 +166,11 @@ public class ClientManager implements Observer<String> {
             int die = CLI.printDieFromDraftPool(draftPoolSize);
             while (!validateInput.checkDieInArray(die,draftPoolSize)) die = CLI.printDieFromDraftPool(draftPoolSize);
 
-            int x = CLI.printCoordinates("x");
-            while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates("x");
+            int x = CLI.printCoordinates(X);
+            while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates(X);
 
-            int y = CLI.printCoordinates("y");
-            while(!validateInput.checkRowIndex(y)) y = CLI.printCoordinates("y");
+            int y = CLI.printCoordinates(Y);
+            while(!validateInput.checkRowIndex(y)) y = CLI.printCoordinates(Y);
 
             if (clientTurn) network.send(new SetDieMessage(x, y, die).serialize());
         }
@@ -237,16 +248,16 @@ public class ClientManager implements Observer<String> {
 
     private ToolCardBMessage useToolCardB(int nToolCard) {
         //old coordinates
-        int x = CLI.printCoordinates("x");
-        while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates("x");
-        int y = CLI.printCoordinates("y");
-        while(!validateInput.checkRowIndex(y)) y = CLI.printCoordinates("y");
+        int x = CLI.printCoordinates(X);
+        while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates(X);
+        int y = CLI.printCoordinates(Y);
+        while(!validateInput.checkRowIndex(y)) y = CLI.printCoordinates(Y);
 
         //new coordinates
-        int a = CLI.printCoordinates("x");
-        while(!validateInput.checkColumnIndex(a)) a = CLI.printCoordinates("x");
-        int b = CLI.printCoordinates("y");
-        while(!validateInput.checkRowIndex(b)) b = CLI.printCoordinates("y");
+        int a = CLI.printCoordinates(X);
+        while(!validateInput.checkColumnIndex(a)) a = CLI.printCoordinates(X);
+        int b = CLI.printCoordinates(Y);
+        while(!validateInput.checkRowIndex(b)) b = CLI.printCoordinates(Y);
 
         return new ToolCardBMessage(nToolCard, x, y , a , b);
 
@@ -255,32 +266,32 @@ public class ClientManager implements Observer<String> {
     private ToolCardCMessage useToolCardC(int nToolCard) {
         //DIE 1
         //old coordinates
-        int x = CLI.printCoordinates("x");
-        while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates("x");
-        int y = CLI.printCoordinates("y");
-        while(!validateInput.checkRowIndex(y)) y = CLI.printCoordinates("y");
+        int x = CLI.printCoordinates(X);
+        while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates(X);
+        int y = CLI.printCoordinates(Y);
+        while(!validateInput.checkRowIndex(y)) y = CLI.printCoordinates(Y);
 
         //new coordinates
-        int a = CLI.printCoordinates("x");
-        while(!validateInput.checkColumnIndex(a)) a = CLI.printCoordinates("x");
-        int b = CLI.printCoordinates("y");
-        while(!validateInput.checkRowIndex(b)) b = CLI.printCoordinates("y");
+        int a = CLI.printCoordinates(X);
+        while(!validateInput.checkColumnIndex(a)) a = CLI.printCoordinates(X);
+        int b = CLI.printCoordinates(Y);
+        while(!validateInput.checkRowIndex(b)) b = CLI.printCoordinates(Y);
 
         String choice = "";
         if (nToolCard == 12) choice = CLI.printChooseAnotherDie();
-        if ((nToolCard == 4) || (choice.equalsIgnoreCase("yes"))) {
+        if ((nToolCard == 4) || (choice.equalsIgnoreCase(YES))) {
             //DIE 2
             //old coordinates
-            int x2 = CLI.printCoordinates("x");
-            while (!validateInput.checkColumnIndex(x2)) x2 = CLI.printCoordinates("x");
-            int y2 = CLI.printCoordinates("y");
-            while (!validateInput.checkRowIndex(y2)) y2 = CLI.printCoordinates("y");
+            int x2 = CLI.printCoordinates(X);
+            while (!validateInput.checkColumnIndex(x2)) x2 = CLI.printCoordinates(X);
+            int y2 = CLI.printCoordinates(Y);
+            while (!validateInput.checkRowIndex(y2)) y2 = CLI.printCoordinates(Y);
 
             //new coordinates
-            int a2 = CLI.printCoordinates("x");
-            while (!validateInput.checkColumnIndex(a2)) a2 = CLI.printCoordinates("x");
-            int b2 = CLI.printCoordinates("y");
-            while (!validateInput.checkRowIndex(b2)) b2 = CLI.printCoordinates("y");
+            int a2 = CLI.printCoordinates(X);
+            while (!validateInput.checkColumnIndex(a2)) a2 = CLI.printCoordinates(X);
+            int b2 = CLI.printCoordinates(Y);
+            while (!validateInput.checkRowIndex(b2)) b2 = CLI.printCoordinates(Y);
 
             return new ToolCardCMessage(nToolCard, x, y, a, b, x2, y2, a2, b2);
         }
@@ -290,10 +301,10 @@ public class ClientManager implements Observer<String> {
     private ToolCardDMessage useToolCardD(int nToolCard) {
         int dieIndex = CLI.printDieFromDraftPool(draftPoolSize);
         while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = CLI.printDieFromDraftPool(draftPoolSize);
-        int x = CLI.printCoordinates("x");
-        while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates("x");
-        int y = CLI.printCoordinates("y");
-        while(!validateInput.checkRowIndex(y)) y = CLI.printCoordinates("y");
+        int x = CLI.printCoordinates(X);
+        while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates(X);
+        int y = CLI.printCoordinates(Y);
+        while(!validateInput.checkRowIndex(y)) y = CLI.printCoordinates(Y);
         if (clientTurn) network.send(new ToolCardDMessage(nToolCard, dieIndex, x, y).serialize());
         return new ToolCardDMessage(nToolCard, dieIndex, x, y);
 

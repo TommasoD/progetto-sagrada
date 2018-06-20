@@ -12,15 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
-//client rimangono il controllo sia prima sia quando devo mandare il messaggio per verificare che è il suo turno
-
-///spostare i controlli nella view
-
-//rendere tutte el stringhe come costanti
-
-//scritta reconnect quando viene sospeso
-
 public class CLI {
 
     private static final String INSERT_USERNAME = "Insert username: ";
@@ -74,6 +65,8 @@ public class CLI {
     private static final String ACTION_SUCCESSFUL = "Action successful!";
     private static final String THANKS_FOR_PLAYING = "Thanks for playing!";
     private static final String THE_WINNER_IS = "The winner is ";
+    private static final String YES = "yes";
+    private static final String NO = "no";
 
 
     private ArrayList<String> windowsName = new ArrayList<String>();
@@ -140,10 +133,6 @@ public class CLI {
     --------------------------------------------------------------------------------------
      */
 
-    //da eliminare
-    public void print(String s){
-        System.out.println(s);
-    }
     //setup print
     public String printLogin() {
         System.out.println(INSERT_USERNAME);
@@ -169,7 +158,7 @@ public class CLI {
         return stdin.nextLine();
     }
 
-    //SI PUO RENDERE PRIVATE SE SPOSTO IN CONTROLLI
+
     public ArrayList<String> getWindowsName() {
         return windowsName;
     }
@@ -201,12 +190,12 @@ public class CLI {
 
     //Player print
     public int printDieFromRoundTrack(int size) {
-        System.out.print(CHOOSE_DIE_FROM_ROUND_TRACK + size );
+        System.out.print(CHOOSE_DIE_FROM_ROUND_TRACK + (size-1) );
         return Integer.parseInt(stdin.nextLine());
     }
 
     public int printDieFromDraftPool(int size) {
-        System.out.println(CHOOSE_DIE_FROM_DRAFT_POOL  + size );
+        System.out.println(CHOOSE_DIE_FROM_DRAFT_POOL  + (size-1) );
         return Integer.parseInt(stdin.nextLine());
     }
 
@@ -260,7 +249,7 @@ public class CLI {
     public String printChooseAnotherDie() {
         System.out.println(CHOOSE_ANOTHER_DIE);
         String choice = stdin.nextLine();
-        while ((!choice.equalsIgnoreCase("yes"))&&(!choice.equalsIgnoreCase("no"))) {
+        while ((!choice.equalsIgnoreCase(YES))&&(!choice.equalsIgnoreCase(NO))) {
             System.out.println(INVALID_ENTRY);
             choice = stdin.nextLine();
         }

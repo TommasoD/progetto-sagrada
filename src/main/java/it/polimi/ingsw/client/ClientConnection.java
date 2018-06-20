@@ -11,6 +11,8 @@ public class ClientConnection extends Observable<String> implements Runnable {
 
     private DataInputStream socketIn;
     private DataOutputStream socketOut;
+    private static final String GAME_READY = "\nGame ready\n" ;
+    private static final String CONNECTION_CLOSED = "Connection closed";
 
     public ClientConnection(Socket socket) {
 
@@ -34,7 +36,7 @@ public class ClientConnection extends Observable<String> implements Runnable {
             while (!done) {
                 String mex = socketIn.readUTF();
                 System.out.print(mex);
-                if(mex.equals("\nGame ready\n")) done = true;
+                if(mex.equals(GAME_READY)) done = true;
             }
 
             done = false;
@@ -45,7 +47,7 @@ public class ClientConnection extends Observable<String> implements Runnable {
             }
 
         } catch (IOException e ) {
-            System.out.println("Connection closed");
+            System.out.println(CONNECTION_CLOSED);
         }
 
         finally {
