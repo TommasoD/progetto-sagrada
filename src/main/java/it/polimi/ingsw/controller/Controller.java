@@ -7,6 +7,10 @@ import it.polimi.ingsw.utils.Observer;
 
 import java.util.logging.Logger;
 
+/**
+ * Manages a game in terms of turn order and players' actions.
+ * Modifies the model according to the rules.
+ */
 public class Controller implements Observer<String>{
 
     private Game model;
@@ -18,7 +22,7 @@ public class Controller implements Observer<String>{
     private Logger logger;
 
     /**
-     * Constructs a Controller from an already existing game.
+     * Constructs a controller from an already existing game.
      * @param model an existing game.
      */
 
@@ -32,7 +36,7 @@ public class Controller implements Observer<String>{
     }
 
     /**
-     * Constructs a Controller.
+     * Constructs a controller.
      */
 
     public Controller(){

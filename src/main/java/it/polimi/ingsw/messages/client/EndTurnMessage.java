@@ -3,9 +3,16 @@ package it.polimi.ingsw.messages.client;
 import com.google.gson.Gson;
 import it.polimi.ingsw.client.ClientManager;
 
+/**
+ * Notifies the player of the end of his turn.
+ */
 public class EndTurnMessage extends ClientMessage {
 
     private String id;
+
+    /**
+     * Class constructor.
+     */
 
     public EndTurnMessage(){
         id = "end";
@@ -20,14 +27,31 @@ public class EndTurnMessage extends ClientMessage {
         c.visit(this);
     }
 
+    /**
+     * Takes a Json representation of the class as a string and
+     * converts it in the corresponding object.
+     * @param s Json representation of the class.
+     * @return an instance of the class.
+     */
+
     public static EndTurnMessage deserializeEndTurnMessage(String s){
         Gson gson = new Gson();
         return gson.fromJson(s, EndTurnMessage.class);
     }
 
+    /**
+     *
+     * @return the ID.
+     */
+
     public String getId() {
         return id;
     }
+
+    /**
+     *
+     * @param id the ID.
+     */
 
     public void setId(String id) {
         this.id = id;
