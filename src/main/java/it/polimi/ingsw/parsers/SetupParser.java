@@ -1,7 +1,6 @@
 package it.polimi.ingsw.parsers;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;

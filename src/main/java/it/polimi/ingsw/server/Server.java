@@ -6,11 +6,8 @@ import it.polimi.ingsw.parsers.SetupParser;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-
-import java.net.UnknownHostException;
-import java.net.InetAddress;
+import java.net.*;
+import java.util.Enumeration;
 
 public class Server {
 
@@ -45,13 +42,8 @@ public class Server {
     }
 
     public void startServer() {
-        try {
-            System.out.println("My ip address: " + InetAddress.getLocalHost().getHostAddress());
-        }
-        catch (UnknownHostException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+
+        this.printIPAddress();
 
         int socketId = 0;
         while(gameRoom.getSize() < 4) {
@@ -66,7 +58,7 @@ public class Server {
                 System.out.println("Client " + socketId + " connected");
 
             } catch (IOException e) {
-                System.out.println("Client" + (socketId) + ": connection failed");
+                System.out.println("Client " + (socketId) + ": connection failed");
             }
         }
 
@@ -93,10 +85,32 @@ public class Server {
                 socket.close();
                 i++;
             } catch (IOException e) {
-                System.out.println("Client" + (i + 1) + ": connection failed");
+                System.out.println("Client " + (i + 1) + ": connection failed");
             }
        }
 
+    }
+
+    private void printIPAddress() {
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface iface = interfaces.nextElement();
+                // filters out 127.0.0.1 and inactive interfaces
+                if (iface.isLoopback() || !iface.isUp())
+                    continue;
+
+                Enumeration<InetAddress> addresses = iface.getInetAddresses();
+                while(addresses.hasMoreElements()) {
+                    InetAddress addr = addresses.nextElement();
+
+                    if (addr.getHostAddress().contains(":")) continue;
+                    System.out.println("My IP address: " + addr.getHostAddress());
+                }
+            }
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void main(String[] args) {
