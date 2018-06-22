@@ -7,6 +7,9 @@ import it.polimi.ingsw.client.ClientManager;
 /**
  * Contains four window patterns from which the player
  * will choose the one he wants to play the game with.
+ * <p>
+ * Contains everything needed to be transformed into a Json string
+ * to be sent across the network as a source of information.
  */
 public class ShowWindowsMessage extends ClientMessage {
 

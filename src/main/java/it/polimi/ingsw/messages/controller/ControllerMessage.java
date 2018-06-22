@@ -3,6 +3,9 @@ package it.polimi.ingsw.messages.controller;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.messages.Message;
 
+/**
+ * Abstract class representing a message sent to the controller.
+ */
 public abstract class ControllerMessage extends Message {
 
     /**

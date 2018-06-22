@@ -9,10 +9,13 @@ import java.util.List;
 
 /**
  * Contains all the elements of the game:
- * round is the index of the current round;
- * players is the list off all the players involved in the game;
- * draft contains all the dice in the draft pool;
- * roundTrack contains all the dice in the round track.
+ * - round is the index of the current round;
+ * - players is the list off all the players involved in the game;
+ * - draft contains all the dice in the draft pool;
+ * - roundTrack contains all the dice in the round track.
+ * <p>
+ * Contains everything needed to be transformed into a Json string
+ * to be sent across the network as a source of information.
  */
 public class UpdateModelMessage extends ClientMessage {
 

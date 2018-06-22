@@ -6,6 +6,9 @@ import it.polimi.ingsw.client.ClientManager;
 /**
  * Notifies the player of the start of the game
  * and the need for a personal username in order to play
+ * <p>
+ * Contains everything needed to be transformed into a Json string
+ * to be sent across the network as a source of information.
  */
 public class LoginRequestMessage extends ClientMessage {
 

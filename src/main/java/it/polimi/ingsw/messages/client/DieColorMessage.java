@@ -6,6 +6,9 @@ import it.polimi.ingsw.client.ClientManager;
 /**
  * Notifies the player of the color of the die extracted from the bag
  * after using tool card 11.
+ * <p>
+ * Contains everything needed to be transformed into a Json string
+ * to be sent across the network as a source of information.
  */
 public class DieColorMessage extends ClientMessage {
 

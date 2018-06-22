@@ -10,6 +10,9 @@ import it.polimi.ingsw.client.ClientManager;
  * 3 -> unexpected message from parser;
  * 4 -> not enough tokens to use the card or already used a card this turn;
  * 5 -> reconnection but player is online.
+ * <p>
+ * Contains everything needed to be transformed into a Json string
+ * to be sent across the network as a source of information.
  */
 public class ErrorMessage extends ClientMessage {
 

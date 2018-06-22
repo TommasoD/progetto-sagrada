@@ -12,6 +12,9 @@ import java.util.List;
  * Contains the list of the public objectives regarding the current game,
  * the private objective of a player and  the list off all the tool cards with
  * status and description of each one.
+ * <p>
+ * Contains everything needed to be transformed into a Json string
+ * to be sent across the network as a source of information.
  */
 public class ShowTableMessage extends ClientMessage {
 

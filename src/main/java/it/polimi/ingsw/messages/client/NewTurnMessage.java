@@ -5,6 +5,9 @@ import it.polimi.ingsw.client.ClientManager;
 
 /**
  * Notifies the player of the start of his turn.
+ * <p>
+ * Contains everything needed to be transformed into a Json string
+ * to be sent across the network as a source of information.
  */
 public class NewTurnMessage extends ClientMessage {
 

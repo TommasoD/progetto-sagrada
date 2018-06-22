@@ -7,9 +7,12 @@ import it.polimi.ingsw.client.ClientManager;
  * Notifies the player of a connection-related event.
  * In particular, contains the name of the player who caused the event and a string
  * identifying the event:
- * disconnect when a player closes the terminal;
- * suspended when a player is suspended for inactivity;
- * reconnect when a player asks to exit the suspended state.
+ * - disconnect when a player closes the terminal;
+ * - suspended when a player is suspended for inactivity;
+ * - reconnect when a player asks to exit the suspended state.
+ * <p>
+ * Contains everything needed to be transformed into a Json string
+ * to be sent across the network as a source of information.
  */
 public class NotificationMessage extends ClientMessage {
 

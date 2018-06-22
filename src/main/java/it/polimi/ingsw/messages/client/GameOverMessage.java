@@ -5,6 +5,9 @@ import it.polimi.ingsw.client.ClientManager;
 
 /**
  * Notifies the player of the end of the game, telling the name of the winner.
+ * <p>
+ * Contains everything needed to be transformed into a Json string
+ * to be sent across the network as a source of information.
  */
 public class GameOverMessage extends ClientMessage {
 
