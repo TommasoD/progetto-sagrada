@@ -6,8 +6,8 @@ public class Slot {
     private String colorRule;
     private String valueRule;
 
-    protected static final String RED = "RED";
-    protected static final String GREEN = "GREEN";
+    private static final String RED = "RED";
+    private static final String GREEN = "GREEN";
     private static final String YELLOW = "YELLOW";
     private static final String BLUE = "BLUE";
     private static final String PURPLE = "PURPLE";
