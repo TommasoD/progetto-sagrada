@@ -1,4 +1,5 @@
 package it.polimi.ingsw.parsers;
+import java.io.File;
 import java.io.InputStream;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -39,11 +40,19 @@ public class SetupParser {
             try {
                 SAXParser saxParser = saxParserFactory.newSAXParser();
                 SetupParser.SetupReader handler = new SetupParser.SetupReader();
-                InputStream path = getClass().getResourceAsStream("/setup.xml");
-                saxParser.parse(path, handler);
+                String user_dir = System.getProperty("user.dir");
+                saxParser.parse(new File(user_dir + "/src/main/resources/setup.xml"), handler);
             } catch (Exception e) {
-                e.printStackTrace();
-                System.exit(1);
+
+                try {
+                    SAXParser saxParser = saxParserFactory.newSAXParser();
+                    SetupParser.SetupReader handler = new SetupParser.SetupReader();
+                    InputStream path = getClass().getResourceAsStream("/setup.xml");
+                    saxParser.parse(path, handler);
+                } catch (Exception e1) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
             }
         }
 

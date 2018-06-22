@@ -7,6 +7,10 @@ public class WindowPattern {
     protected int difficultyToken;
     protected String name;
 
+    private static final String ADJACENT_SLOT_EXCEPTION = "adjacentSlots exception thrown: ";
+    private static final String COLORS_AND_VALUES_EXCEPTION = "colorsAndValues exception thrown: ";
+    private static final String TOKEN_AVAILABLE = " tokens available";
+
     public WindowPattern () {
         this.windowMatrix = new Slot[5][4];
 
@@ -127,7 +131,7 @@ public class WindowPattern {
         try {
             return windowMatrix[x][y].isNotEmpty();
         } catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("adjacentSlots exception thrown: " + e);
+            System.out.println(ADJACENT_SLOT_EXCEPTION + e);
         }
         return false;
     }
@@ -144,14 +148,14 @@ public class WindowPattern {
         return adjacentSlots(x+1, y);
     }
 
-    public boolean colorsAndValues(int x, int y, Die die) {
+    private boolean colorsAndValues(int x, int y, Die die) {
         try {
             if(windowMatrix[x][y].isNotEmpty()) {
                 if (windowMatrix[x][y].getDie().getColor().equals(die.getColor()) ||
                         windowMatrix[x][y].getDie().getValue().equals(die.getValue())) return true;
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("colorsAndValues exception thrown: " + e);
+            System.out.println(COLORS_AND_VALUES_EXCEPTION + e);
         }
         return false;
     }
@@ -162,7 +166,7 @@ public class WindowPattern {
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        String s = "\u001B[0m" + name + " (" + difficultyToken + " tokens available)\n";
+        String s = "\u001B[0m" + name + " (" + difficultyToken + TOKEN_AVAILABLE  + ")" + "\n";
         sb.append(s);
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){

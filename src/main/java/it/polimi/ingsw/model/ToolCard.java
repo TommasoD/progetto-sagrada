@@ -6,6 +6,10 @@ public class ToolCard {
     private String name;
     private String description;
     private boolean alreadyUsed;
+    private static final String TOOL_CARD = "Tool Card ";
+    private static final String ALREADY_USED = "Already Used: ";
+    private static final String EFFECT = "Effect: ";
+
 
     /*
         constructors
@@ -59,7 +63,7 @@ public class ToolCard {
     }
 
     public String toString(){
-        return "Tool Card " + (id + 1) + "\n" + name + "\n" + "Already Used: " + alreadyUsed + "\nEffect: " + description + "\n";
+        return TOOL_CARD + (id + 1) + "\n" + name + "\n" + ALREADY_USED + alreadyUsed + "\n" + EFFECT + description + "\n";
     }
 
     public void dump(){
