@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.Controller;
 
 /**
  * Contains the information about the placement of a die inside a window pattern, i.e.
- * the index of the die in the list representing the draft pool,
+ * the index of the die in the list representing the draft pool and
  * the coordinates (x, y) corresponding to a slot in the window.
  * <p>
  * Contains everything needed to be transformed into a Json string
