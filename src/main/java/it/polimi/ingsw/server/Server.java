@@ -55,7 +55,8 @@ public class Server {
                 }
                 socketId++;
                 gameRoom.addSocketConnection(new SocketConnection(gameRoom, socket, socketId));
-                System.out.println("Client " + socketId + " connected");
+                if(socketId <= 2) System.out.println("Client " + socketId + " connected");
+                else System.out.println("\n" + "Client " + socketId + " connected");
 
             } catch (IOException e) {
                 System.out.println("Client " + (socketId) + ": connection failed");

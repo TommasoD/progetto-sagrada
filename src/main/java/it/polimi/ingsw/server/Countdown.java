@@ -74,9 +74,19 @@ public class Countdown extends Thread {
     public void run() {
 
         //this.reset();
-        while((this.read() < max_time) && (!done)) {}
+        while((this.read() < max_time) && (!done)) {
+            if(isActive) {
+                System.out.print("\r" + this.toString());
+                try {
+                    Thread.sleep(100);
+                } catch(InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         this.stopClock();
         if(this.read() >= max_time) {
+            System.out.print("\n");
             try {
                 this.serverBreak();
             } catch (IOException e) {
