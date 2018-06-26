@@ -31,7 +31,19 @@ import static it.polimi.ingsw.messages.controller.ToolCardCMessage.deserializeTo
 import static it.polimi.ingsw.messages.controller.ToolCardDMessage.deserializeToolCardDMessage;
 import static it.polimi.ingsw.messages.controller.ToolCardEMessage.deserializeToolCardEMessage;
 
+/**
+ * A parser to analyze and manage Json string representing classes.
+ * Classes represents events and are sent across the network thanks to Gson,
+ * from the server to each client and vice versa.
+ */
 public class GsonParser {
+
+    /**
+     * Analyzes Json data on the server side, returning an instance of the corresponding class,
+     * with a bunch of information describing a certain event (i.e. a move from a player).
+     * @param gson the Json representation of a class.
+     * @return the instance of the class.
+     */
 
     public ControllerMessage parseController(String gson) {
         String id = getIdMessage(gson);
@@ -74,6 +86,13 @@ public class GsonParser {
         return new UnexpectedMessage();
     }
 
+    /**
+     * Analyzes Json data on the client side, returning an instance of the corresponding class,
+     * with a bunch of information describing a certain event (someone disconnected, a player made a move etc.).
+     * @param gson the Json representation of a class.
+     * @return the instance of the class.
+     */
+
     public ClientMessage parseClient(String gson){
         String id = getIdMessage(gson);
         if(id.equals("turn")){
@@ -111,6 +130,13 @@ public class GsonParser {
         }
         return new ErrorMessage(3);
     }
+
+    /**
+     * Analyzes the first string containing the identifier of the represented class and returns it.
+     * In case it fails to identify the string, returns a fixed value.
+     * @param gson the Json representation of a class.
+     * @return the identifier of the class as a string.
+     */
 
     private String getIdMessage(String gson) {
         JsonReader jsonReader = new JsonReader(new StringReader(gson));
