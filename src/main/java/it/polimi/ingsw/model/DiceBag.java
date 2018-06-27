@@ -5,6 +5,7 @@ import java.util.Random;
 public class DiceBag {
 
     private ArrayList <Die> bag;
+    private  static final int DICE_OF_EACH_COLOR = 18;
     private static final String[] colors = {
             "RED",
             "BLUE",
@@ -18,9 +19,9 @@ public class DiceBag {
      */
 
     public DiceBag() {
-        bag = new ArrayList <Die>();
+        bag = new ArrayList <>();
         for(String s: colors){
-            for(int i = 0; i < 18; i++) {
+            for(int i = 0; i < DICE_OF_EACH_COLOR; i++) {
                 Die d = new Die(s);
                 bag.add(d);
             }
