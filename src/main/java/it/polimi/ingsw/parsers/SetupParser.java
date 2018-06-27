@@ -7,6 +7,18 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+
+/**
+ * Public class used to read parameters from a specific xml file
+ * that contains:
+ * - the ip address to which the client must connect if the
+ *  value entered by the user is wrong.
+ * - the specific port to which the server and the client must connect.
+ * - the time value within the clients must successfully complete
+ *  the connection phase if they want to participate in the game.
+ * - the time value within the clients must make a move during the game.
+ */
+
 public class SetupParser {
 
     private int port;
@@ -16,6 +28,15 @@ public class SetupParser {
 
 
     private class SetupReader extends DefaultHandler {
+
+        /**
+         * Starts the parser and reads the setup parameters.
+         * @param uri
+         * @param localName
+         * @param qName to identify the element to be read.
+         * @param attributes set of parameters read.
+         * @throws SAXException
+         */
 
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -30,11 +51,16 @@ public class SetupParser {
                 countdownMove = Integer.parseInt(attributes.getValue("move"));
             }
 
-
         }
     }
 
-        public void readSetup() {
+
+
+    /**
+     * instantiate the parser by looking at the specified
+     * directory for the xml file that contains the values to be read.
+     */
+    public void readSetup() {
 
             SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
             try {
@@ -53,15 +79,33 @@ public class SetupParser {
 
         }
 
-        public String getIp () {
+    /**
+     *
+     * @return ip address read from file.
+     */
+
+    public String getIp () {
             return ip;
         }
 
-        public int getPort() {
+    /**
+     *
+     * @return the port read from file
+     */
+    public int getPort() {
             return port;
         }
 
-        public int getCountdownConnection() {return countdownConnection;}
+    /**
+     *
+      * @return maximum time available to connect
+     */
 
-        public int getCountdownMove() {return countdownMove;}
+    public int getCountdownConnection() {return countdownConnection;}
+
+    /**
+     *
+     * @return maximum time available to make a move
+     */
+    public int getCountdownMove() {return countdownMove;}
 }
