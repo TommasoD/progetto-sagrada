@@ -13,6 +13,14 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * Public class used to read from a specific xml file
+ * the parameters of the 12 tool cards to use during the game.
+ * Every tool cards has:
+ * - a specific id, from 1 to 12.
+ * - a name.
+ * - a description that shows the move that the card allows to make.
+ */
 
 public class ToolCardParser {
 
@@ -20,6 +28,15 @@ public class ToolCardParser {
     private ToolCard toolCard = null;
 
     private class ToolCardReader extends DefaultHandler {
+
+        /**
+         * Starts the parser and reads the tool cards parameters.
+         * @param uri
+         * @param localName
+         * @param qName
+         * @param attributes set of parameters read.
+         * @throws SAXException
+         */
 
         @Override
         public void startElement(java.lang.String uri, java.lang.String localName, java.lang.String qName, Attributes attributes) throws SAXException {
@@ -36,6 +53,11 @@ public class ToolCardParser {
         }
     }
 
+    /**
+     * Instantiate the parser by looking at the specified
+     * directory for the xml file that contains the values to be read.
+     * @return the set of read tool cards
+     */
 
     public ArrayList<ToolCard> readToolCards() {
 

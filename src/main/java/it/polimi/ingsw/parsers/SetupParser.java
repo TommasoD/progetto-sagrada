@@ -57,7 +57,7 @@ public class SetupParser {
 
 
     /**
-     * instantiate the parser by looking at the specified
+     * Instantiate the parser by looking at the specified
      * directory for the xml file that contains the values to be read.
      */
     public void readSetup() {

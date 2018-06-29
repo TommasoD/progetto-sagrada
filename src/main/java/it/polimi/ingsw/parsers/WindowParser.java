@@ -1,10 +1,7 @@
 package it.polimi.ingsw.parsers;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+
 import java.io.InputStream;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -14,11 +11,30 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * Public class used that receives as input the name
+ * of a specific window and read its parameters from a xml file.
+ * The parameters read are:
+ * - the name of the window.
+ * - the number of difficulty token.
+ * For each slot it reads the relative color and value limitations.
+ * In case there were no limitations, the value read is 'none'.
+ */
+
 public class WindowParser {
 
     private WindowPattern playerWindow  = null;
 
     private class WindowReader extends DefaultHandler {
+
+        /**
+         * Starts the parser and reads the window parameters.
+         * @param uri
+         * @param localName
+         * @param qName
+         * @param attributes set of parameters read.
+         * @throws SAXException
+         */
 
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -50,6 +66,13 @@ public class WindowParser {
 
         }
     }
+
+    /**
+     * Instantiate the parser by looking at the specified
+     * directory for the xml file that contains the values to be read.
+     * @param windowName the name of the window whose parameters are to be read.
+     * @return the window initialized with the parameters from file.
+     */
 
     public WindowPattern readWindowPattern (String windowName) {
 
