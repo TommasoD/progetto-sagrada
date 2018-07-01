@@ -25,7 +25,7 @@ public class DiceBag {
      */
 
     public DiceBag() {
-        bag = new ArrayList <>();
+        bag = new ArrayList <Die>();
         for(String s: colors){
             for(int i = 0; i < DICE_OF_EACH_COLOR; i++) {
                 Die d = new Die(s);

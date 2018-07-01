@@ -48,11 +48,11 @@ public class Game extends Observable<String> {
 
     public Game(){
         diceBag = new DiceBag();
-        draft = new ArrayList<>();
-        players = new ArrayList<>();
-        roundTrack = new ArrayList<>();
-        publicObjectiveActive = new ArrayList<>(N_OBJECTIVES);
-        toolCards = new ArrayList<>(N_TOOL_CARD);
+        draft = new ArrayList<Die>();
+        players = new ArrayList<Player>();
+        roundTrack = new ArrayList<Die>();
+        publicObjectiveActive = new ArrayList<PublicObjective>(N_OBJECTIVES);
+        toolCards = new ArrayList<ToolCard>(N_TOOL_CARD);
         reader = new ToolCardParser();
         gameEnded = false;
         logger = Logger.getLogger(Game.class.getName());
@@ -267,7 +267,7 @@ public class Game extends Observable<String> {
 
     public void initialize() {
         //randomly assigns private objectives
-        ArrayList<PrivateObjective> privateObjectives = new ArrayList<>();
+        ArrayList<PrivateObjective> privateObjectives = new ArrayList<PrivateObjective>();
         privateObjectives.add(new PrivateObjective(RED));
         privateObjectives.add(new PrivateObjective(YELLOW));
         privateObjectives.add(new PrivateObjective(PURPLE));
@@ -476,7 +476,7 @@ public class Game extends Observable<String> {
      */
 
     public List<String> getObjectivesAsString(){
-        ArrayList<String> obj = new ArrayList<>();
+        ArrayList<String> obj = new ArrayList<String>();
         for(PublicObjective o : getPublicObjectiveActive()){
             obj.add(o.toString());
         }
