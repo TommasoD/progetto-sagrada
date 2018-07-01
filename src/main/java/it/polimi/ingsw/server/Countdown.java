@@ -18,19 +18,19 @@ public class Countdown extends Thread {
 
     private boolean done;
 
-    private static int max_time;
+    private static int maxTime;
 
 
     public Countdown() {
         SetupParser reader = new SetupParser();
         reader.readSetup();
-        max_time = reader.getCountdownConnection();
+        maxTime = reader.getCountdownConnection();
         resetAndStop();
         done = false;
     }
 
     public int getMaxTime() {
-        return max_time;
+        return maxTime;
     }
 
     /**Reset and stop the timer */
@@ -74,7 +74,7 @@ public class Countdown extends Thread {
     public void run() {
 
         //this.reset();
-        while((this.read() < max_time) && (!done)) {
+        while((this.read() < maxTime) && (!done)) {
             if(isActive) {
                 System.out.print("\r" + this.toString());
                 try {
@@ -85,7 +85,7 @@ public class Countdown extends Thread {
             }
         }
         this.stopClock();
-        if(this.read() >= max_time) {
+        if(this.read() >= maxTime) {
             System.out.print("\n");
             try {
                 this.serverBreak();

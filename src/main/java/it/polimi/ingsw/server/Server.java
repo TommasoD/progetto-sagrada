@@ -12,7 +12,7 @@ import java.util.Enumeration;
 public class Server {
 
     private int port;
-    SetupParser reader = new SetupParser();
+    private SetupParser reader = new SetupParser();
     private ServerSocket serverSocket;
     private GameManager gameManager;
     private GameRoom gameRoom;
