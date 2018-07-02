@@ -2,6 +2,10 @@ package it.polimi.ingsw.client;
 
 import java.util.ArrayList;
 
+/**
+ * Public class with the function of validating keyboard inputs.
+ */
+
 public class ValidateInput {
 
 
@@ -11,8 +15,14 @@ public class ValidateInput {
     private static final String DIGIT_WINDOW = "You have to choose a window. Digit 'window' to do so.";
 
 
+    /**
+     * Returns true if the index belongs to the array.
+     * @param index the chosen die index.
+     * @param size the size of the array.
+     * @return true if the index belongs to the array;
+     *         false otherwise.
+     */
 
-    // check if the die index form the round track is correct
     public boolean checkDieInArray(int index, int size) {
         if ((0 <= index) && (index < size)) return true;
         else {
@@ -22,7 +32,14 @@ public class ValidateInput {
     }
 
 
-    // check if the die index of the column is correct
+    /**
+     * Returns true if the chosen index belongs to the
+     * size of the column.
+     * @param index the chosen die index.
+     * @return true if the index belongs to the size of the column;
+     *         false otherwise.
+     */
+
     public boolean checkColumnIndex(int index) {
         if ((0 <= index) && (index < 5)) return true;
         else {
@@ -31,8 +48,14 @@ public class ValidateInput {
         }
     }
 
+    /**
+     * Returns true if the chosen index belongs to the
+     * size of the row.
+     * @param index the chosen die index.
+     * @return true if the index belongs to the size of the row;
+     *         false otherwise.
+     */
 
-    // check if the die index of the row is correct
     public boolean checkRowIndex(int index) {
         if ((0 <= index) && (index < 4)) return true;
         else {
@@ -41,7 +64,15 @@ public class ValidateInput {
         }
     }
 
-    //the name entered must match exactly one window name
+    /**
+     * Returns true if the name entered match exactly the name
+     * of a window actually present.
+     * @param windowNames
+     * @param insertName the name entered.
+     * @return true if the name entered match exactly the name of a window actually present;
+     *         false otherwise.
+     */
+
     public boolean checkWindowName(ArrayList<String> windowNames, String insertName) {
         for (String windowName : windowNames) if (windowName.equals(insertName)) return true;
         System.out.println(DIGIT_WINDOW);
@@ -51,18 +82,41 @@ public class ValidateInput {
         return false;
     }
 
-    // check if the tool card index is correct (between 0 and 11)
+    /**
+     * Returns true if the chosen tool card index
+     * belongs to the set of tool cards actually present.
+     * @param index the chosen tool card index.
+     * @return true if the index belongs to the size of the set of tool cards;
+     *         false otherwise;
+     */
+
     public boolean checkToolCardInArray(int index) {
         if ((0 <= index) && (index < 12)) return true;
         System.out.println(TOOL_CARD_NOT_PRESENT);
         return false;
     }
 
+    /**
+     * Returns true if the choice, expressed by the value of i,
+     * to increase or decrease the value of the die is correct.
+     * @param i
+     * @return true if i is 1 or if i is 0;
+     *         false otherwise.
+     */
+
     public boolean increaseOrDecreaseChoice(int i) {
         if ((i == 0) || (i == 1)) return true;
         System.out.println(INVALID_ENTRY);
         return false;
     }
+
+    /**
+     * Returns true if the chosen value belongs to the
+     * set of correct dice values.
+     * @param i chosen die value.
+     * @return true if the chosen value belongs to the set of correct dice values.
+     *         false otherwise.
+     */
 
     public boolean checkDieValue(int i) {
         if ((i >= 1) && (i <= 6)) return true;
