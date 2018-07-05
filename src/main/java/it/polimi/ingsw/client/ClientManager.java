@@ -6,8 +6,6 @@ import it.polimi.ingsw.parsers.GsonParser;
 import it.polimi.ingsw.parsers.SetupParser;
 import it.polimi.ingsw.utils.Observer;
 import it.polimi.ingsw.view.CLI;
-
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Scanner;
@@ -38,7 +36,7 @@ public class ClientManager implements Observer<String> {
 
     private static final String INSERT_VALID_IP = "Insert a valid IP address: ";
     private static final String CONNECTING = "Connecting...\n";
-    private static final String IP_NOT_VALID = "IP address is not valid\nA default IP address is used";
+    private static final String IP_NOT_VALID = "IP address is not valid";
     private static final String CONNECTION_CLOSED = "Error in socket\nConnection closed";
     private static final int SOCKET_TIMEOUT = 5000;
 
@@ -85,23 +83,13 @@ public class ClientManager implements Observer<String> {
             socket.connect(new InetSocketAddress(ip, port), SOCKET_TIMEOUT);
         } catch (Exception e) {
             System.out.println(IP_NOT_VALID);
+            System.out.println(CONNECTION_CLOSED);
             try {
                 socket.close();
+                System.exit(1);
             } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-            try {
-                ip = reader.getIp();
-                socket = new Socket(ip, port);
-            } catch (IOException e2) {
-                try {
-                    socket.close();
-                } catch (Exception e1) {
-                    System.out.println(CONNECTION_CLOSED);
-                }
                 System.exit(1);
             }
-
         }
 
         network = new ClientConnection(socket);
@@ -472,7 +460,7 @@ public class ClientManager implements Observer<String> {
     }
 
     /**
-     *
+     * Print the winner of the game.
      * @param message the GameOverMessage.
      */
     public void visit(GameOverMessage message){
@@ -481,7 +469,8 @@ public class ClientManager implements Observer<String> {
     }
 
     /**
-     *
+     * Print the color of the die obtained
+     * using Tool Card 11.
      * @param message the DieColorMessage.
      */
     public void visit(DieColorMessage message){
@@ -489,25 +478,27 @@ public class ClientManager implements Observer<String> {
     }
 
     /**
-     *
+     * Print the status of a player.
      * @param message the NotificationMessage.
      */
     public void visit(NotificationMessage message){
        CLI.printEvent(message.getUsername(),message.getEvent());
     }
 
-    /*
-        unsupported method
+    /**
+     * Unsupported method inherited from Observer.
+     * @param message not used.
+     * @param id not used.
      */
-
     public void update(String message, int id) {
         throw new UnsupportedOperationException();
     }
 
-
-    /*
-        creates an instance of Client and calls startClient on it
+    /**
+     * Creates an instance of Client and calls startClient on it
+     * @param args not used.
      */
+
     public static void main(String[] args) {
         ClientManager client = new ClientManager();
         client.startClient();

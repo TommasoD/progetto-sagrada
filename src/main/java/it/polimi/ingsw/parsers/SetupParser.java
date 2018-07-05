@@ -73,7 +73,7 @@ public class SetupParser {
                     saxParser.parse(new File(dir + "/setup.xml"), handler);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Exception in parsing the xml file");
                 System.exit(1);
             }
 

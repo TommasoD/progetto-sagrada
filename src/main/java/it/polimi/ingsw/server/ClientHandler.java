@@ -24,7 +24,7 @@ public class ClientHandler extends Thread {
             output = new DataOutputStream(socket.getOutputStream());
         }
         catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Exception when creating Data Stream");
             System.exit(1);
         }
         this.gameManager = gameManager;
@@ -52,7 +52,7 @@ public class ClientHandler extends Thread {
         try {
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Exception when closing the socket");
             System.exit(1);
         }
 

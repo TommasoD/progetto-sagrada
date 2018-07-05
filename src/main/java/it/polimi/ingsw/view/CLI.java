@@ -6,8 +6,6 @@ import it.polimi.ingsw.model.Die;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.ToolCard;
 import it.polimi.ingsw.model.objectives.PrivateObjective;
-import it.polimi.ingsw.model.objectives.publicobjectives.PublicObjective;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -74,12 +72,23 @@ public class CLI {
 
 
     //General write
+
+    /**
+     * Return the request written by the player.
+     * @return the player request.
+     */
     public String writeRequest() {
         return stdin.nextLine();
     }
 
 
     //General print
+
+    /**
+     * Print the error related to the input id.
+     * @param id the error id.
+     */
+
     public void printError(int id) {
         switch (id) {
             case 1: System.out.println(USERNAME_ALREADY_USED);
@@ -95,29 +104,58 @@ public class CLI {
         }
     }
 
+    /**
+     * Print the event.
+     * @param user the name of the player running the event.
+     * @param event the type of event.
+     */
     public void printEvent(String user, String event) {
         if (event.equals(RECONNECT)) System.out.println(user + IS_RECONNECT);
         else if (event.equals(DISCONNECT)) System.out.println(user + IS_DISCONNECTED);
         else if (event.equals(SUSPEND)) System.out.println(user + IS_SUSPENDED);
     }
 
+    /**
+     * Print the help string.
+     */
+
     public void printHelp() { System.out.println(HELP);}
+
+    /**
+     * Notify the player that his turn has started.
+     */
 
     public void printYourTurn() {
         System.out.println(YOUR_TURN);
     }
 
+    /**
+     * Notify the player that his turn has ended.
+     */
+
     public void printEndOfTurn(){
         System.out.println(TURN_ENDED);
     }
+
+    /**
+     * Notify the player to wait for the start of the match.
+     */
 
     public void printWaitForTheMatch() {
         System.out.println(WAIT_FOR_THE_MATCH);
     }
 
+    /**
+     * Notify the player to wait for the start of his turn.
+     */
+
     public void printWaitForYourTurn() {
         System.out.println(WAIT_FOR_YOUR_TURN);
     }
+
+    /**
+     *
+     */
 
     public void printActionSuccessful() {
         System.out.println(ACTION_SUCCESSFUL);
@@ -140,6 +178,11 @@ public class CLI {
     }
 
     //Window print
+
+    /**
+     *
+     * @param message
+     */
     public void printWindows(ShowWindowsMessage message){
         System.out.println(CHOOSE_WINDOW);
         System.out.println(message.getW1());

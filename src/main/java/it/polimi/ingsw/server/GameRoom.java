@@ -9,6 +9,8 @@ public class GameRoom {
     private ArrayList<SocketConnection> connections = new ArrayList<SocketConnection>();
     private Countdown timer = new Countdown();
     private boolean gameReady;
+    private static final String NEW_PLAYER_CONNECTED = "\nNew player connected\n";
+    private static final String PLAYER_DISCONNECTED = "\nA player disconnected\n";
 
     public GameRoom() {
         super();
@@ -32,10 +34,10 @@ public class GameRoom {
     public synchronized void addSocketConnection(SocketConnection playerSocket) {
         for (SocketConnection socketConnection : connections) {
             try {
-                socketConnection.getOutput().writeUTF("\nNew player connected\n");
+                socketConnection.getOutput().writeUTF(NEW_PLAYER_CONNECTED);
             }
             catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Exception while sending a message from Game Room");
             }
         }
         connections.add(playerSocket);
@@ -56,10 +58,10 @@ public class GameRoom {
 
         for (SocketConnection socketConnection : connections) {
             try {
-                socketConnection.getOutput().writeUTF("\nA player disconnected\n");
+                socketConnection.getOutput().writeUTF(PLAYER_DISCONNECTED);
             }
             catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Exception while sending a message from Game Room");
             }
         }
         if (connections.size() >= 2) timer.reset();

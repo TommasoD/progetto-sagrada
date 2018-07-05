@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.parsers.SetupParser;
@@ -18,6 +19,7 @@ public class Server {
     private GameRoom gameRoom;
     private Game model;
     private Controller controller;
+    private static final String NEW_GAME = "A new game is being played. Try connecting later.";
 
     public Server() {
 
@@ -27,7 +29,7 @@ public class Server {
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Exception in creating the server Socket");
             System.exit(1);
         }
 
@@ -80,7 +82,7 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 System.out.println("Client " + (i + 1) + " connected");
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-                out.writeUTF("A new game is being played. Try connecting later.");
+                out.writeUTF(NEW_GAME);
                 out.flush();
                 out.close();
                 socket.close();

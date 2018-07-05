@@ -19,12 +19,12 @@ public class ClientConnection extends Observable<String> implements Runnable {
         try {
             socketIn = new DataInputStream(socket.getInputStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("IOException on DataInputStream");
         }
         try {
             socketOut = new DataOutputStream(socket.getOutputStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("IOException on DataOutputStream");
         }
 
     }
@@ -54,12 +54,12 @@ public class ClientConnection extends Observable<String> implements Runnable {
             try {
                 socketIn.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Exception when closing input");
             }
             try {
                 socketOut.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Exception when closing output");
             }
         }
     }
@@ -70,7 +70,7 @@ public class ClientConnection extends Observable<String> implements Runnable {
             socketOut.flush();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Exception while sending message through the network");
         }
     }
 

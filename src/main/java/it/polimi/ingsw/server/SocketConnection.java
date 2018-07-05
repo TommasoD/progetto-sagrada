@@ -20,7 +20,7 @@ public class SocketConnection extends Thread {
             output = new DataOutputStream(socket.getOutputStream());
         }
         catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Exception in creating Data Output Stream");
             System.exit(1);
         }
     }
@@ -41,10 +41,9 @@ public class SocketConnection extends Thread {
                 try {
                     Thread.sleep(100);
                 } catch(InterruptedException e) {
-                    e.printStackTrace();
+                    System.out.println("Exception when sending a message from SocketConnection");
                 }
             }
-            /////gameReady -> true
         }
         catch (IOException e) {
             gameRoom.removeSocketConnection(id);

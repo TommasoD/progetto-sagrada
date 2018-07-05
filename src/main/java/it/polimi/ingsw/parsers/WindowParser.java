@@ -83,7 +83,7 @@ public class WindowParser {
             InputStream path = getClass().getResourceAsStream("/" + windowName + ".xml");
             saxParser.parse(path, handler);
         } catch ( Exception e) {
-            e.printStackTrace();
+            System.out.println("Exception in parsing the xml file");
             System.exit(1);
         }
         return playerWindow;
