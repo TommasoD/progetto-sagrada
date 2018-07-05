@@ -47,8 +47,8 @@ public class ClientManager implements Observer<String> {
     private static final String YES = "yes";
 
 
-    /*
-        constructor
+    /**
+     * Class constructor.
      */
 
     private ClientManager(){
@@ -60,6 +60,15 @@ public class ClientManager implements Observer<String> {
         stage = 0;
         validateInput = new ValidateInput();
     }
+
+    /**
+     * Start the client.
+     * Allows the client to enter the IP address of the server to connect to.
+     * It reads from the xml file the port and also the ip address
+     * in case the inserted ip address was not correct.
+     * Connects the client to the server via sockets according to
+     * the specified parameters
+     */
 
     private void startClient(){
         SetupParser reader = new SetupParser();
@@ -104,8 +113,15 @@ public class ClientManager implements Observer<String> {
         }
     }
 
-    /*
-        handles the player's requests
+    /**
+     * Handles the player's requests based on the stage of the game
+     * in which the player is at the moment.
+     * Valid requests are:
+     * - help;
+     * - login;
+     * - window;
+     * - reconnect;
+     * @param request the player request.
      */
 
     private void handleRequest(String request){
@@ -119,6 +135,7 @@ public class ClientManager implements Observer<String> {
             CLI.printWaitForTheMatch();
             return;
         }
+
         if(stage == 1){
             if(request.equalsIgnoreCase(LOGIN)){
                 LoginMessage gson = new LoginMessage(CLI.printLogin());
@@ -128,6 +145,7 @@ public class ClientManager implements Observer<String> {
             CLI.printDigitLogin();
             return;
         }
+
         if(stage == 2){
             if(request.equalsIgnoreCase(WINDOW)){
                 String line = CLI.printInsertWindow();
@@ -153,11 +171,24 @@ public class ClientManager implements Observer<String> {
             CLI.printWaitForYourTurn();
             return;
         }
+
         playerAction(request);
     }
 
-       /*
-        handles the player's turn
+    /**
+     * Handles the player's move.
+     * Handles the client's requests in case they are to
+     * place a die or use a tool card.
+     * Calls the specific method according to the chosen tool card.
+     * Manages the client inputs, also calling the class
+     * to verify if they are correct.
+     *
+     * Valid moves are:
+     * - place;
+     * - tool card;
+     * - show table;
+     * - end;
+     * @param move
      */
 
     private void playerAction(String move){
@@ -177,7 +208,7 @@ public class ClientManager implements Observer<String> {
 
         else if(move.equalsIgnoreCase(TOOL_CARD)) {
 
-            //REMEMBER 1<=nToolCard<=12 so the toolCard 1 is the element 0 in the arrayList.
+            // 1<=nToolCard<=12 so the toolCard 1 is the element 0 in the arrayList.
             int nToolCard = CLI.printChooseAToolCard();
             while (!validateInput.checkToolCardInArray(nToolCard-1)) nToolCard = CLI.printChooseAToolCard();
 
@@ -212,14 +243,22 @@ public class ClientManager implements Observer<String> {
         else if(move.equalsIgnoreCase(END)){
             if (clientTurn) network.send(new PassMessage().serialize());
         }
-       /* else if(move.equalsIgnoreCase("help")){
-            CLI.printHelp();
-        }*/
+
         else{
             CLI.printError(3);
         }
     }
 
+
+    /**
+     * Manages the use of tool cards number 1, 5, 6, 10 and 11.
+     * Different input parameters are required depending
+     * on the chosen tool card.
+     * ToolCardA is the set of tool cards whose function is restricted
+     * to the manipulation of a die.
+     * @param nToolCard the number or the chosen tool card.
+     * @return a ToolCardAMessage with the relative parameters.
+     */
 
     private ToolCardAMessage useToolCardA(int nToolCard) {
         int dieIndex;
@@ -246,7 +285,18 @@ public class ClientManager implements Observer<String> {
         return new ToolCardAMessage(nToolCard, dieIndex, action);
     }
 
+
+    /**
+     * Manages the use of tool cards number 2 and 3.
+     * Different input parameters are required depending
+     * on the chosen tool card.
+     * ToolCardB is the set of tool cards whose function
+     * allows to place a die ignoring some restriction rules.
+     * @param nToolCard the number or the chosen tool card.
+     * @return a ToolCardBMessage with the relative parameters.
+     */
     private ToolCardBMessage useToolCardB(int nToolCard) {
+
         //old coordinates
         int x = CLI.printCoordinates(X);
         while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates(X);
@@ -262,6 +312,17 @@ public class ClientManager implements Observer<String> {
         return new ToolCardBMessage(nToolCard, x, y , a , b);
 
     }
+
+    /**
+     * Manages the use of tool cards number 4 and 12.
+     * Different input parameters are required depending
+     * on the chosen tool card.
+     * ToolCardC is the set of tool cards whose function
+     * allows to place two dice ignoring some restriction
+     * rules.
+     * @param nToolCard the number or the chosen tool card.
+     * @return a ToolCardCMessage with the relative parameters.
+     */
 
     private ToolCardCMessage useToolCardC(int nToolCard) {
         //DIE 1
@@ -298,6 +359,14 @@ public class ClientManager implements Observer<String> {
         return new ToolCardCMessage(nToolCard, x, y, a, b, -1, -1, -1, -1);
     }
 
+    /**
+     * Manages the use of tool cards number 8 and 9.
+     * Different input parameters are required depending
+     * on the chosen tool card.
+     * @param nToolCard the number or the chosen tool card.
+     * @return  a ToolCardDMessage with the relative parameters.
+     */
+
     private ToolCardDMessage useToolCardD(int nToolCard) {
         int dieIndex = CLI.printDieFromDraftPool(draftPoolSize);
         while (!validateInput.checkDieInArray(dieIndex,draftPoolSize)) dieIndex = CLI.printDieFromDraftPool(draftPoolSize);
@@ -310,16 +379,19 @@ public class ClientManager implements Observer<String> {
 
     }
 
-    /*
-        calls accept, which calls the visitor pattern methods below
+    /**
+     * Handles a message from the network.
+     * @param message the message depicting the event.
      */
     public void update(String message) {
         ClientMessage gson = parser.parseClient(message);
         gson.accept(this);
     }
 
-    /*
-        when such a method is called, the player need to ask for login and then insert a username
+    /**
+     * When the method is called, the player need to ask
+     * for login and then insert a valid username.
+     * @param message the LoginRequestMessage.
      */
 
     public void visit(LoginRequestMessage message){
@@ -327,8 +399,11 @@ public class ClientManager implements Observer<String> {
         CLI.printDigitLogin();
     }
 
-    /*
-        when such a method is called, the player's already chosen a correct username
+    /**
+     * When the method is called the player's
+     * already chosen a correct username.
+     * Allows to show the windows to be chosen by the player.
+     * @param message the ShowWindowsMessage.
      */
 
     public void visit(ShowWindowsMessage message){
@@ -336,24 +411,49 @@ public class ClientManager implements Observer<String> {
         CLI.printWindows(message);
     }
 
+    /**
+     * Allows you to manage a player's new turn.
+     * @param message the NewTurnMessage.
+     */
+
     public void visit(NewTurnMessage message){
         clientTurn = true;
         CLI.printYourTurn();
     }
 
+    /**
+     * Print the error message received.
+     * @param message the ErrorMessage.
+     */
     public void visit(ErrorMessage message) {
         CLI.printError(message.getType());
     }
 
+    /**
+     * Print that the action was performed correctly.
+     * @param message the OkMessage.
+     */
+
     public void visit(OkMessage message){
         CLI.printActionSuccessful();
     }
+
+    /**
+     * Allows you to manage the end of a player's turn.
+     * Print that the turn is ended.
+     * @param message the EndTurnMessage.
+     */
 
     public void visit(EndTurnMessage message){
         clientTurn = false;
         CLI.printEndOfTurn();
     }
 
+    /**
+     * Update the size of round track and the
+     * size of the draft pool.
+     * @param message the UpdateModelMessage.
+     */
     public void visit(UpdateModelMessage message){
         stage = 3;
         roundTrackSize = message.getRoundTrack().size();
@@ -361,19 +461,37 @@ public class ClientManager implements Observer<String> {
         CLI.printUpdate(message);
     }
 
+
+    /**
+     * Handles the message send by the client to see his
+     * private objective, the public objectives and the tool cards.
+     * @param message the ShowTableMessage.
+     */
     public void visit(ShowTableMessage message){
         CLI.printShowTable(message.getPrivateObjective(),message.getPublicObjective(),message.getToolCards());
     }
 
+    /**
+     *
+     * @param message the GameOverMessage.
+     */
     public void visit(GameOverMessage message){
        CLI.printWinner(message.getWinner());
         this.gameEnded = true;
     }
 
+    /**
+     *
+     * @param message the DieColorMessage.
+     */
     public void visit(DieColorMessage message){
         CLI.printDieColor(message.getColor());
     }
 
+    /**
+     *
+     * @param message the NotificationMessage.
+     */
     public void visit(NotificationMessage message){
        CLI.printEvent(message.getUsername(),message.getEvent());
     }
