@@ -19,8 +19,6 @@ public class CountdownMove extends Thread {
 
     private int maxTime;
 
-    private boolean gameEnded;
-
     private Controller controller;
 
     private int playerIndex;
@@ -44,10 +42,6 @@ public class CountdownMove extends Thread {
 
     public void wakeUp(int index) {
         this.playerIndex = index;
-    }
-
-    public void setGameEnded() {
-        gameEnded = true;
     }
 
     /**Reset and stop the timer */
@@ -90,7 +84,6 @@ public class CountdownMove extends Thread {
 
     public void run() {
 
-        gameEnded = false;
         done = false;
 
         this.reset();
@@ -99,11 +92,11 @@ public class CountdownMove extends Thread {
         controller.startMatch();
         done = false;
 
-        while(!gameEnded) {
+        while(!controller.getGame().isGameEnded()) {
             this.reset();
-            while(this.read() <maxTime&& !done) {}
+            while(this.read() < maxTime && !done) {}
             this.stopClock();
-            if(this.read() >= maxTime) {
+            if(this.read() >= maxTime && !controller.getGame().isGameEnded()) {
                 controller.setPlayerOffline(controller.getGame().getPlayers(playerIndex).getId(), "suspended");
                 controller.nextPlayer(controller.getGame().getPlayers(playerIndex).getId());
             }

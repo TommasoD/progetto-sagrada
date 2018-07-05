@@ -75,7 +75,7 @@ public class Server {
 
         controller.newLoginRequest();
 
-        while(1 == 1) {
+        while(!model.isGameEnded()) {
             try {
                 Socket socket = serverSocket.accept();
                 System.out.println("Client " + (i + 1) + " connected");
