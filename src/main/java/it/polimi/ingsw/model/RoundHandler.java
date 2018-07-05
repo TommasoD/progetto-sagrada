@@ -2,6 +2,14 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.NewRoundException;
 
+/**
+ * Represents the logic of rounds and turns according to the rules.
+ * The game consists of 10 rounds, each round consists of 2 turns for each player,
+ * the rotation of the turns follow the pattern A B C D D C B A.
+ * After every round, the second player becomes the first player and the first
+ * player from before becomes the last player, i.e. the one playing two turns
+ * in series in the middle of the round.
+ */
 public class RoundHandler {
 
     private int round;
@@ -12,8 +20,9 @@ public class RoundHandler {
 
     private static final int MAX_ROUND = 10;
 
-    /*
-        constructor
+    /**
+     * Constructor specifying the number of players.
+     * @param n the number of players.
      */
 
     public RoundHandler(int n){
@@ -31,36 +40,56 @@ public class RoundHandler {
         }
     }
 
-    /*
-        getters and setters
+    /**
+     *
+     * @return the current round as an integer.
      */
 
     public int getRound() {
         return round;
     }
 
+    /**
+     *
+     * @param currentPlayerIndex the index of the current player in the list of turns.
+     */
+
     public void setCurrentPlayerIndex(int currentPlayerIndex) {
         this.currentPlayerIndex = currentPlayerIndex;
     }
+
+    /**
+     *
+     * @return the first player of the round.
+     */
 
     public int getFirstPlayer(){
         return firstPlayer;
     }
 
+    /**
+     *
+     * @return the list of turns for the current round.
+     */
+
     public int[] getTurnOrder() {
         return turnOrder;
     }
 
-    /*
-        returns - as an int - the identifier of the current player
+    /**
+     * Returns the index of the current player in the list of players,
+     * i.e the identifier of the class corresponding to the current player.
+     * @return the index of the current player in the list of players.
      */
 
     public int getCurrentPlayer(){
         return turnOrder[currentPlayerIndex];
     }
 
-    /*
-        sets the next player as the current player and calls nextRound() if round has ended
+    /**
+     * Sets the next player of the round as the current player and
+     * handles the start of a new round in case the current one is ended.
+     * @throws NewRoundException if the current round is ended.
      */
 
     public void nextTurn() throws NewRoundException {
@@ -72,8 +101,8 @@ public class RoundHandler {
         }
     }
 
-    /*
-        increase round and create the new turnOrder array
+    /**
+     * Increases the round counter and update the list containing the order of turns until the end of the game.
      */
 
     public void nextRound(){
@@ -88,13 +117,18 @@ public class RoundHandler {
         }
     }
 
-    /*
-        checks if game is ended (i.e. round 10 has concluded)
+    /**
+     * Returns true if the game is ended, i.e. the last round has concluded.
+     * @return true if the game is ended; false otherwise.
      */
 
     public boolean isGameEnded(){
         return round > MAX_ROUND;
     }
+
+    /**
+     * Prints the list containing the order of turns.
+     */
 
     public void dump(){
         for(int i = 0; i < 2*nPlayers; i++){
