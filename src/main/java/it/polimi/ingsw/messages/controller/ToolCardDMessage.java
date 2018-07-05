@@ -5,7 +5,8 @@ import it.polimi.ingsw.controller.Controller;
 
 /**
  * Contains the information about the use of a tool card number 8 or 9 as
- * all of them let the player place a die fro the draft pool inside his window pattern.
+ * all of them let the player place a die from the draft pool inside his window pattern
+ * ignoring some restrictions.
  * <p>
  * Contains everything needed to be transformed into a Json string
  * to be sent across the network as a source of information.

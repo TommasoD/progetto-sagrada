@@ -5,12 +5,12 @@ import it.polimi.ingsw.client.ClientManager;
 
 /**
  * Contains an integer explaining the error occurred:
- * 1 -> username already used;
- * 2 -> invalid move;
- * 3 -> unexpected message from parser;
- * 4 -> not enough tokens to use the card or already used a card this turn;
- * 5 -> reconnection but player is online.
  * <p>
+ * 1 -> username already used;<p>
+ * 2 -> invalid move;<p>
+ * 3 -> unexpected message from parser;<p>
+ * 4 -> not enough tokens to use the card or already used a card this turn;<p>
+ * 5 -> reconnection but player is online.<p>
  * Contains everything needed to be transformed into a Json string
  * to be sent across the network as a source of information.
  */

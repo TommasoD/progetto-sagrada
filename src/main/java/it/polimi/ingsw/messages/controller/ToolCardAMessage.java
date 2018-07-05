@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.Controller;
 
 /**
  * Contains the information about the use of a tool card number 1, 5, 6, 10 or 11 as
- * all of them regard a die from the draft pool and usually give the the player a choice
+ * all of them regard a die from the draft pool and usually give the player a choice
  * between two actions, like increasing or decreasing the value of a selected die.
  * <p>
  * Contains everything needed to be transformed into a Json string
