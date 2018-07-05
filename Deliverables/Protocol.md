@@ -1,261 +1,275 @@
-﻿## login
+﻿## Network Protocol
+
+*All the messages are written in JSON and represents message classes. These message classes contain the open source library Gson to be serialized and deserialized to (and from) JSON, to be efficiently sent across the network.*
 
 
-**C-->S login message**
+## Login phase
 
-login 'username'
+**S-->C login request right at the start of the game**
 
-**S-->C login answer**
+{\"id\":\"login\"}
 
-Welcome 'username'
+**C-->S login message containing the username**
 
-**S-->C login answer in case of error**
+{\"id\":\"login\",\"username\":\<username\>}
 
-Username 'username' already used
+**S-->C answer in case of username already used**
 
-
-
-## windows (sent at the start of the game, when 2-4 players are connected)
-
-**S-->C show windows**
-
-windows 'name1' 'token1' 'w1' 'name2' 'token2' 'w2' 'name3' 'token3' 'w3' 'name4' 'token4' 'w4'
-
-**C-->S windows choice**
-
-window 'windowName'
+{\"id\":\"error\",\"type\":1}
 
 
+## Windows phase (right after the login phase)
 
-## positioning
+**S-->C four randomly selected windows are shown to each player**
 
-**S-->C notification**
+{\"id\":\"windows\",\"w1\":\<window1\>,\"w2\":\<window2\>,\"w3\":\<window3\>,\"w4\":\<window4\>}
 
-Insert move
+**C-->S each player selects the window he'll play with**
+
+{\"id\":\"window\",\"windowName\":\<windowName\>"}
+
+
+## Turn phase (one player at a time)
+
+**S-->C the player is notified of the start of his turn**
+
+{\"id\":\"turn\"}
+
+### Placing a die in the window
 
 **C-->S placement request**
 
-place 'positionX' 'positionY' 'dieIndex'
+{\"id\":\"place\",\"x\":\<coordinateX\>,\"y\":\<coordinateY\>,\"index\":\<dieIndex\>}
 
-**S-->C placement answer**
+**S-->C in case the move is valid**
 
-Die placed
+*The player who made the move receives a positive answer:*
 
-**S-->C placement answer in case of error**
+{\"id\":\"ok\"}
 
-Invalid placement
+*Everyone receives an update on the status of the game:*
 
+{\"id\":\"update\",\"round\":\<currentRound\>,\"players\":\<playerList\>,\"draft\":\<draftPool\>,\"roundTrack\":\<roundTrack\>}
 
+**S-->C in case of invalid placement**
 
-## toolcard 1
+{\"id\":\"error\",\"type\":2} 
 
-**C-->S client request**
+### Using tool card 1, 5, 6 or 10
 
-toolcard 1 'dieIndex' 'increase/decrease'
+*All those cards act on one die from the draft pool; the player chooses which action to perform on it, like increasing or decreasing the value.*
+
+**C-->S the player asks to use the card**
+
+{\"id\":\"toolcardA\",\"num\":\<numberOfCard\>,\"dieIndex\":\<dieIndex\>,\"action\":\<someAction\>}
+
+**S-->C in case the move is valid**
+
+*The player who made the move receives a positive answer:*
+
+{\"id\":\"ok\"}
+
+*Everyone receives an update on the status of the game:*
+
+{\"id\":\"update\",\"round\":\<currentRound\>,\"players\":\<playerList\>,\"draft\":\<draftPool\>,\"roundTrack\":\<roundTrack\>}
+
+**S-->C answer in case of error (not enough tokens or card already used)**
+
+{\"id\":\"error\",\"type\":4}
+
+**S-->C answer in case of error (invalid move)**
+
+{\"id\":\"error\",\"type\":2}
+
+### Using tool card 2 or 3
+
+*All those cards let the player move a die inside the window.*
+
+**C-->S the player asks to use the card**
+
+{\"id\":\"toolcardB\",\"num\":\<numberOfCard\>,\"x\":\<coordinateX\>,\"y\":\<coordinateY\>,\"a\":\<coordinateA\>,\"b\":\<coordinateB\>}
+
+**S-->C in case the move is valid**
+
+*The player who made the move receives a positive answer:*
+
+{\"id\":\"ok\"}
+
+*Everyone receives an update on the status of the game:*
+
+{\"id\":\"update\",\"round\":\<currentRound\>,\"players\":\<playerList\>,\"draft\":\<draftPool\>,\"roundTrack\":\<roundTrack\>}
+
+**S-->C answer in case of error (not enough tokens or card already used)**
+
+{\"id\":\"error\",\"type\":4}
+
+**S-->C answer in case of error (invalid move)**
+
+{\"id\":\"error\",\"type\":2}
+
+### Using tool card 4 or 12
+
+*All those cards let the player move two dice inside the window.*
+
+**C-->S the player asks to use the card**
+
+{\"id\":\"toolcardC\",\"num\":\<numberOfCard\>,\"x\":\<coordinateX\>,\"y\":\<coordinateY\>,\"a\":\<coordinateA\>,\"b\":\<coordinateB\>,\"x2\":\<coordinateX2\>,\"y2\":\<coordinateY2\>,\"a2\":\<coordinateA2\>,\"b2\":\<coordinateB2\>}
+
+**S-->C in case the move is valid**
+
+*The player who made the move receives a positive answer:*
+
+{\"id\":\"ok\"}
+
+*Everyone receives an update on the status of the game:*
+
+{\"id\":\"update\",\"round\":\<currentRound\>,\"players\":\<playerList\>,\"draft\":\<draftPool\>,\"roundTrack\":\<roundTrack\>}
+
+**S-->C answer in case of error (not enough tokens or card already used)**
+
+{\"id\":\"error\",\"type\":4}
+
+**S-->C answer in case of error (invalid move)**
+
+{\"id\":\"error\",\"type\":2}
+
+### Using tool card 8 or 9
+
+*All those cards let the player place a die ignoring some restrictions.*
+
+**C-->S the player asks to use the card**
+
+{\"id\":\"toolcardD\",\"num\":\<numberOfCard\>,\"dieIndex\":\<dieIndex\>,\"x\":\<coordinateX\>,\"y\":\<coordinateY\>}
+
+**S-->C in case the move is valid**
+
+*The player who made the move receives a positive answer:*
+
+{\"id\":\"ok\"}
+
+*Everyone receives an update on the status of the game:*
+
+{\"id\":\"update\",\"round\":\<currentRound\>,\"players\":\<playerList\>,\"draft\":\<draftPool\>,\"roundTrack\":\<roundTrack\>}
+
+**S-->C answer in case of error (not enough tokens or card already used)**
+
+{\"id\":\"error\",\"type\":4}
+
+**S-->C answer in case of error (invalid move)**
+
+{\"id\":\"error\",\"type\":2}
+
+### Using tool card 7
+
+**C-->S the player asks to use the card**
+
+{\"id\":\"toolcardE\",\"num\":7}
+
+**S-->C in case the move is valid**
+
+*The player who made the move receives a positive answer:*
+
+{\"id\":\"ok\"}
+
+*Everyone receives an update on the status of the game:*
+
+{\"id\":\"update\",\"round\":\<currentRound\>,\"players\":\<playerList\>,\"draft\":\<draftPool\>,\"roundTrack\":\<roundTrack\>}
+
+**S-->C answer in case of error (not enough tokens or card already used)**
+
+{\"id\":\"error\",\"type\":4}
+
+**S-->C answer in case of error (invalid move)**
+
+{\"id\":\"error\",\"type\":2}
+
+### Using tool card 11
+
+**C-->S the player asks to use the card**
+
+{\"id\":\"toolcardA\",\"num\":11,\"dieIndex\":\<dieIndex\>,\"action\":0}
+
+**S-->C in case the move is valid the player is notified of the color of the new die**
+
+{\"id\":\"die_color\",\"color\":\<color\>}
+
+**C-->S the player assigns a value to the die**
+
+{\"id\":\"toolcardA\",\"num\":11,\"dieIndex\":\<dieIndex\>,\"action\":\<value\>}
+
+**S-->C in case the move is valid**
+
+*The player who made the move receives a positive answer:*
+
+{\"id\":\"ok\"}
+
+*Everyone receives an update on the status of the game:*
+
+{\"id\":\"update\",\"round\":\<currentRound\>,\"players\":\<playerList\>,\"draft\":\<draftPool\>,\"roundTrack\":\<roundTrack\>}
+
+**S-->C answer in case of error (not enough tokens or card already used)**
+
+{\"id\":\"error\",\"type\":4}
+
+**S-->C answer in case of error (invalid move)**
+
+{\"id\":\"error\",\"type\":2}
+
+### Looking at objectives and tool cards
+
+**C-->S asking to give a look at objectives and tool cards**
+
+{\"id\":\"show_table\"}
 
 **S-->C answer**
 
-Action done
+{\"id\":\"show_table\",\"privateObjective"\:\<privateObjective\>,\"toolCards"\:\<toolCards\>,\"publicObjective"\:\<publicObjectives\>}
 
-**S-->C answer in case of error**
+### Passing the turn
 
-Invalid action
+**C-->S passing**
 
+{\"id\":\"pass\"}
 
+**S-->C notification of turn ended**
 
-## toolcard 2
+{\"id\":\"end\"}
 
-**C-->S client request**
 
-toolcard 2 'positionX1' 'positionY1' 'positionX2' 'positionY2'
+## End of the game
 
-**S-->C answer**
+**S-->C telling the name of the winner**
 
-Action done
+{\"id\":\"game_over\",\"winner\":\<username\>}
 
-**S-->C answer in case of error**
 
-Invalid action
+## Disconnection and suspension
 
+*Whenever a player disconnects or is suspended, everyone gets a notification.*
 
+**S-->C when a player disconnects**
 
-## toolcard 3
+{\"id\":\"notification\",\"username\":\<username\>,\"event\":\"disconnect\"}
 
-**C-->S client request**
+**S-->C when a player is suspended for inactivity**
 
-toolcard 3 'positionX1' 'positionY1' 'positionX2' 'positionY2'
+{\"id\":\"notification\",\"username\":\<username\>,\"event\":\"suspended\"}
 
-**S-->C answer**
 
-Action done
+## Reconnection
 
-**S-->C answer in case of error**
+*Whenever a player reconnects from inactivity, everyone gets a notification.*
 
-Invalid action
+**C-->S trying reconnecting**
 
+{\"id\":\"reconnect\"}
 
+**S-->C when a player successfully reconnects**
 
-## toolcard 4
+{\"id\":\"notification\",\"username\":\<username\>,\"event\":\"reconnect\"}
 
-**C-->S client request**
+**S-->C in case the player tries to reconnect but it was not suspended**
 
-toolcard 4 'positionX1' 'positionY1' 'positionX2' 'positionY2' 'secondPositionX1' 'secondPositionY1' 'secondPositionX2' 'secondPositionY2'
+{\"id\":\"error\",\"type\":3}
 
-**S-->C answer**
-
-Action done
-
-**S-->C answer in case of error**
-
-Invalid action
-
-
-
-## toolcard 5
-
-**C-->S client request**
-
-toolcard 5 'dieIndex' 'roundIndex'
-
-**S-->C answer**
-
-Action done
-
-**S-->C answer in case of error**
-
-Invalid action
-
-
-
-## toolcard 6
-
-**C-->S client request**
-
-toolcard 6 'dieIndex'
-
-**S-->C answer**
-
-Action done
-
-**S-->C answer in case of error**
-
-Invalid action
-
-
-
-## toolcard 7
-
-**C-->S client request**
-
-toolcard 7
-
-**S-->C answer**
-
-Action done
-
-**S-->C answer in case of error**
-
-Invalid action
-
-
-
-## toolcard 8
-
-**C-->S client request**
-
-toolcard 8 'positionX' 'positionY' 'dieIndex'
-
-**S-->C answer**
-
-Action done
-
-**S-->C answer in case of error**
-
-Invalid action
-
-
-
-## toolcard 9
-
-**C-->S client request**
-
-toolcard 9 'positionX' 'positionY' 'dieIndex'
-
-**S-->C answer**
-
-Action done
-
-**S-->C answer in case of error**
-
-Invalid action
-
-
-
-## toolcard 10
-
-**C-->S client request**
-
-toolcard 10 'dieIndex'
-
-**S-->C answer**
-
-Action done
-
-**S-->C answer in case of error**
-
-Invalid action
-
-
-## toolcard 11
-
-**C-->S client request**
-
-toolcard 11 'dieIndex'
-
-**S-->C answer**
-
-'dieColor'
-
-**C-->S client value setting**
-
-'dieValue' 'positionX' 'positionY'
-
-**S-->C answer**
-
-Action done
-
-**S-->C answer in case of error**
-
-Invalid action
-
-
-
-## toolcard 12
-
-**C-->S client request**
-
-toolcard 12 'positionX1' 'positionY1' 'positionX2' 'positionY2' 'secondPositionX1' 'secondPositionY1' 'secondPositionX2' 'secondPositionY2'
-
-**S-->C answer**
-
-Action done
-
-**S-->C answer in case of error**
-
-Invalid action
-
-
-
-## pass the turn
-
-**C-->S pass message**
-
-pass
-
-
-
-## logout
-
-**C-->S logout message**
-
-quit
+## End
