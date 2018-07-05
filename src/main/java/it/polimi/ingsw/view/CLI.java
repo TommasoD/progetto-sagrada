@@ -71,6 +71,15 @@ public class CLI {
     private Scanner stdin = new Scanner(System.in);
 
 
+    /**
+     * Print the message received.
+     * @param msg the message.
+     */
+    private void print (String msg) {
+        System.out.println(msg);
+    }
+
+
     //General write
 
     /**
@@ -91,18 +100,21 @@ public class CLI {
 
     public void printError(int id) {
         switch (id) {
-            case 1: System.out.println(USERNAME_ALREADY_USED);
+            case 1: print(USERNAME_ALREADY_USED);
                     break;
-            case 2: System.out.println(INVALID_MOVE);
+            case 2: print(INVALID_MOVE);
                     break;
-            case 3: System.out.println(UNSUPPORTED_MOVE);
+            case 3: print(UNSUPPORTED_MOVE);
                     break;
-            case 4: System.out.println(CAN_NOT_USE_TOOL_CARD);
+            case 4: print(CAN_NOT_USE_TOOL_CARD);
                     break;
-            case 5: System.out.println(CAN_NOT_RECONNECT);
+            case 5: print(CAN_NOT_RECONNECT);
                     break;
         }
     }
+
+
+
 
     /**
      * Print the event.
@@ -110,23 +122,23 @@ public class CLI {
      * @param event the type of event.
      */
     public void printEvent(String user, String event) {
-        if (event.equals(RECONNECT)) System.out.println(user + IS_RECONNECT);
-        else if (event.equals(DISCONNECT)) System.out.println(user + IS_DISCONNECTED);
-        else if (event.equals(SUSPEND)) System.out.println(user + IS_SUSPENDED);
+        if (event.equals(RECONNECT)) print(user + IS_RECONNECT);
+        else if (event.equals(DISCONNECT)) print(user + IS_DISCONNECTED);
+        else if (event.equals(SUSPEND)) print(user + IS_SUSPENDED);
     }
 
     /**
      * Print the help string.
      */
 
-    public void printHelp() { System.out.println(HELP);}
+    public void printHelp() { print(HELP);}
 
     /**
      * Notify the player that his turn has started.
      */
 
     public void printYourTurn() {
-        System.out.println(YOUR_TURN);
+        print(YOUR_TURN);
     }
 
     /**
@@ -134,7 +146,7 @@ public class CLI {
      */
 
     public void printEndOfTurn(){
-        System.out.println(TURN_ENDED);
+        print(TURN_ENDED);
     }
 
     /**
@@ -142,7 +154,7 @@ public class CLI {
      */
 
     public void printWaitForTheMatch() {
-        System.out.println(WAIT_FOR_THE_MATCH);
+        print(WAIT_FOR_THE_MATCH);
     }
 
     /**
@@ -150,7 +162,7 @@ public class CLI {
      */
 
     public void printWaitForYourTurn() {
-        System.out.println(WAIT_FOR_YOUR_TURN);
+        print(WAIT_FOR_YOUR_TURN);
     }
 
     /**
@@ -158,13 +170,13 @@ public class CLI {
      */
 
     public void printActionSuccessful() {
-        System.out.println(ACTION_SUCCESSFUL);
+        print(ACTION_SUCCESSFUL);
     }
 
 
     public void printWinner(String winner) {
-        System.out.println(THE_WINNER_IS + winner );
-        System.out.println(THANKS_FOR_PLAYING);
+        print(THE_WINNER_IS + winner );
+        print(THANKS_FOR_PLAYING);
     }
 
     /*
@@ -173,7 +185,7 @@ public class CLI {
 
     //setup print
     public String printLogin() {
-        System.out.println(INSERT_USERNAME);
+        print(INSERT_USERNAME);
         return stdin.nextLine();
     }
 
@@ -184,11 +196,11 @@ public class CLI {
      * @param message
      */
     public void printWindows(ShowWindowsMessage message){
-        System.out.println(CHOOSE_WINDOW);
-        System.out.println(message.getW1());
-        System.out.println(message.getW2());
-        System.out.println(message.getW3());
-        System.out.println(message.getW4());
+        print(CHOOSE_WINDOW);
+        print(message.getW1().toString());
+        print(message.getW2().toString());
+        print(message.getW3().toString());
+        print(message.getW4().toString());
         printDigitWindow();
         windowsName.add(message.getW1().getName());
         windowsName.add(message.getW2().getName());
@@ -197,7 +209,7 @@ public class CLI {
     }
 
     public String printInsertWindow() {
-        System.out.println(INSERT_WINDOW_NAME);
+        print(INSERT_WINDOW_NAME);
         return stdin.nextLine();
     }
 
@@ -208,19 +220,19 @@ public class CLI {
 
 
     public void printUpdate(UpdateModelMessage message){
-        System.out.println(ROUND +  "#" + message.getRound());
+        print(ROUND +  "#" + message.getRound());
         StringBuilder sb = new StringBuilder();
         for (Die d : message.getDraft()) {
             sb.append(d.toString());
             sb.append(" ");
         }
-        System.out.println(DRAFT + sb.toString() + "\u001B[0m");
+        print(DRAFT + sb.toString() + "\u001B[0m");
         sb = new StringBuilder();
         for (Die d : message.getRoundTrack()) {
             sb.append(d.toString());
             sb.append(" ");
         }
-        System.out.println(TRACK  + sb.toString() + "\u001B[0m");
+        print(TRACK  + sb.toString() + "\u001B[0m");
         for(Player p : message.getPlayers()){
             p.dump();
         }
@@ -238,30 +250,30 @@ public class CLI {
     }
 
     public int printDieFromDraftPool(int size) {
-        System.out.println(CHOOSE_DIE_FROM_DRAFT_POOL  + (size-1) );
+        print(CHOOSE_DIE_FROM_DRAFT_POOL  + (size-1) );
         return Integer.parseInt(stdin.nextLine());
     }
 
     public int printCoordinates(String c) {
-        System.out.println(INSERT_COORDINATE + c);
+        print(INSERT_COORDINATE + c);
         return Integer.parseInt(stdin.nextLine());
     }
 
     public void printDigitWindow() {
-        System.out.println(DIGIT_WINDOW);
+        print(DIGIT_WINDOW);
     }
 
     public void printDigitLogin() {
-        System.out.println(DIGIT_LOGIN);
+        print(DIGIT_LOGIN);
     }
 
     public void printShowTable(PrivateObjective privateObjective, List<String> publicObjective, List<ToolCard> toolCards) {
-        System.out.println(YOUR_PRIVATE_OBJECTIVE  + privateObjective.toString());
-        System.out.println("\n" + PUBLIC_OBJECTIVES);
+        print(YOUR_PRIVATE_OBJECTIVE  + privateObjective.toString());
+        print("\n" + PUBLIC_OBJECTIVES);
         for (String p : publicObjective) {
-            System.out.println(p);
+            print(p);
         }
-        System.out.println("\n" + TOOL_CARDS);
+        print("\n" + TOOL_CARDS);
         for (ToolCard t : toolCards) {
             t.dump();
         }
@@ -274,26 +286,26 @@ public class CLI {
 
     //ToolCard print
     public int printChooseAToolCard() {
-        System.out.println(CHOOSE_A_TOOL_CARD);
+        print(CHOOSE_A_TOOL_CARD);
         return Integer.parseInt(stdin.nextLine());
     }
 
 
     public int printIncreaseOrDecrease() {
-        System.out.println(INCREASE_OR_DECREASE);
+        print(INCREASE_OR_DECREASE);
         return Integer.parseInt(stdin.nextLine());
     }
 
     public int printChooseDieValue() {
-        System.out.println(CHOOSE_DIE_VALUE );
+        print(CHOOSE_DIE_VALUE );
         return Integer.parseInt(stdin.nextLine());
     }
 
     public String printChooseAnotherDie() {
-        System.out.println(CHOOSE_ANOTHER_DIE);
+        print(CHOOSE_ANOTHER_DIE);
         String choice = stdin.nextLine();
         while ((!choice.equalsIgnoreCase(YES))&&(!choice.equalsIgnoreCase(NO))) {
-            System.out.println(INVALID_ENTRY);
+            print(INVALID_ENTRY);
             choice = stdin.nextLine();
         }
         return  choice;
@@ -302,7 +314,7 @@ public class CLI {
 
 
     public void printDieColor(String color) {
-        System.out.println(color);
+        print(color);
     }
 
 

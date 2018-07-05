@@ -42,6 +42,7 @@ public class SocketConnection extends Thread {
                     Thread.sleep(100);
                 } catch(InterruptedException e) {
                     System.out.println("Exception when sending a message from SocketConnection");
+                    Thread.currentThread().interrupt();
                 }
             }
         }

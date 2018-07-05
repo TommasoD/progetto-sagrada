@@ -80,7 +80,8 @@ public class Countdown extends Thread {
                 try {
                     Thread.sleep(100);
                 } catch(InterruptedException e) {
-                    e.printStackTrace();
+                    System.out.println("Countdown thread interrupted");
+                    Thread.currentThread().interrupt();
                 }
             }
         }
@@ -90,7 +91,7 @@ public class Countdown extends Thread {
             try {
                 this.serverBreak();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("IOException in countdown");
             }
         }
 
