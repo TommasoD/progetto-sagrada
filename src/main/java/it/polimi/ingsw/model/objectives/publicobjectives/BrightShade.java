@@ -7,6 +7,7 @@ public class BrightShade extends PublicObjective {
     public BrightShade(){
         points = 2;
         name = "Light Shades";
+        description = "Sets of 1 & 2";
     }
 
     public int checkPoints(WindowPattern window) {

@@ -7,6 +7,7 @@ public class DiffColorColumn extends PublicObjective {
     public DiffColorColumn(){
         points = 5;
         name = "Column Color Variety";
+        description = "Columns with no repeated colors";
     }
 
     public int checkPoints(WindowPattern window) {

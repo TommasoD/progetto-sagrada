@@ -7,6 +7,7 @@ public class DiffShadeColumn extends PublicObjective {
     public DiffShadeColumn(){
         points = 4;
         name = "Column Shade Variety";
+        description = "Columns with no repeated shades";
     }
 
     public int checkPoints(WindowPattern window) {

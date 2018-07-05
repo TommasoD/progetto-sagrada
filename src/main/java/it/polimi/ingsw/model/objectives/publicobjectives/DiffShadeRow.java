@@ -7,6 +7,7 @@ public class DiffShadeRow extends PublicObjective {
     public DiffShadeRow(){
         points = 5;
         name = "Row Shade Variety";
+        description = "Rows with no repeated shades";
     }
 
     public int checkPoints(WindowPattern window) {

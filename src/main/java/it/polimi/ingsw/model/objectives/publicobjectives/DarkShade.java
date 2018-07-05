@@ -7,6 +7,7 @@ public class DarkShade extends PublicObjective {
     public DarkShade(){
         points = 2;
         name = "Deep Shades";
+        description = "Sets of 5 & 6";
     }
 
     public int checkPoints(WindowPattern window) {

@@ -7,6 +7,7 @@ public class MediumShade extends PublicObjective {
     public MediumShade(){
         points = 2;
         name = "Medium Shades";
+        description = "Sets of 3 & 4";
     }
 
     public int checkPoints(WindowPattern window) {

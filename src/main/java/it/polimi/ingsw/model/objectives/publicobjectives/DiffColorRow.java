@@ -7,6 +7,7 @@ public class DiffColorRow extends PublicObjective {
     public DiffColorRow(){
         points = 6;
         name = "Row Color Variety";
+        description = "Rows with no repeated colors";
     }
 
     public int checkPoints(WindowPattern window) {

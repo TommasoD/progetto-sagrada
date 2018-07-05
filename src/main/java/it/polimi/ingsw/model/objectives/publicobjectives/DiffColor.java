@@ -7,6 +7,7 @@ public class DiffColor extends PublicObjective {
     public DiffColor(){
         points = 4;
         name = "Color Variety";
+        description = "Sets of one of each color";
     }
 
     public int checkPoints (WindowPattern window) {

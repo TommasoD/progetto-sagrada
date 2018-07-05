@@ -1,11 +1,11 @@
 package it.polimi.ingsw.model.objectives.publicobjectives;
-import it.polimi.ingsw.model.WindowPattern;
 import it.polimi.ingsw.model.objectives.Objective;
 
 public abstract class PublicObjective implements Objective{
 
     protected int points;
     protected String name;
+    protected String description;
 
     public int getPoints() {
         return points;
@@ -23,8 +23,16 @@ public abstract class PublicObjective implements Objective{
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String toString(){
-        return name + " [" + points + "]";
+        return name + " [" + points + "] - " + description;
     }
 
     public void dump(){

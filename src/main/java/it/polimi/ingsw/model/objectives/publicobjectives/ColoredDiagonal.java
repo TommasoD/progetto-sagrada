@@ -11,6 +11,7 @@ public class ColoredDiagonal extends PublicObjective {
     public ColoredDiagonal(){
         points = 1;
         name = "Diagonals";
+        description = "Two or more pieces of the same color";
         supportMatrix1 = new Slot[8][5];
         supportMatrix2 = new Slot[8][5];
     }
@@ -82,6 +83,6 @@ public class ColoredDiagonal extends PublicObjective {
     }
 
     public String toString(){
-        return name + " [#]";
+        return name + " [#] - " + description;
     }
 }

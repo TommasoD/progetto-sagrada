@@ -7,6 +7,7 @@ public class DiffShade extends PublicObjective {
     public DiffShade(){
         points = 5;
         name = "Shade Variety";
+        description = "Sets of one of each shade";
     }
 
     public int checkPoints(WindowPattern window) {
