@@ -8,8 +8,9 @@ import it.polimi.ingsw.utils.Observer;
 import java.util.logging.Logger;
 
 /**
- * Manages a game in terms of turn order and players' actions.
- * Modifies the model according to the rules.
+ * Manages a game in terms of the order of turns and players' actions.
+ * Receives messages from the network and handles them, modifies the model according
+ * to the actions of the players and the rules of the game.
  */
 public class Controller implements Observer<String>{
 
@@ -95,7 +96,9 @@ public class Controller implements Observer<String>{
         while (!model.getPlayers(handler.getCurrentPlayer()).isOnline()){
             try{
                 handler.nextTurn();
-            } catch (NewRoundException e){}
+            } catch (NewRoundException e){
+                logger.info("new round");
+            }
         }
         model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
         timer.wakeUp(handler.getCurrentPlayer());
@@ -132,7 +135,7 @@ public class Controller implements Observer<String>{
                     break;
                 }
             }
-            // TODO segnalare al server la fine della partita
+            model.setGameEnded(true);
         }
     }
 
@@ -170,7 +173,7 @@ public class Controller implements Observer<String>{
             GameOver gameOver = new GameOver();
             String winner = gameOver.determineWinner(model.getPlayers(), model.getPublicObjectiveActive(), handler.getTurnOrder());
             model.notifyAllPlayers(new GameOverMessage(winner));
-            // TODO : segnalare fine del gioco al server in qualche modo?
+            model.setGameEnded(true);
         }
         else{
             model.notifyMessage(new NewTurnMessage(), model.getPlayers(handler.getCurrentPlayer()).getId());
