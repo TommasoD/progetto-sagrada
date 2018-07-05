@@ -12,7 +12,7 @@ public class ClientConnection extends Observable<String> implements Runnable {
     private DataInputStream socketIn;
     private DataOutputStream socketOut;
     private static final String GAME_READY = "\nGame ready\n" ;
-    private static final String CONNECTION_CLOSED = "Connection closed";
+    private static final String CONNECTION_CLOSED = "\nConnection closed";
 
     public ClientConnection(Socket socket) {
 
@@ -48,6 +48,7 @@ public class ClientConnection extends Observable<String> implements Runnable {
 
         } catch (IOException e ) {
             System.out.println(CONNECTION_CLOSED);
+            System.exit(1);
         }
 
         finally {
