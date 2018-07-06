@@ -30,7 +30,7 @@ public class DiffColorColumn extends PublicObjective {
         int blue = 0;
         int yellow = 0;
         int purple = 0;
-        int occupiedSlot = 0; //serve per sapere se effettivamente tutte gli slot sono occupati da un dado
+        int occupiedSlot = 0; 
 
         //primo indice sono le colonne, secondo indice sono le righe
         for (int i = 0; i < 5; i++) {
