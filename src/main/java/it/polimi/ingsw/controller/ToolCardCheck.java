@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.WindowPattern;
 import java.util.List;
 
 /**
- * Check if a ToolCard effect can be used.
+ * Checks if a ToolCard effect can be used.
  */
 public class ToolCardCheck {
 

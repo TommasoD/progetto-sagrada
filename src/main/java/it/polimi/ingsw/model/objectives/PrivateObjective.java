@@ -2,17 +2,37 @@ package it.polimi.ingsw.model.objectives;
 
 import it.polimi.ingsw.model.WindowPattern;
 
+/**
+ * Represents a private objective.
+ * There are five private objective and each private objective has a color.
+ */
 public class PrivateObjective implements Objective {
 
     private String color;
+
+    /**
+     * Class constructor.
+     * @param color the color of the private objective
+     */
 
     public PrivateObjective(String color) {
         this.color = color;
     }
 
+    /**
+     *
+     * @return the color of the private objective.
+     */
+
     public String getColor() {
         return color;
     }
+
+    /**
+     * Calculates points given from the private objective.
+     * @param window the window of the player with this private objective.
+     * @return points from the private objective.
+     */
 
     public int checkPoints(WindowPattern window) {
         int sum = 0;
@@ -27,6 +47,11 @@ public class PrivateObjective implements Objective {
         }
         return sum;
     }
+
+    /**
+     *
+     * @return the color of this private objective.
+     */
 
     @Override
     public String toString() {

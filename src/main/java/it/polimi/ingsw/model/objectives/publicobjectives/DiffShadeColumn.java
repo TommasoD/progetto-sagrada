@@ -2,13 +2,26 @@ package it.polimi.ingsw.model.objectives.publicobjectives;
 
 import it.polimi.ingsw.model.WindowPattern;
 
+/**
+ * Represents the public objective card "Column Shade Variety".
+ */
 public class DiffShadeColumn extends PublicObjective {
+
+    /**
+     * Class constructor.
+     */
 
     public DiffShadeColumn(){
         points = 4;
         name = "Column Shade Variety";
         description = "Columns with no repeated shades";
     }
+
+    /**
+     *
+     * @param window the window of a player.
+     * @return public objective points given from this card.
+     */
 
     public int checkPoints(WindowPattern window) {
         int sum = 0;

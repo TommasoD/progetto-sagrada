@@ -3,10 +3,18 @@ package it.polimi.ingsw.model.objectives.publicobjectives;
 import it.polimi.ingsw.model.Slot;
 import it.polimi.ingsw.model.WindowPattern;
 
+/**
+ * Represents the public objective card "Diagonals".
+ * Contains two support matrix used to assist points calculation.
+ */
 public class ColoredDiagonal extends PublicObjective {
 
     private Slot[][] supportMatrix1;
     private Slot[][] supportMatrix2;
+
+    /**
+     * Class constructor.
+     */
 
     public ColoredDiagonal(){
         points = 1;
@@ -15,6 +23,11 @@ public class ColoredDiagonal extends PublicObjective {
         supportMatrix1 = new Slot[8][5];
         supportMatrix2 = new Slot[8][5];
     }
+
+    /**
+     * fills support matrix.
+     * @param window the window of a player.
+     */
 
     private void fullSupportMatrix(WindowPattern window) {
         int m = 5;
@@ -37,6 +50,12 @@ public class ColoredDiagonal extends PublicObjective {
             m++;
         }
     }
+
+    /**
+     *
+     * @param window the window of a player.
+     * @return public objective points given from this card.
+     */
 
     public int checkPoints(WindowPattern window) {
         this.fullSupportMatrix(window);
@@ -82,6 +101,12 @@ public class ColoredDiagonal extends PublicObjective {
         return (sum*points);
     }
 
+    /**
+     * Returns the String representation of the class.
+     * @return the String representation of the card.
+     */
+
+    @Override
     public String toString(){
         return name + " [#] - " + description;
     }

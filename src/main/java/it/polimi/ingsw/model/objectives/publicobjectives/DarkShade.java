@@ -2,13 +2,26 @@ package it.polimi.ingsw.model.objectives.publicobjectives;
 
 import it.polimi.ingsw.model.WindowPattern;
 
+/**
+ * Represents the public objective card "Deep Shades".
+ */
 public class DarkShade extends PublicObjective {
+
+    /**
+     * Class constructor.
+     */
 
     public DarkShade(){
         points = 2;
         name = "Deep Shades";
         description = "Sets of 5 & 6";
     }
+
+    /**
+     *
+     * @param window the window of a player.
+     * @return public objective points given from this card.
+     */
 
     public int checkPoints(WindowPattern window) {
         int five = 0;

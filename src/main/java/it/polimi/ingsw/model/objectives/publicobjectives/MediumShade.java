@@ -2,13 +2,26 @@ package it.polimi.ingsw.model.objectives.publicobjectives;
 
 import it.polimi.ingsw.model.WindowPattern;
 
+/**
+ * Represents the public objective card "Medium Shades".
+ */
 public class MediumShade extends PublicObjective {
+
+    /**
+     * Class constructor.
+     */
 
     public MediumShade(){
         points = 2;
         name = "Medium Shades";
         description = "Sets of 3 & 4";
     }
+
+    /**
+     *
+     * @param window the window of a player.
+     * @return public objective points given from this card.
+     */
 
     public int checkPoints(WindowPattern window) {
         int three = 0;

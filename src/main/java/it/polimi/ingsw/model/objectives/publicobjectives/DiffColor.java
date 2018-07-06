@@ -2,13 +2,26 @@ package it.polimi.ingsw.model.objectives.publicobjectives;
 
 import it.polimi.ingsw.model.WindowPattern;
 
+/**
+ * Represents the public objective card "Color Variety".
+ */
 public class DiffColor extends PublicObjective {
+
+    /**
+     * Class constructor.
+     */
 
     public DiffColor(){
         points = 4;
         name = "Color Variety";
         description = "Sets of one of each color";
     }
+
+    /**
+     *
+     * @param window the window of a player.
+     * @return public objective points given from this card.
+     */
 
     public int checkPoints (WindowPattern window) {
         int sum;
