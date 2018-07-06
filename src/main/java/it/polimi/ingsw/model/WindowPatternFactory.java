@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+/**
+ * Creates random window patterns from the list of all windows available in the game,
+ * retrieving information from external XML files.
+ */
 public class WindowPatternFactory {
 
     private WindowParser reader;
@@ -37,11 +41,21 @@ public class WindowPatternFactory {
             "Sun's Glory"
     };
 
+    /**
+     * Class constructor.
+     */
+
     public WindowPatternFactory(){
         list = new ArrayList<String>();
         Collections.addAll(list, windows);
         reader = new WindowParser();
     }
+
+    /**
+     * Creates a certain window pattern reading info from an external XML file.
+     * @param name the name of the window pattern.
+     * @return the window pattern.
+     */
 
     public WindowPattern createWindow(String name){
         if(name.equals("Kaleidoscopic Dream")) return reader.readWindowPattern("window1");
@@ -71,6 +85,12 @@ public class WindowPatternFactory {
         return null;
     }
 
+    /**
+     * Creates a random window pattern from a list of available windows,
+     * reading info from external XML files.
+     * @return a random window pattern.
+     */
+
     public WindowPattern getWindow (){
         int bound = list.size();
         if(bound == 0) return null;
@@ -81,6 +101,10 @@ public class WindowPatternFactory {
         list.remove(s);
         return createWindow(s);
     }
+
+    /**
+     * Prints class.
+     */
 
     public void dump(){
         System.out.println("Window Factory:");
