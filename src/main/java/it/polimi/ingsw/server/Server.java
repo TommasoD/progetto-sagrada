@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.parsers.SetupParser;
@@ -10,6 +9,11 @@ import java.io.IOException;
 import java.net.*;
 import java.util.Enumeration;
 
+/**
+ * Represents the server, so it accepts or declines new client connections.
+ * Contains the port number and references to gameManager, gameRoom, Game and Controller.
+ * These references are essential to create a new match.
+ */
 public class Server {
 
     private int port;
@@ -20,6 +24,10 @@ public class Server {
     private Game model;
     private Controller controller;
     private static final String NEW_GAME = "A new game is being played. Try connecting later.";
+
+    /**
+     * Class constructor.
+     */
 
     public Server() {
 
@@ -42,6 +50,15 @@ public class Server {
 
         System.out.println("Server ready");
     }
+
+    /**
+     * Accepts or declines new client connections.
+     * 1. In the first while, this class accepts up to four new client connections.
+     * 2. Creates a new match with the relative controller method.
+     * 3. Creates a new client handler for each client.
+     * 4. Calls the controller method newLoginRequest.
+     * 5. In the second while, this class declines new client connections.
+     */
 
     public void startServer() {
 
@@ -67,7 +84,7 @@ public class Server {
 
         controller.newMatch(gameRoom.getSize());
 
-        //create client handler
+
         int i = 0;
         for (SocketConnection s : gameRoom.getConnections()) {
             gameManager.playerList.add(new ClientHandler(s.getSocket(), gameManager, i));
@@ -94,6 +111,10 @@ public class Server {
 
     }
 
+    /**
+     * Prints IPv4 Address of this machine.
+     */
+
     private void printIPAddress() {
         try {
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
@@ -115,6 +136,10 @@ public class Server {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Creates an instance of this class and calls the server method startServer.
+     */
 
     public static void main(String[] args) {
         Server server = new Server();

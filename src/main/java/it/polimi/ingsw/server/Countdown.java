@@ -5,21 +5,22 @@ import it.polimi.ingsw.parsers.SetupParser;
 import java.io.IOException;
 import java.net.Socket;
 
+/*
+ * Used at the beginning, first of the clients login.
+ * Counts how much time is passed from a new client connection.
+ * If too much time passes, the game will start with less than four players.
+ */
 public class Countdown extends Thread {
 
-    /** Save the time instant when you stop */
     private long stopTempo;
-
-    /** Real begin time */
     private long currentTempo;
-
-    /** On/Off of the timer */
     private boolean isActive;
-
     private boolean done;
-
     private int maxTime;
 
+    /**
+     * Class constructor.
+     */
 
     public Countdown() {
         SetupParser reader = new SetupParser();
@@ -29,11 +30,19 @@ public class Countdown extends Thread {
         done = false;
     }
 
+    /**
+     *
+     * @return the max time to wait.
+     */
+
     public int getMaxTime() {
         return maxTime;
     }
 
-    /**Reset and stop the timer */
+    /**
+     * Reset and stop the timer.
+     */
+
     public void resetAndStop() {
         synchronized (this) {
             stopTempo = 0;
@@ -41,7 +50,10 @@ public class Countdown extends Thread {
         }
     }
 
-    /** turn on the timer that begin from the last stop */
+    /**
+     * Turn on the timer. It will restart from the last stop.
+     */
+
     public void resumeClock() {
         synchronized (this) {
             currentTempo = System.currentTimeMillis();
@@ -49,7 +61,10 @@ public class Countdown extends Thread {
         }
     }
 
-    /** stop the timer */
+    /**
+     * Stop the timer.
+     */
+
     public void stopClock() {
         synchronized (this) {
             stopTempo += System.currentTimeMillis() - currentTempo;
@@ -57,19 +72,34 @@ public class Countdown extends Thread {
         }
     }
 
-    /** reset and start the timer */
+    /**
+     * Restart the timer.
+     */
+
     public void reset() {
         resetAndStop();
         resumeClock();
     }
 
-    /** return current time in milliseconds */
+    /**
+     *
+     * @return current time in milliseconds.
+     */
+
     public long read() {
         synchronized (this) {
             return isActive ? (stopTempo + System.currentTimeMillis() - currentTempo)
                     : stopTempo;
         }
     }
+
+    /**
+     * If gameRoom sets true the variable done,
+     * this method will finish without calls serverBreak method
+     * because there are four players in this case.
+     * If too much time passes, the game begin with less than
+     * four players and this class calls serverBreak method.
+     */
 
     @Override
     public void run() {
@@ -97,6 +127,13 @@ public class Countdown extends Thread {
 
     }
 
+    /**
+     * If too much time passes and there are less than four players
+     * the server is blocked on serverSocket.accept(), so this method
+     * create a new Socket to unlock the server, then this Socket
+     * will be closed.
+     */
+
     private void serverBreak() throws IOException {
         SetupParser reader = new SetupParser();
         reader.readSetup();
@@ -104,10 +141,18 @@ public class Countdown extends Thread {
         socket.close();
     }
 
-    /** return current time in seconds */
+    /**
+     *
+     * @return current time in seconds.
+     */
+
     public String toString() {
         return "" + read()/1000;
     }
+
+    /**
+     * Set true the variable done.
+     */
 
     public void setDone() {
         done = true;
