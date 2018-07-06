@@ -7,7 +7,7 @@ import java.net.Socket;
 
 public class Countdown extends Thread {
 
-    /** Save the time istant when you stop */
+    /** Save the time instant when you stop */
     private long stopTempo;
 
     /** Real begin time */
@@ -18,7 +18,7 @@ public class Countdown extends Thread {
 
     private boolean done;
 
-    private static int maxTime;
+    private int maxTime;
 
 
     public Countdown() {
@@ -71,9 +71,9 @@ public class Countdown extends Thread {
         }
     }
 
+    @Override
     public void run() {
 
-        //this.reset();
         while((this.read() < maxTime) && (!done)) {
             if(isActive) {
                 System.out.print("\r" + this.toString());
