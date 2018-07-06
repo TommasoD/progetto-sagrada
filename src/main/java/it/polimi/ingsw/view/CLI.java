@@ -239,7 +239,7 @@ public class CLI {
     /**
      * Each turn updates the round track, the draft pool
      * and the window of each player.
-     * @param message the (UpdateModelMessage.
+     * @param message the UpdateModelMessage.
      */
 
     public void printUpdate(UpdateModelMessage message){
