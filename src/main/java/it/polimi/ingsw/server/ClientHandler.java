@@ -7,7 +7,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-
+/**
+ * Represents the clientHandler, so it receives and sends message
+ * from and to a client. A reference to GameManager is essential
+ * to notify the input string from a client to the controller.
+ */
 public class ClientHandler extends Thread {
     private Socket socket;
     private int index;
@@ -15,6 +19,12 @@ public class ClientHandler extends Thread {
     private DataOutputStream output;
     private GameManager gameManager;
 
+    /**
+     * Constructor specifying socket, gameManager and index of the player.
+     * @param socket a socket.
+     * @param gameManager an existing GameManager.
+     * @param index index of the player.
+     */
 
     public ClientHandler(Socket socket, GameManager gameManager, int index) {
         this.socket = socket;
@@ -29,6 +39,13 @@ public class ClientHandler extends Thread {
         }
         this.gameManager = gameManager;
     }
+
+    /**
+     * Firstly send to a client the string "\nGame ready\n",
+     * then wait an input string from the same client.
+     * When this class receives the input string,
+     * notifies it to the controller
+     */
 
     public void run() {
 
@@ -58,6 +75,11 @@ public class ClientHandler extends Thread {
 
     }
 
+    /**
+     * Sends to a client the parameter line.
+     * @param line a string.
+     */
+
     public void send(String line) {
         try {
             output.writeUTF(line);
@@ -66,6 +88,11 @@ public class ClientHandler extends Thread {
             System.out.println("client " + index + " still disconnected");
         }
     }
+
+    /**
+     *
+     * @return index of the player.
+     */
 
     public int getIndex() {
         return index;

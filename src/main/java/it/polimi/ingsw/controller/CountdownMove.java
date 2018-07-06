@@ -17,7 +17,7 @@ public class CountdownMove extends Thread {
     private int playerIndex;
 
     /**
-     * Constructs a CountdownMove from an already existing Controller.
+     * Constructor specifying controller.
      * @param controller an existing Controller.
      */
 
