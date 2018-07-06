@@ -7,12 +7,23 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * Public class that manages the client connection.
+ * Waits to read a message throughout the game,
+ * calling the notify method for each message.
+ */
+
 public class ClientConnection extends Observable<String> implements Runnable {
 
     private DataInputStream socketIn;
     private DataOutputStream socketOut;
     private static final String GAME_READY = "\nGame ready\n" ;
     private static final String CONNECTION_CLOSED = "\nConnection closed";
+
+    /**
+     * Creates an input socket and an output socket for data.
+     * @param socket the connection socket.
+     */
 
     public ClientConnection(Socket socket) {
 
@@ -28,6 +39,11 @@ public class ClientConnection extends Observable<String> implements Runnable {
         }
 
     }
+
+    /**
+     * Starts ClientConnection and waits to read
+     * an input socket until the end of the game.
+     */
 
     public void run(){
         try {
@@ -64,6 +80,11 @@ public class ClientConnection extends Observable<String> implements Runnable {
             }
         }
     }
+
+    /**
+     * Writes a message on output socket.
+     * @param message the message sent.
+     */
 
     public void send(String message) {
         try {
