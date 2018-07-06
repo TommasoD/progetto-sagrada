@@ -5,8 +5,19 @@ import it.polimi.ingsw.model.objectives.publicobjectives.PublicObjective;
 
 import java.util.List;
 
+/**
+ * Class used to determine the winner of the match.
+ */
 public class GameOver {
 
+
+    /**
+     *
+     * @param players list of the players.
+     * @param publicObjectiveActive list of the active public Objective.
+     * @param lastTurnPosition vector that contains the order of the players during the last round.
+     * @return the winner of the match.
+     */
 
     public String determineWinner(List<Player> players, List<PublicObjective> publicObjectiveActive, int[] lastTurnPosition) {
         int[] totalPoints = new int[4];
@@ -40,13 +51,13 @@ public class GameOver {
         }
 
         if (count == 1) {
-            //un solo vincitore
+            //Just a winner.
             for (int i = 0; i < players.size(); i++) {
                 if (maxIndex[i] == 1) return players.get(i).getUsername();
             }
         }
 
-        //calcolo obiettivi privati
+        //Private Objectives calculation (in case of Total Point draw).
         for(int i = 0; i < players.size(); i++) {
             if(maxIndex[i] == 1) {
                 max = privateObjectivePoints[i];
@@ -68,16 +79,16 @@ public class GameOver {
         }
 
         if (count == 1) {
-            //un solo vincitore
+            //just a winner.
             for (int i = 0; i < players.size(); i++) {
                 if (maxIndex[i] == 2) return players.get(i).getUsername();
             }
         }
 
-        //calcolo token
+        //Tokens calculation (in case of Private Objective point draw).
         for(int i = 0; i < players.size(); i++) {
             if(maxIndex[i] == 2) {
-                max = privateObjectivePoints[i];
+                max = difficultyToken[i];
                 break;
             }
         }
@@ -96,13 +107,14 @@ public class GameOver {
         }
 
         if (count == 1) {
-            //un solo vincitore
+            //Just a winner.
             for (int i = 0; i < players.size(); i++) {
                 if (maxIndex[i] == 3) return players.get(i).getUsername();
             }
         }
 
         for(int i = 0; i < players.size(); i++) {
+            //If there's also a Token point draw.
             if(maxIndex[i] == 3) return players.get(lastTurnPosition[i]).getUsername();
         }
 
