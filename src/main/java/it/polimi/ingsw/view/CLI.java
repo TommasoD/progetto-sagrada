@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Public class that has the function of Command-line Interface.
+ * Handles the prints and client inputs during the game.
+ */
+
 public class CLI {
 
     private static final String INSERT_USERNAME = "Insert username: ";
@@ -134,7 +139,7 @@ public class CLI {
     public void printHelp() { print(HELP);}
 
     /**
-     * Notify the player that his turn has started.
+     * Notifies the player that his turn has started.
      */
 
     public void printYourTurn() {
@@ -142,7 +147,7 @@ public class CLI {
     }
 
     /**
-     * Notify the player that his turn has ended.
+     * Notifies the player that his turn has ended.
      */
 
     public void printEndOfTurn(){
@@ -150,7 +155,7 @@ public class CLI {
     }
 
     /**
-     * Notify the player to wait for the start of the match.
+     * Notifies the player to wait for the start of the match.
      */
 
     public void printWaitForTheMatch() {
@@ -158,7 +163,7 @@ public class CLI {
     }
 
     /**
-     * Notify the player to wait for the start of his turn.
+     * Notifies the player to wait for the start of his turn.
      */
 
     public void printWaitForYourTurn() {
@@ -166,35 +171,39 @@ public class CLI {
     }
 
     /**
-     *
+     * Notifies the player that the action was successful.
      */
 
     public void printActionSuccessful() {
         print(ACTION_SUCCESSFUL);
     }
 
+    /**
+     *  Notifies the players the winner of the game-
+     * @param winner the name of the winner.
+     */
 
     public void printWinner(String winner) {
         print(THE_WINNER_IS + winner );
         print(THANKS_FOR_PLAYING);
     }
 
-    /*
-    --------------------------------------------------------------------------------------
+    /**
+     * Return the username entered by the client.
+     * @return the username entered by the client.
      */
 
-    //setup print
     public String printLogin() {
         print(INSERT_USERNAME);
         return stdin.nextLine();
     }
 
-    //Window print
-
     /**
-     *
-     * @param message
+     * Prints the names of the extracted windows
+     * between which the player must choose.
+     * @param message the ShowWindowsMessage.
      */
+
     public void printWindows(ShowWindowsMessage message){
         print(CHOOSE_WINDOW);
         print(message.getW1().toString());
@@ -208,16 +217,30 @@ public class CLI {
         windowsName.add(message.getW4().getName());
     }
 
+    /**
+     * Return the window name chosen by the player.
+     * @return the window name chosen by the player.
+     */
+
     public String printInsertWindow() {
         print(INSERT_WINDOW_NAME);
         return stdin.nextLine();
     }
 
+    /**
+     *
+     * @return the names of the extracted windows.
+     */
 
     public ArrayList<String> getWindowsName() {
         return windowsName;
     }
 
+    /**
+     * Each turn updates the round track, the draft pool
+     * and the window of each player.
+     * @param message the (UpdateModelMessage.
+     */
 
     public void printUpdate(UpdateModelMessage message){
         print(ROUND +  "#" + message.getRound());
@@ -238,34 +261,64 @@ public class CLI {
         }
     }
 
-     /*
-    ----------------------------------------------------------------------------
+    //Player print
+
+    /**
+     * Notifies the player that he can choose a die from the round track.
+     * @param size the size of the round track.
+     * @return index of the chosen die.
      */
 
-
-    //Player print
     public int printDieFromRoundTrack(int size) {
         System.out.print(CHOOSE_DIE_FROM_ROUND_TRACK + (size-1) );
         return Integer.parseInt(stdin.nextLine());
     }
+
+    /**
+     * Notifies the player that he can choose a die from the draft pool.
+     * @param size the size of the draft pool
+     * @return index of the chosen die.
+     */
 
     public int printDieFromDraftPool(int size) {
         print(CHOOSE_DIE_FROM_DRAFT_POOL  + (size-1) );
         return Integer.parseInt(stdin.nextLine());
     }
 
+    /**
+     * Notifies the player who must enter the coordinates to select the die
+     * @param c the coordinate entered by the player.
+     * @return the coordinate entered by the player.
+     */
+
     public int printCoordinates(String c) {
         print(INSERT_COORDINATE + c);
         return Integer.parseInt(stdin.nextLine());
     }
 
+    /**
+     * Notifies the player that he must type 'window' to choose a window.
+     */
+
     public void printDigitWindow() {
         print(DIGIT_WINDOW);
     }
 
+    /**
+     * Notifies the client that he must type 'login' enter setup.
+     */
+
     public void printDigitLogin() {
         print(DIGIT_LOGIN);
     }
+
+    /**
+     * Shows the player his private objective, the public objectives
+     * and the tool cards.
+     * @param privateObjective the private objective of the player making the request.
+     * @param publicObjective the public objectives.
+     * @param toolCards the tool cards.
+     */
 
     public void printShowTable(PrivateObjective privateObjective, List<String> publicObjective, List<ToolCard> toolCards) {
         print(YOUR_PRIVATE_OBJECTIVE  + privateObjective.toString());
@@ -279,27 +332,50 @@ public class CLI {
         }
     }
 
-    /*
-    ----------------------------------------------------------------------------
-     */
-
 
     //ToolCard print
+
+    /**
+     * Notifies the player that he can enter the chosen tool card index
+     * @return the index of the chosen tool card.
+     */
+
     public int printChooseAToolCard() {
         print(CHOOSE_A_TOOL_CARD);
         return Integer.parseInt(stdin.nextLine());
     }
 
+    /**
+     * Notifies the player who can choose whether to
+     * increase or decrease the die value, after the player
+     * had chosen the tool card number 1.
+     * The player must enter 1 to increase the value of the die, 0 to decrease it.
+     * @return the choice of the player (0 or 1).
+     */
 
     public int printIncreaseOrDecrease() {
         print(INCREASE_OR_DECREASE);
         return Integer.parseInt(stdin.nextLine());
     }
 
+    /**
+     * Notifies the player who can choose the value of
+     * the extracted die, after the player had chosen the
+     * tool card number 11.
+     * @return the value of the die inserted by the player.
+     */
+
     public int printChooseDieValue() {
         print(CHOOSE_DIE_VALUE );
         return Integer.parseInt(stdin.nextLine());
     }
+
+    /**
+     * Notifies the player that he can choose another
+     * die, after he had used the tool card number 12.
+     * The player must insert 'yes' or 'no'.
+     * @return the player choice.
+     */
 
     public String printChooseAnotherDie() {
         print(CHOOSE_ANOTHER_DIE);
@@ -311,11 +387,13 @@ public class CLI {
         return  choice;
     }
 
-
+    /**
+     * Print the die color.
+     * @param color the die color.
+     */
 
     public void printDieColor(String color) {
         print(color);
     }
-
 
 }
