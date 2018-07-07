@@ -13,7 +13,7 @@ public class ToolCardCheck {
     /**
      * Checks if the ToolCard1 effect can be used.
      * @param d a die from the draft pool.
-     * @param action 0 -> decrease, 1 -> increase.
+     * @param action 0: decrease, 1: increase.
      * @return false if a player try to make an illegal move; true otherwise.
      */
 

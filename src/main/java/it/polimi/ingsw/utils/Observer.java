@@ -4,7 +4,7 @@ package it.polimi.ingsw.utils;
  * Implements different methods to manage an observed event depicted
  * by a message received from the an observable class.
  * The basis of the observer pattern together with the Observable class.
- * @param <T>
+ * @param <T> the type of the received events.
  */
 public interface Observer<T> {
 

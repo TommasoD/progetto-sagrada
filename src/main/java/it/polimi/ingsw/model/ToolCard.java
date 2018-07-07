@@ -77,7 +77,7 @@ public class ToolCard {
 
     /**
      *
-     * @return
+     * @return whether the tool card has already been used.
      */
 
     public boolean isAlreadyUsed() {
@@ -85,7 +85,7 @@ public class ToolCard {
     }
 
     /**
-     *
+     * Sets the tool card as already used by someone.
      */
 
     public void setAsAlreadyUsed(){

@@ -67,7 +67,7 @@ public class ValidateInput {
     /**
      * Returns true if the name entered match exactly the name
      * of a window actually present.
-     * @param windowNames
+     * @param windowNames the names of all the present windows.
      * @param insertName the name entered.
      * @return true if the name entered match exactly the name of a window actually present;
      *         false otherwise.
@@ -99,7 +99,7 @@ public class ValidateInput {
     /**
      * Returns true if the choice, expressed by the value of i,
      * to increase or decrease the value of the die is correct.
-     * @param i
+     * @param i the choice to decrease or increase, as an integer.
      * @return true if i is 1 or if i is 0;
      *         false otherwise.
      */
