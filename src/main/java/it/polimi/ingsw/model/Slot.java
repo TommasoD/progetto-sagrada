@@ -1,5 +1,11 @@
 package it.polimi.ingsw.model;
 
+/**
+ * Represents a slot inside a window patter. A slot can contain a die or not, can be associated
+ * to a value rule, to a color rule, or having no rule at all. It cannot contain both a value
+ * and a color rule. Color rules states that only dice of a certain color can be placed in the slot;
+ * value rule states that only dice with a certain value can be placed in the slot.
+ */
 public class Slot {
 
     private Die die;

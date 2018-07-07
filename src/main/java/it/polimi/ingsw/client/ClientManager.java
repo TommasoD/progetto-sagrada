@@ -10,7 +10,9 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
-
+/**
+ * Represents a client; handles a game from start to finish from a player's point of view.
+ */
 public class ClientManager implements Observer<String> {
 
     private Scanner stdin;

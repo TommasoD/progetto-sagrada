@@ -5,7 +5,7 @@ import it.polimi.ingsw.parsers.SetupParser;
 import java.io.IOException;
 import java.net.Socket;
 
-/*
+/**
  * Used at the beginning, first of the clients login.
  * Counts how much time is passed from a new client connection.
  * If too much time passes, the game will start with less than four players.
