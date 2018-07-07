@@ -30,9 +30,9 @@ public class DiffColorColumn extends PublicObjective {
         int blue = 0;
         int yellow = 0;
         int purple = 0;
-        int occupiedSlot = 0; 
+        int occupiedSlot = 0;
 
-        //primo indice sono le colonne, secondo indice sono le righe
+        //the first index is the columns, the second the rows
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 4; j++) {
                 if (window.getWindowMatrix(i, j).isNotEmpty()) {

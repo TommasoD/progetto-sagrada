@@ -468,6 +468,7 @@ public class ClientManager implements Observer<String> {
     public void visit(GameOverMessage message){
        CLI.printWinner(message.getWinner());
         this.gameEnded = true;
+        System.exit(1);
     }
 
     /**

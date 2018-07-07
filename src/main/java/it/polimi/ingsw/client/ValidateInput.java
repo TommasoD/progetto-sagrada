@@ -75,8 +75,8 @@ public class ValidateInput {
 
     public boolean checkWindowName(ArrayList<String> windowNames, String insertName) {
         for (String windowName : windowNames) if (windowName.equals(insertName)) return true;
-        System.out.println(DIGIT_WINDOW);
         System.out.println(WINDOW_NAME_NOT_PRESENT);
+        System.out.println(DIGIT_WINDOW);
         System.out.println();
 
         return false;

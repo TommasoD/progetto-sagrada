@@ -2,7 +2,7 @@
 
 <toolcards>
 
-    <toolcard id = "1" name = "Grozing Pliers" description = "After drafting increase or decrease the value of the drafted by 1
+    <toolcard id = "1" name = "Grozing Pliers" description = "After drafting increase or decrease the value of the drafted by 1.
 1 may not change to 6, or 6 to 1" > </toolcard>
 
     <toolcard id = "2" name = "Englomise Brush" description = "Move any one die in your window ignoring the color restrictions.

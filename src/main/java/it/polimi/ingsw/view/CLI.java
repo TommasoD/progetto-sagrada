@@ -37,12 +37,12 @@ public class CLI {
     private static final String YOUR_TURN = "It's your turn. Make a move (digit 'help' to see more).";
 
     private static final String HELP = "'login' to choose a username\n" +
-            "'window to choose a window\n" +
+            "'window to choose a window.\n" +
             "'place' to place a die on your Window.\n" +
-            "'tool card' to use a selected tool card\n" +
-            "'show table' to check your private objective, public objectives and tool cards\n" +
+            "'tool card' to use a selected tool card.\n" +
+            "'show table' to check your private objective, public objectives and tool cards.\n" +
             "'end' to end your turn.\n" +
-            "'reconnect' to rejoin the game when suspended";
+            "'reconnect' to rejoin the game when suspended.";
 
     private static final String INSERT_WINDOW_NAME = "Now insert the name of the desired window: ";
     private static final String DIGIT_WINDOW = "You have to choose a window. Digit 'window' to do so.";
@@ -271,7 +271,13 @@ public class CLI {
 
     public int printDieFromRoundTrack(int size) {
         System.out.print(CHOOSE_DIE_FROM_ROUND_TRACK + (size-1) );
-        return Integer.parseInt(stdin.nextLine());
+        int x;
+        try {
+            x = Integer.parseInt(stdin.nextLine());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+        return x;
     }
 
     /**
@@ -282,8 +288,15 @@ public class CLI {
 
     public int printDieFromDraftPool(int size) {
         print(CHOOSE_DIE_FROM_DRAFT_POOL  + (size-1) );
-        return Integer.parseInt(stdin.nextLine());
+        int x;
+        try {
+            x = Integer.parseInt(stdin.nextLine());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+        return x;
     }
+
 
     /**
      * Notifies the player who must enter the coordinates to select the die
@@ -293,7 +306,13 @@ public class CLI {
 
     public int printCoordinates(String c) {
         print(INSERT_COORDINATE + c);
-        return Integer.parseInt(stdin.nextLine());
+        int x;
+        try {
+            x = Integer.parseInt(stdin.nextLine());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+        return x;
     }
 
     /**
@@ -342,7 +361,13 @@ public class CLI {
 
     public int printChooseAToolCard() {
         print(CHOOSE_A_TOOL_CARD);
-        return Integer.parseInt(stdin.nextLine());
+        int x;
+        try {
+            x = Integer.parseInt(stdin.nextLine());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+        return x;
     }
 
     /**
@@ -355,7 +380,13 @@ public class CLI {
 
     public int printIncreaseOrDecrease() {
         print(INCREASE_OR_DECREASE);
-        return Integer.parseInt(stdin.nextLine());
+        int x;
+        try {
+            x = Integer.parseInt(stdin.nextLine());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+        return x;
     }
 
     /**
@@ -367,7 +398,13 @@ public class CLI {
 
     public int printChooseDieValue() {
         print(CHOOSE_DIE_VALUE );
-        return Integer.parseInt(stdin.nextLine());
+        int x;
+        try {
+            x = Integer.parseInt(stdin.nextLine());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+        return x;
     }
 
     /**
