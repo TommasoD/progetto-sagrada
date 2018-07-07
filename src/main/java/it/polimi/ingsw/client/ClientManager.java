@@ -194,6 +194,7 @@ public class ClientManager implements Observer<String> {
             while(!validateInput.checkRowIndex(y)) y = CLI.printCoordinates(Y);
 
             if (clientTurn) network.send(new SetDieMessage(x, y, die).serialize());
+
         }
 
         else if(move.equalsIgnoreCase(TOOL_CARD)) {
@@ -203,7 +204,11 @@ public class ClientManager implements Observer<String> {
             while (!validateInput.checkToolCardInArray(nToolCard-1)) nToolCard = CLI.printChooseAToolCard();
 
             if ((nToolCard  == 1) || (nToolCard  == 5) || (nToolCard   == 6) || (nToolCard  == 10) || (nToolCard == 11)) {
-               if(clientTurn) network.send(useToolCardA(nToolCard).serialize());
+               if ((nToolCard == 5) && (roundTrackSize <= 0)) {
+                   CLI.printError(6);
+                   return;
+               }
+               if (clientTurn) network.send(useToolCardA(nToolCard).serialize());
             }
 
             else if ((nToolCard == 2) || (nToolCard == 3)) {

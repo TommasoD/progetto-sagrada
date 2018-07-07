@@ -20,6 +20,7 @@ public class CLI {
     private static final String INSERT_USERNAME = "Insert username: ";
     private static final String USERNAME_ALREADY_USED = "Username already used. Try login again.";
     private static final String INVALID_MOVE = "Invalid move";
+    private static final String NO_DICE_ON_ROUND_TRACK = "there are no dice on the round track";
     private static final String UNSUPPORTED_MOVE = "Unsupported move. Digit 'help' to see the supported actions.";
     private static final String CAN_NOT_USE_TOOL_CARD = "You can not use the selected tool card";
     private static final String CAN_NOT_RECONNECT = "'reconnect' command is not supported. you are already online";
@@ -114,6 +115,8 @@ public class CLI {
             case 4: print(CAN_NOT_USE_TOOL_CARD);
                     break;
             case 5: print(CAN_NOT_RECONNECT);
+                    break;
+            case 6: print(NO_DICE_ON_ROUND_TRACK );
                     break;
         }
     }
