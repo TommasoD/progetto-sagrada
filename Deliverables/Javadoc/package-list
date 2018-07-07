@@ -1,0 +1,12 @@
+it.polimi.ingsw.client
+it.polimi.ingsw.controller
+it.polimi.ingsw.messages
+it.polimi.ingsw.messages.client
+it.polimi.ingsw.messages.controller
+it.polimi.ingsw.model
+it.polimi.ingsw.model.objectives
+it.polimi.ingsw.model.objectives.publicobjectives
+it.polimi.ingsw.parsers
+it.polimi.ingsw.server
+it.polimi.ingsw.utils
+it.polimi.ingsw.view
