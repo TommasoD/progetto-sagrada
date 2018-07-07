@@ -167,6 +167,13 @@ public class Controller implements Observer<String>{
                 p.resetRound();
             }
             model.notifyUpdate();
+            try {
+                while (!model.getPlayers(handler.getCurrentPlayer()).isOnline()) {
+                    handler.nextTurn();
+                }
+            } catch(NewRoundException ex) {
+                logger.info("round " + e.getRound() + " is starting");
+            }
         }
 
         if(handler.isGameEnded()){
