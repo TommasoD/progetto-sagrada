@@ -369,7 +369,6 @@ public class ClientManager implements Observer<String> {
         while(!validateInput.checkColumnIndex(x)) x = CLI.printCoordinates(X);
         int y = CLI.printCoordinates(Y);
         while(!validateInput.checkRowIndex(y)) y = CLI.printCoordinates(Y);
-        if (clientTurn) network.send(new ToolCardDMessage(nToolCard, dieIndex, x, y).serialize());
         return new ToolCardDMessage(nToolCard, dieIndex, x, y);
 
     }
