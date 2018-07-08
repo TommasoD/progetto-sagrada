@@ -15,7 +15,8 @@ Java implementation of "Sagrada", a board game for 2-4 players by Cranio Creatio
 ## Getting started
 
 Download the zip files from the <code>Deliverables</code> folder or clone the repository:
- <code>git clone https://github.com/TommasoD/progetto-sagrada.git</code>
+
+<code>git clone https://github.com/TommasoD/progetto-sagrada.git</code>
 
 Unzip files <code>LM_50_server.zip</code> and <code>LM_50_client.zip</code>
 
