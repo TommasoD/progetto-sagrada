@@ -327,7 +327,7 @@ public class Controller implements Observer<String>{
             return;
         }
         if(!model.canUseToolCard(message.getNum(), player)){
-            model.notifyMessage(new ErrorMessage(3), player);
+            model.notifyMessage(new ErrorMessage(4), player);
             return;
         }
         if(message.getNum() ==  1){
@@ -374,7 +374,7 @@ public class Controller implements Observer<String>{
         printMessage(message.getId(), player);
         WindowPattern w = model.getPlayerFromId(player).getPlayerWindow();
         if(!model.canUseToolCard(message.getNum(), player)){
-            model.notifyMessage(new ErrorMessage(3), player);
+            model.notifyMessage(new ErrorMessage(4), player);
             return;
         }
         if(message.getNum() ==  2 &&
@@ -405,7 +405,7 @@ public class Controller implements Observer<String>{
         printMessage(message.getId(), player);
         WindowPattern w = model.getPlayerFromId(player).getPlayerWindow();
         if(!model.canUseToolCard(message.getNum(), player)){
-            model.notifyMessage(new ErrorMessage(3), player);
+            model.notifyMessage(new ErrorMessage(4), player);
             return;
         }
         if(message.getNum() ==  4 &&
@@ -439,20 +439,19 @@ public class Controller implements Observer<String>{
         printMessage(message.getId(), player);
         WindowPattern w = model.getPlayerFromId(player).getPlayerWindow();
         if(!model.canUseToolCard(message.getNum(), player)){
-            model.notifyMessage(new ErrorMessage(3), player);
+            model.notifyMessage(new ErrorMessage(4), player);
             return;
         }
         if(message.getNum() ==  8){
             if(!checker.toolCard8(w, model.getDieFromDraft(message.getDieIndex()), message.getX(), message.getY()) ||
                     model.getPlayerFromId(player).isFirstTurnDone() ||
-                    model.getPlayerFromId(player).isDieUsed()) {
+                    !model.getPlayerFromId(player).isDieUsed()) {
                 model.notifyMessage(new ErrorMessage(2), player);
                 return;
             }
             model.getPlayerFromId(player).setSecondTurnDone(true);
         }
         if(message.getNum() ==  9 &&
-
                 !checker.toolCard9(w, model.getDieFromDraft(message.getDieIndex()), message.getX(), message.getY())){
             model.notifyMessage(new ErrorMessage(2), player);
             return;
@@ -473,7 +472,7 @@ public class Controller implements Observer<String>{
     public void visit(ToolCardEMessage message, int player){
         printMessage(message.getId(), player);
         if(!model.canUseToolCard(message.getNum(), player)){
-            model.notifyMessage(new ErrorMessage(3), player);
+            model.notifyMessage(new ErrorMessage(4), player);
             return;
         }
         if(message.getNum() ==  7){

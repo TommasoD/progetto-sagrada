@@ -344,6 +344,7 @@ class ControllerTest {
         c.startMatch();
         c.setWindowPattern(0, "Kaleidoscopic Dream");
         c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(0, 0).setDie(new Die("RED", "2"));
+        c.getGame().getPlayerFromId(0).setDieUsed(true);
         c.update(new ToolCardDMessage(8, 1, 1, 1).serialize(), 0);
         assertNotNull(c.getGame().getPlayerFromId(0).getPlayerWindow().getWindowMatrix(1, 1).getDie());
         assertTrue(c.getGame().getToolCard(7).isAlreadyUsed());

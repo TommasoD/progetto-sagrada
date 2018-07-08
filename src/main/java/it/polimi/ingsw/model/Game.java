@@ -309,7 +309,6 @@ public class Game extends Observable<String> {
         w.getWindowMatrix(x, y).setDie(d);
         getPlayerFromId(playerId).setFirstDiePlaced(true);
         getPlayerFromId(playerId).setDieUsed(true);
-        notify(this.toString());
     }
 
     /**
