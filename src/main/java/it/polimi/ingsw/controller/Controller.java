@@ -476,7 +476,7 @@ public class Controller implements Observer<String>{
             return;
         }
         if(message.getNum() ==  7){
-            if(model.getPlayerFromId(player).isFirstTurnDone() && !model.getPlayerFromId(player).isSecondTurnDone()) {
+            if(!model.getPlayerFromId(player).isFirstTurnDone() || model.getPlayerFromId(player).isDieUsed()) {
                 model.notifyMessage(new ErrorMessage(2), player);
                 return;
             }

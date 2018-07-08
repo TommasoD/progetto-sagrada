@@ -377,16 +377,17 @@ class ControllerTest {
         System.out.println(c.getGame().draftToString());
         c.update(new ToolCardEMessage(7).serialize(), 0);
         System.out.println(c.getGame().draftToString());
-        assertTrue(c.getGame().getToolCard(6).isAlreadyUsed());
-        assertTrue(c.getGame().getPlayerFromId(0).isToolCardUsed());
-        assertEquals(3, c.getGame().getPlayerFromId(0).getPlayerWindow().getDifficultyToken());
+        assertFalse(c.getGame().getToolCard(6).isAlreadyUsed());
+        assertFalse(c.getGame().getPlayerFromId(0).isToolCardUsed());
+        assertEquals(4, c.getGame().getPlayerFromId(0).getPlayerWindow().getDifficultyToken());
 
         c.getGame().getPlayerFromId(0).setToolCardUsed(false);
         c.getGame().getPlayerFromId(0).setFirstTurnDone(true);
+        c.getGame().getPlayerFromId(0).setDieUsed(false);
         c.update(new ToolCardEMessage(7).serialize(), 0);
         System.out.println(c.getGame().draftToString());
         assertTrue(c.getGame().getToolCard(6).isAlreadyUsed());
-        assertFalse(c.getGame().getPlayerFromId(0).isToolCardUsed());
+        assertTrue(c.getGame().getPlayerFromId(0).isToolCardUsed());
         assertEquals(3, c.getGame().getPlayerFromId(0).getPlayerWindow().getDifficultyToken());
     }
 

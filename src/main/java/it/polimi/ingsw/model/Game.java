@@ -357,7 +357,7 @@ public class Game extends Observable<String> {
     public boolean canUseToolCard(int toolcard, int player){
         if(getPlayerFromId(player).isToolCardUsed()) return false;
         int cost = toolCards.get(toolcard - 1).isAlreadyUsed() ? 2 : 1;
-        return getPlayerFromId(player).getPlayerWindow().getDifficultyToken() > cost;
+        return getPlayerFromId(player).getPlayerWindow().getDifficultyToken() >= cost;
     }
 
     /**
